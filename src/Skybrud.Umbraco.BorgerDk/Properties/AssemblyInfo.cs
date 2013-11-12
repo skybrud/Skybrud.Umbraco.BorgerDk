@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Skybrud.Umbraco.DataTypes.BorgerDk")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Skybrud.Umbraco.BorgerDk")]
+[assembly: AssemblyDescription("Integration mellem mellem Skybrud.BorgerDk og Umbraco")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Skybrud.Umbraco.DataTypes.BorgerDk")]
+[assembly: AssemblyCompany("Skybrud.dk")]
+[assembly: AssemblyProduct("Skybrud.Umbraco.BorgerDk")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
