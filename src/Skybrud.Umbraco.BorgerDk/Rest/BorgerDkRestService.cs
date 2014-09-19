@@ -39,7 +39,7 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
         public static void UpdateAllArticles() {
 
             // Check for permissions
-            if (HasValidLogin) {
+            if (!HasValidLogin) {
                 WriteJsonError(HttpStatusCode.Forbidden, "Access denied");
                 return;
             }
@@ -60,7 +60,7 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
         public static void UpdateArticlesOnPage(int pageId) {
 
             // Check for permissions
-            if (HasValidLogin) {
+            if (!HasValidLogin) {
                 WriteJsonError(HttpStatusCode.Forbidden, "Access denied");
                 return;
             }
@@ -185,7 +185,7 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
         public static void UpdateAllArticlesInSteps(int pagesPerCycles) {
 
             // Check for permissions
-            if (HasValidLogin) {
+            if (!HasValidLogin) {
                 WriteJsonError(HttpStatusCode.Forbidden, "Access denied");
                 return;
             }
@@ -200,7 +200,7 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
         public static void GetArticleList() {
 
             // Check for permissions
-            if (HasValidLogin) {
+            if (!HasValidLogin) {
                 WriteJsonError(HttpStatusCode.Forbidden, "Access denied");
                 return;
             }
