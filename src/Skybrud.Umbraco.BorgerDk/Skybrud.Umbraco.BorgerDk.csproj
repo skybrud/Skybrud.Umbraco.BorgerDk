@@ -238,6 +238,11 @@
     <Compile Include="DataTypes\BorgerDkDataEditor.cs" />
     <Compile Include="DataTypes\BorgerDkDataType.cs" />
     <Compile Include="DataTypes\BorgerDkPrevalueEditor.cs" />
+    <Compile Include="Model\BorgerDkArticle.cs" />
+    <Compile Include="Model\BorgerDkMicroArticle.cs" />
+    <Compile Include="Model\BorgerDkMicroArticlesBlock.cs" />
+    <Compile Include="Model\BorgerDkTextBlock.cs" />
+    <Compile Include="Model\IBorgerDkBlock.cs" />
     <Compile Include="Rest\BorgerDkRestService.cs" />
     <Compile Include="Rest\BorgerDkUpdateArticlesTask.cs" />
     <Compile Include="DataTypes\DataTypeHelpers.cs" />
