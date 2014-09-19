@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Configuration;
 using System.Net;
 using System.Web;
@@ -18,7 +19,7 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
             get {
                 if (User.GetCurrent() != null) return true;
                 string skybrudUniqueKey = ConfigurationManager.AppSettings["skybrudUniqueKey"];
-                return Request.QueryString["uniqueKey"] == skybrudUniqueKey;
+                return String.IsNullOrWhiteSpace(skybrudUniqueKey) || Request.QueryString["uniqueKey"] == skybrudUniqueKey;
             }
         }
 
