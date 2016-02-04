@@ -183,6 +183,10 @@
       <HintPath>..\packages\Skybrud.BorgerDk.1.2.0\lib\net40\Skybrud.BorgerDk.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Skybrud.WebApi.Json, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Skybrud.WebApi.Json.1.0.3\lib\Skybrud.WebApi.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SQLCE4Umbraco, Version=1.0.5858.25606, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\UmbracoCms.Core.7.3.5\lib\SQLCE4Umbraco.dll</HintPath>
       <Private>True</Private>
