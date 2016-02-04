@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Skybrud.Umbraco.BorgerDk")]
-[assembly: AssemblyDescription("Integration mellem mellem Skybrud.BorgerDk og Umbraco 7")]
+[assembly: AssemblyDescription("Integration mellem Skybrud.BorgerDk og Umbraco 7")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Skybrud.dk")]
 [assembly: AssemblyProduct("Skybrud.Umbraco.BorgerDk")]
