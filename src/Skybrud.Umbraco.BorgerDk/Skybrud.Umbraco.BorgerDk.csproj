@@ -306,6 +306,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BorgerDkHelper.cs" />
+    <Compile Include="Controllers\Api\BorgerDkController.cs" />
+    <Compile Include="Exceptions\BorgerDkException.cs" />
+    <Compile Include="Models\BorgerDkArticle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
