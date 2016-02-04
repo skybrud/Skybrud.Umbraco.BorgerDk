@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skybrud.Umbraco.BorgerDk", "Skybrud.Umbraco.BorgerDk\Skybrud.Umbraco.BorgerDk.csproj", "{C2DCFD6F-4E63-4F17-B2E3-8635B3DC2167}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{6BE3D9BE-0AFB-4522-8E22-A60058159C34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		{C2DCFD6F-4E63-4F17-B2E3-8635B3DC2167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2DCFD6F-4E63-4F17-B2E3-8635B3DC2167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2DCFD6F-4E63-4F17-B2E3-8635B3DC2167}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BE3D9BE-0AFB-4522-8E22-A60058159C34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BE3D9BE-0AFB-4522-8E22-A60058159C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BE3D9BE-0AFB-4522-8E22-A60058159C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BE3D9BE-0AFB-4522-8E22-A60058159C34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
