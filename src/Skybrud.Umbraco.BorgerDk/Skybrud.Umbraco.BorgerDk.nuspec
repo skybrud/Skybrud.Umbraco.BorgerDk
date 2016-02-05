@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Skybrud.dk, Anders Bjerner</authors>
+    <owners>Skybrud.dk</owners>
+    <licenseUrl>https://github.com/skybrud/Skybrud.BorgerDk/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/skybrud/Skybrud.BorgerDk</projectUrl>
+    <iconUrl>http://www.skybrud.dk/img/5431sk/icon/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <language>da-DK</language>
+    <tags>Skybrud, Umbraco, Borger.dk, selvbetjening, web service, artikel</tags>
+  </metadata>
+</package>
