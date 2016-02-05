@@ -24,11 +24,11 @@
         </li>
         <li>
             <label>Publiceret</label>
-            <span class="BorgerDkPublished">{{article.published}}</span>
+            <span class="BorgerDkPublished">{{article.published * 1000 | date: 'yyyy-MM-dd HH:mm'}}</span>
         </li>
         <li>
             <label>Ændret</label>
-            <span class="BorgerDkUpdated">{{article.modified}}</span>
+            <span class="BorgerDkUpdated">{{article.modified * 1000 | date: 'yyyy-MM-dd HH:mm'}}</span>
         </li>
     </ul>
 
