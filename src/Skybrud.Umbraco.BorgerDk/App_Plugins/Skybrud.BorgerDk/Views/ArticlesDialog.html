@@ -1,0 +1,53 @@
+﻿<div ng-controller="Skybrud.BorgerDkArticlesDialog.Controller">
+    <h2>Vælg artikel</h2>
+    <div style="margin-top: 20px; display: flex;">
+        <div class="btn-group">
+            <button class="btn" ng-repeat="endpoint in endpoints" prevent-default="" ng-click="selectEndpoint(endpoint);" ng-class="{active: endpoint.id == active}">
+                {{endpoint.name}}
+                <span ng-show="endpoint.count >= 0">({{endpoint.articles.length}})</span>
+            </button>
+        </div>
+        <input type="text" ng-model="query" style="margin-left: 10px; width: 100%;" placeholder="Søg på titel..." />
+    </div>
+
+    <div ng-repeat="endpoint in endpoints" ng-show="endpoint.id == active">
+        <div class="div-table">
+            <div class="thead">
+                <div class="row">
+                    <div class="col col-title">
+                        <a href="#" prevent-default="" ng-click="sort('title', 'asc');">Titel</a>
+                        <i class="icon" ng-class="{'icon-navigation-down': isSortDirection('title', 'asc'), 'icon-navigation-up': isSortDirection('title', 'desc')}"></i>
+                    </div>
+                    <div class="col col-date">
+                        <a href="#" prevent-default="" ng-click="sort('published', 'asc');">Publiceret</a>
+                        <i class="icon" ng-class="{'icon-navigation-down': isSortDirection('published', 'asc'), 'icon-navigation-up': isSortDirection('published', 'desc')}"></i>
+                    </div>
+                    <div class="col col-date">
+                        <a href="#" prevent-default="" ng-click="sort('updated', 'asc');">Opdateret</a>
+                        <i class="icon" ng-class="{'icon-navigation-down': isSortDirection('updated', 'asc'), 'icon-navigation-up': isSortDirection('updated', 'desc')}"></i>
+                    </div>
+                    <div class="col col-filler"></div>
+                </div>
+            </div>
+            <div class="tbody" style="max-height: 400px; overflow-y: scroll;">
+                <div class="row" ng-repeat="article in endpoint.articles">
+                    <div class="col col-title">
+                        <a href="#" prevent-default="" ng-click="submit(article)">{{article.title}}</a>
+                    </div>
+                    <div class="col col-date">{{article.published * 1000 | date: 'yyyy-MM-dd HH:mm'}}</div>
+                    <div class="col col-date">{{article.updated * 1000 | date: 'yyyy-MM-dd HH:mm'}}</div>
+                </div>
+            </div>
+            <div class="tbody" ng-show="endpoint.count == 0">
+                <div class="col" style="padding: 25px;">
+                    Din søgning under <strong>{{endpoint.name}}</strong> matchede ingen artikler.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="position: absolute; bottom: 10px;">
+        <button prevent-default="" ng-click="close()" class="btn">Cancel</button>
+    </div>
+
+</div>

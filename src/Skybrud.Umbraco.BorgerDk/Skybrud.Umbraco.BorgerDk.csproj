@@ -331,7 +331,29 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.css.map">
+      <DependentUpon>Default.css</DependentUpon>
+    </None>
     <None Include="packages.config" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.less" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Table.less" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\ArticlesDialog.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\BorgerDkDirective.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\Loader.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.css">
+      <DependentUpon>Default.less</DependentUpon>
+    </Content>
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.min.css">
+      <DependentUpon>Default.css</DependentUpon>
+    </Content>
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\ArticlesDialog.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\Directive.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\GridEditor.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PropertyEditor.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

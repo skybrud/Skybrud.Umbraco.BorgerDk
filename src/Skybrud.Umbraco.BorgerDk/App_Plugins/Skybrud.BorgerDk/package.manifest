@@ -1,0 +1,9 @@
+﻿{
+    "javascript": [ 
+        "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkDirective.js",
+        "/App_Plugins/Skybrud.BorgerDk/Controllers/ArticlesDialog.js"
+    ],
+    "css": [ 
+        "/App_Plugins/Skybrud.BorgerDk/Styles/Default.css"
+    ]
+}

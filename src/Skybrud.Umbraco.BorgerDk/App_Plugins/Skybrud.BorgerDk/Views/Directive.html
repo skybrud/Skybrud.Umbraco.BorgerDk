@@ -1,0 +1,93 @@
+﻿<div class="BorgerDkArticle" ng-class="{loading: loading}">
+
+    <label>
+        <strong>Sidens adresse</strong>
+        <div style="display: flex;">
+            <input type="text" ng-model="value.url" ng-change="urlChanged()" style="width: 100%;" ng-disabled="!isConfigured" />
+            <button class="btn" title="Genindlæs artikel" type="button" ng-click="reload()" ng-disabled="value.url.length == 0">
+                <i class="icon icon-refresh"></i>
+            </button>
+            <button class="btn" title="Vælg artikel fra liste" type="button" ng-click="search()">
+                <i class="icon icon-search"></i>
+            </button>
+        </div>
+    </label>
+
+    <div class="BorgerDkExample" ng-show="!article">
+        Fx https://www.borger.dk/Sider/Drikkevand-og-vandforbrug.aspx
+    </div>
+
+    <ul class="BorgerDkDetails" ng-show="article">
+        <li>
+            <label>ID</label>
+            <span class="BorgerDkId">{{article.id}}</span>
+        </li>
+        <li>
+            <label>Publiceret</label>
+            <span class="BorgerDkPublished">{{article.published}}</span>
+        </li>
+        <li>
+            <label>Ændret</label>
+            <span class="BorgerDkUpdated">{{article.modified}}</span>
+        </li>
+    </ul>
+
+    <div ng-show="article">
+        <br />
+        <h4>Mikroartikler</h4>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vælg</th>
+                        <th style="width: 100%;">Beskrivelse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="micro in article.micro">
+                        <td>
+                            <input id="{{id}}_{{micro.id}}" type="checkbox" ng-model="micro.selected" ng-change="updateSelected(micro);" />
+                        </td>
+                        <td>
+                            <label class="title" for="{{id}}_{{micro.id}}">{{micro.title}}</label>
+                            <!--<span class="comment">({{micro.id}})</span>-->
+                            <a class="more" href="#" ng-click="micro.expanded = !micro.expanded" prevent-default="">{{micro.expanded ? 'Skjul dette indhold' : 'Vis dette indhold'}}</a>
+                            <div class="content" ng-show="micro.expanded">
+                                <div ng-bind-html="micro.content"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h4>Andet indhold</h4>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vælg</th>
+                        <th style="width: 100%;">Beskrivelse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="element in article.other">
+                        <td>
+                            <input id="{{id}}_{{element.type}}" type="checkbox" ng-model="element.selected" ng-change="updateSelected(element);" />
+                        </td>
+                        <td>
+                            <label class="title" for="{{id}}_{{element.type}}">{{element.title}}</label>
+                            <span class="comment">({{element.type}})</span>
+                            <a class="more" href="#" ng-click="element.expanded = !element.expanded" prevent-default="">{{element.expanded ? 'Skjul dette indhold' : 'Vis dette indhold'}}</a>
+                            <div class="content" ng-show="element.expanded">
+                                <div ng-bind-html="element.content"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <skybrud-loader />
+
+</div>
