@@ -174,6 +174,6 @@ This will be supported in the future ;)
 
 
 
-[NuGetPackageUrl]: https://www.nuget.org/packages/Skybrud.Social.BorgerDk
+[NuGetPackageUrl]: https://www.nuget.org/packages/Skybrud.Umbraco.BorgerDk
 [UmbracoPackageUrl]: http://our.umbraco.org/projects/website-utilities/skybrud.umbraco.borgerdk
-[GitHubReleaseUrl]: https://github.com/skybrud/Skybrud.Social.BorgerDk/releases/latest
+[GitHubReleaseUrl]: https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/releases/latest
