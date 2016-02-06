@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 using Skybrud.BorgerDk;
 using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Exceptions;
+using Skybrud.Umbraco.BorgerDk.Models;
+using umbraco.webservices;
+using www.borger.dk._2009.WSArticleExport.v1.types;
 
 namespace Skybrud.Umbraco.BorgerDk {
     
@@ -126,8 +129,94 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        /// <summary>
+        /// Gets a list of articles matching the specified <code>options</code>.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static BorgerDkArticlesResult GetArticles(BorgerDkGetArticlesOptions options) {
+
+            // Make sure the query is lower case
+            string query = (options.Query ?? "").ToLower().Trim();
+            
+            // Get all articles for the endpoint
+            ArticleDescription[] all = options.Endpoint.GetClient().GetAllArticles();
+
+            int total = all.Length;
+
+            // Convert the articles to our own model
+            var articles = all.Select(x => new BorgerDkArticleSummary(x));
+
+            // Filter the articles by a search query?
+            if (!String.IsNullOrWhiteSpace(query)) {
+                articles = articles.Where(x => x.Title.ToLower().Contains(query));
+            }
+
+            switch (options.SortField) {
+                case BorgerDkArticleSortField.Published:
+                    articles = options.SortOrder == BorgerDkSortOrder.Ascending ? articles.OrderBy(x => x.Published) : articles.OrderByDescending(x => x.Published);
+                    break;
+                case BorgerDkArticleSortField.Updated:
+                    articles = options.SortOrder == BorgerDkSortOrder.Ascending ? articles.OrderBy(x => x.Updated) : articles.OrderByDescending(x => x.Updated);
+                    break;
+                case BorgerDkArticleSortField.Title:
+                    articles = options.SortOrder == BorgerDkSortOrder.Ascending ? articles.OrderBy(x => x.Title) : articles.OrderByDescending(x => x.Title);
+                    break;
+            }
+
+            return new BorgerDkArticlesResult(options.Endpoint, total, articles.ToArray(), options.SortField, options.SortOrder);
+
+        }
+
         public static long GetUnixTimeFromDateTime(DateTime dateTime) {
             return (long) (dateTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        }
+
+    }
+
+    public enum BorgerDkArticleSortField {
+        Title,
+        Published,
+        Updated
+    }
+
+    public enum BorgerDkSortOrder {
+        Ascending,
+        Descending
+    }
+
+
+    public class BorgerDkGetArticlesOptions {
+
+        public BorgerDkEndpoint Endpoint { get; set; }
+
+        public string Query { get; set; }
+
+        public BorgerDkArticleSortField SortField { get; set; }
+
+        public BorgerDkSortOrder SortOrder { get; set; }
+
+        public bool UseCache { get; set; }
+
+        public BorgerDkGetArticlesOptions() {
+            Endpoint = BorgerDkEndpoint.Default;
+            UseCache = true;
+        }
+
+    }
+
+    public class BorgerDkArticlesResult {
+
+        public BorgerDkEndpoint Endpoint { get; private set; }
+
+        public int Total { get; private set; }
+
+        public BorgerDkArticleSummary[] Articles { get; private set; }
+
+        public BorgerDkArticlesResult(BorgerDkEndpoint endpoint, int total, BorgerDkArticleSummary[] articles, BorgerDkArticleSortField sortField, BorgerDkSortOrder sortOrder) {
+            Endpoint = endpoint;
+            Total = total;
+            Articles = articles;
         }
 
     }
