@@ -309,6 +309,7 @@
     <Compile Include="BorgerDkHelper.cs" />
     <Compile Include="Controllers\Api\BorgerDkController.cs" />
     <Compile Include="Exceptions\BorgerDkException.cs" />
+    <Compile Include="Json\Converters\UnixDateTimeJsonConverter.cs" />
     <Compile Include="Models\BorgerDkArticle.cs" />
     <Compile Include="Models\BorgerDkArticleSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
