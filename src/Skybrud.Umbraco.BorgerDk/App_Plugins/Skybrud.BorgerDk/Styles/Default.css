@@ -299,6 +299,9 @@
 .BorgerDkArticle.loading .BorgerDkList {
   opacity: 0.75;
 }
+.modal.fade.in.BorgerDkDialog {
+  border: 1px solid #D9D9D9 !important;
+}
 .BorgerDkDialog {
   top: 10%;
   bottom: 10%;
