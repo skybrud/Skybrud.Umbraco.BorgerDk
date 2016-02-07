@@ -168,6 +168,20 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        /// <summary>
+        /// Gets an instance of <see cref="System.DateTime"/> from the specified <code>timestamp</code>.
+        /// </summary>
+        /// <param name="timestamp">The Unix timestamp.</param>
+        /// <returns>Returns an instance of <see cref="System.DateTime"/> from the specified <code>timestamp</code>.</returns>
+        public static DateTime GetDateTimeFromUnixTime(long timestamp) {
+            return new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp);
+        }
+
+        /// <summary>
+        /// Gets a Unix timestamp from the specified <code>dateTime</code>.
+        /// </summary>
+        /// <param name="dateTime">The instance of <see cref="System.DateTime"/> to be converted.</param>
+        /// <returns></returns>
         public static long GetUnixTimeFromDateTime(DateTime dateTime) {
             return (long) (dateTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
         }
