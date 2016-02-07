@@ -1,16 +1,15 @@
 ﻿<div ng-controller="Skybrud.BorgerDkArticlesDialog.Controller">
-    <h2>Vælg artikel</h2>
-    <div style="margin-top: 20px; display: flex;">
+    <h5>Vælg artikel fra Borger.dk</h5>
+    <div class="BorgerDkDialogHeader">
         <div class="btn-group">
             <button class="btn" ng-repeat="endpoint in endpoints" prevent-default="" ng-click="selectEndpoint(endpoint);" ng-class="{active: endpoint.id == active}">
                 {{endpoint.name}}
                 <span ng-show="endpoint.count >= 0">({{endpoint.articles.length}})</span>
             </button>
         </div>
-        <input type="text" ng-model="query" style="margin-left: 10px; width: 100%;" placeholder="Søg på titel..." />
+        <input type="text" ng-model="query" style="margin: 0 0 0 10px; width: 100%;" placeholder="Søg på titel..." />
     </div>
-
-    <div ng-repeat="endpoint in endpoints" ng-show="endpoint.id == active">
+    <div class="BorgerDkDialogContent" ng-repeat="endpoint in endpoints" ng-show="endpoint.id == active">
         <div class="div-table">
             <div class="thead">
                 <div class="row">
@@ -29,7 +28,7 @@
                     <div class="col col-filler"></div>
                 </div>
             </div>
-            <div class="tbody" style="max-height: 400px; overflow-y: scroll;">
+            <div class="tbody" style="overflow-y: scroll;" ng-show="!loading && endpoint.articles.length > 0">
                 <div class="row" ng-repeat="article in endpoint.articles">
                     <div class="col col-title">
                         <a href="#" prevent-default="" ng-click="submit(article)">{{article.title}}</a>
@@ -38,16 +37,22 @@
                     <div class="col col-date">{{article.updated * 1000 | date: 'yyyy-MM-dd HH:mm'}}</div>
                 </div>
             </div>
-            <div class="tbody" ng-show="endpoint.count == 0">
-                <div class="col" style="padding: 25px;">
+            <div class="tbody" ng-show="!loading && endpoint.count == 0">
+                <div class="col" style="padding: 50px; text-align: center;">
                     Din søgning under <strong>{{endpoint.name}}</strong> matchede ingen artikler.
+                </div>
+            </div>
+            <div class="tbody" ng-show="loading || endpoint.count == -1">
+                <div class="col" style="padding: 50px; text-align: center;">
+                    Indlæser artikler...
                 </div>
             </div>
         </div>
     </div>
-    
-    <div style="position: absolute; bottom: 10px;">
-        <button prevent-default="" ng-click="close()" class="btn">Cancel</button>
+    <div class="BorgerDkDialogFooter">
+        <button prevent-default="" ng-click="close()" class="btn">
+            <localize key="general_cancel">Cancel</localize>
+        </button>
     </div>
 
 </div>

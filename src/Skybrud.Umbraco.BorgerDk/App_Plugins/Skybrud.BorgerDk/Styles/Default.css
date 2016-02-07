@@ -300,21 +300,44 @@
   opacity: 0.75;
 }
 .modal.fade.in.BorgerDkDialog {
-  border: 1px solid #D9D9D9 !important;
-}
-.BorgerDkDialog {
-  top: 10%;
-  bottom: 10%;
+  top: 60px !important;
+  border-radius: 0;
+  border: 1px solid #ccc !important;
+  background: white;
   padding: 10px;
+  -webkit-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
+  -moz-box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
+  box-shadow: 3px 3px 12px 0 rgba(50, 50, 50, 0.45);
+}
+.modal.fade.in.BorgerDkDialog {
+  border: none !important;
+  outline: 6px solid rgba(53, 53, 53, 0.85);
+  outline: 6px solid rgba(53, 53, 53, 0.35);
+  -webkit-box-shadow: non;
+  -moz-box-shadow: non;
+  box-shadow: none;
+}
+.modal.fade.in.BorgerDkDialog h5 {
+  border-bottom: 1px solid #D9D9D9;
+  background: #F8F8F8;
+  margin: -10px;
+  margin-bottom: 20px;
+  color: #666;
+  padding: 10px 10px 9px 10px;
+}
+.BorgerDkDialog h5 {
+  border-bottom: 1px solid #d9d9d9;
+  color: #999;
+  padding: 10px;
+  margin-top: 0;
+  text-align: center;
 }
 .BorgerDkDialog > div {
   height: 100%;
-}
-.BorgerDkDialog h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 16px;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
 }
 .BorgerDkDialog .active {
   font-weight: bold;
@@ -324,65 +347,6 @@
 }
 .BorgerDkDialog .row {
   display: flex;
-}
-.BorgerDkDialog .btn-sm {
-  display: inline-block;
-  padding: 2px 8px;
-  margin-bottom: 0;
-  font-size: 12px;
-  line-height: 16px;
-  color: #000;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  background: #f2f2f2;
-  border: 1px solid #ccc;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.BorgerDkDialog .btn-group > .btn,
-.BorgerDkDialog .btn-group > .btn-sm {
-  position: relative;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-}
-.BorgerDkDialog .btn-group > .btn:first-child,
-.BorgerDkDialog .btn-group > .btn-sm:first-child {
-  margin-left: 0;
-  -webkit-border-bottom-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  -webkit-border-top-left-radius: 2px;
-  border-top-left-radius: 2px;
-  -moz-border-radius-bottomleft: 2px;
-  -moz-border-radius-topleft: 2px;
-}
-.BorgerDkDialog .btn-group > .btn:last-child,
-.BorgerDkDialog .btn-group > .btn-sm:last-child {
-  -webkit-border-top-right-radius: 2px;
-  border-top-right-radius: 2px;
-  -webkit-border-bottom-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  -moz-border-radius-topright: 2px;
-  -moz-border-radius-bottomright: 2px;
-}
-.BorgerDkDialog .btn-group .btn-sm {
-  height: 23px;
-}
-.BorgerDkDialog .btn-group > .btn + .btn,
-.BorgerDkDialog .btn-group > .btn-sm + .btn-sm {
-  margin-left: -1px;
-}
-.BorgerDkDialog .btn-group .btn-sm.active,
-.BorgerDkDialog .btn-group .btn-sm:active {
-  background-image: none;
-  outline: 0;
-  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .BorgerDkDialog .col-title {
   width: 700px;
@@ -407,10 +371,20 @@
 .BorgerDkDialog .div-table .tbody .row + .row {
   border-top: 1px solid #dbdbdb;
 }
+.BorgerDkDialog .div-table .tbody {
+  height: 400px;
+}
 .BorgerDkDialog .div-table .tbody .col {
   padding: 8px;
   line-height: 20px;
   text-align: left;
   vertical-align: top;
+}
+.BorgerDkDialogHeader {
+  display: flex;
+}
+.BorgerDkDialogContent {
+  margin: 10px 0;
+  height: 100%;
 }
 /*# sourceMappingURL=Default.css.map */
