@@ -54,20 +54,44 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
         [HttpGet]
         public object GetArticleList(string query = null, string sort = "title", string order = "asc") {
 
-            // Make sure the sort order is either "asc" or "desc"
-            order = (order == "desc" ? "desc" : "asc");
+            // Set the culture to allow sorting based on Danish conventions
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("da-DK");
 
-            // Make sure we have a valid sort field
-            sort = (sort == "published" || sort == "updated" ? sort : "title");
+            // Dtermine the sort order
+            BorgerDkSortOrder sortOrder = (order == "desc" ? BorgerDkSortOrder.Descending : BorgerDkSortOrder.Ascending);
 
-
+            // Determine the sort field
+            BorgerDkArticleSortField sortField;
+            switch (sort) {
+                case "published":
+                    sortField = BorgerDkArticleSortField.Published;
+                    break;
+                case "updated":
+                    sortField = BorgerDkArticleSortField.Updated;
+                    break;
+                default:
+                    sortField = BorgerDkArticleSortField.Title;
+                    break;
+            }
+            
             List<object> temp = new List<object>();
 
-            foreach (var endpoint in BorgerDkEndpoint.Values) {
+            // Iterate through each endpoint. Since there are currently only two known endpoint, we
+            // just fetch articles for both of them at the same time.
+            foreach (BorgerDkEndpoint endpoint in BorgerDkEndpoint.Values) {
 
                 DateTime start = DateTime.UtcNow;
 
-                List<object> articles = GetArticles(endpoint, sort, order, query);
+                // Initialize the options
+                BorgerDkGetArticlesOptions options = new BorgerDkGetArticlesOptions {
+                    Endpoint = endpoint,
+                    Query = (query ?? "").ToLower().Trim(),
+                    SortField = sortField,
+                    SortOrder = sortOrder
+                };
+
+                // Get the articles for the endpoint (calls the Borger.dk webservice)
+                BorgerDkArticlesResult result = BorgerDkHelper.GetArticles(options);
 
                 TimeSpan ts = DateTime.UtcNow.Subtract(start);
 
@@ -76,16 +100,16 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
                     domain = endpoint.Domain,
                     name = endpoint.Name,
                     time = ts.TotalSeconds,
-                    articles,
-                    count = articles.Count
+                    articles = result.Articles,
+                    count = result.Articles.Length
                 });
 
             }
 
             return new {
                 sorting = new {
-                    field = sort,
-                    order
+                    field = sortField.ToString().ToLower(),
+                    order = sortOrder == BorgerDkSortOrder.Ascending ? "asc" : "desc"
                 },
                 data = temp
             };
@@ -163,51 +187,6 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
             }
 
             return BorgerDkHelper.ToJsonObject(article);
-
-        }
-
-        private List<object> GetArticles(BorgerDkEndpoint endpoint, string sortField, string sortOrder, string query) {
-
-            // Set the culture to allow sorting based on Danish conventions
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("da-DK");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("da-DK");
-
-            // Make sure the sort order is either "asc" or "desc"
-            sortOrder = (sortOrder == "desc" ? "desc" : "asc");
-
-            // Make sure the query is lower case
-            query = (query ?? "").ToLower().Trim();
-
-            // TODO: Although the endpoint method is very fast, be should probably cache the result
-            var articles = endpoint.GetClient().GetAllArticles();
-
-            List<object> temp = new List<object>();
-
-            StringComparer comparer = StringComparer.Create(new CultureInfo("da-DK"), true);
-
-            switch (sortField) {
-                case "published":
-                    articles = sortOrder == "asc" ? articles.OrderBy(x => x.PublishingDate).ToArray() : articles.OrderByDescending(x => x.PublishingDate).ToArray();
-                    break;
-                case "updated":
-                    articles = sortOrder == "asc" ? articles.OrderBy(x => x.LastUpdated).ToArray() : articles.OrderByDescending(x => x.LastUpdated).ToArray();
-                    break;
-                default:
-                    articles = sortOrder == "asc" ? articles.OrderBy(x => HttpUtility.HtmlDecode(x.ArticleTitle), comparer).ToArray() : articles.OrderByDescending(x => HttpUtility.HtmlDecode(x.ArticleTitle), comparer).ToArray();
-                    break;
-            }
-
-            foreach (ArticleDescription article in articles.Where(x => query == "" || x.ArticleTitle.ToLower().Contains(query))) {
-                temp.Add(new {
-                    id = article.ArticleID,
-                    url = article.ArticleUrl,
-                    title = HttpUtility.HtmlDecode(article.ArticleTitle),
-                    published = BorgerDkHelper.GetUnixTimeFromDateTime(article.PublishingDate),
-                    updated = BorgerDkHelper.GetUnixTimeFromDateTime(article.LastUpdated)
-                });
-            }
-
-            return temp;
 
         }
 

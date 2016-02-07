@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using Newtonsoft.Json;
+using Skybrud.Umbraco.BorgerDk.Json.Converters;
 using www.borger.dk._2009.WSArticleExport.v1.types;
 
 namespace Skybrud.Umbraco.BorgerDk.Models {
@@ -17,11 +18,13 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         
         [JsonProperty("title")]
         public string Title { get; private set; }
-        
+
         [JsonProperty("published")]
+        [JsonConverter(typeof(UnixDateTimeJsonConverter))]
         public DateTime Published { get; private set; }
 
         [JsonProperty("updated")]
+        [JsonConverter(typeof(UnixDateTimeJsonConverter))]
         public DateTime Updated { get; private set; }
 
         #endregion
