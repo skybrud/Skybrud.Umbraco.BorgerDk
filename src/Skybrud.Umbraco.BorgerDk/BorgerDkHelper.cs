@@ -8,7 +8,6 @@ using Skybrud.BorgerDk;
 using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Exceptions;
 using Skybrud.Umbraco.BorgerDk.Models;
-using umbraco.webservices;
 using www.borger.dk._2009.WSArticleExport.v1.types;
 
 namespace Skybrud.Umbraco.BorgerDk {
