@@ -6,8 +6,8 @@
     <title>$title$</title>
     <authors>Skybrud.dk, Anders Bjerner</authors>
     <owners>Skybrud.dk</owners>
-    <licenseUrl>https://github.com/skybrud/Skybrud.BorgerDk/blob/master/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/skybrud/Skybrud.BorgerDk</projectUrl>
+    <licenseUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</projectUrl>
     <iconUrl>http://www.skybrud.dk/img/5431sk/icon/favicon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
