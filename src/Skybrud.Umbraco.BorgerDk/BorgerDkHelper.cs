@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
@@ -121,6 +122,9 @@ namespace Skybrud.Umbraco.BorgerDk {
                     CacheItemPriority.High, null
                 );
 
+                // We also save the article to the disk so we can use it in the frontend
+                SaveToAppData(article);
+
                 return article;
 
             }
@@ -184,6 +188,32 @@ namespace Skybrud.Umbraco.BorgerDk {
         /// <returns></returns>
         public static long GetUnixTimeFromDateTime(DateTime dateTime) {
             return (long) (dateTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        }
+
+        /// <summary>
+        /// Saves the specified <code>article</code> to the <code>~/App_Data/BorgerDk/</code> directory. If the
+        /// directory does not already exist, it will be created.
+        /// </summary>
+        /// <param name="article">The instance of <see cref="Skybrud.BorgerDk.BorgerDkArticle"/> representing the
+        /// article.</param>
+        public static void SaveToAppData(BorgerDkArticle article) {
+
+            // Obviously we can't save the article if NULL
+            if (article == null) throw new ArgumentNullException("article");
+
+            // Get the municipality ID
+            int municipalityId = article.Municipality.Code;
+
+            // Get a reference to the Borger.dk directory (and create it if not found)
+            DirectoryInfo directory = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/App_Data/BorgerDk/"));
+            if (!directory.Exists) directory.Create();
+
+            // Construct the cache path
+            string path = directory.FullName + municipalityId + "_" + article.Domain.Replace(".", "") + "_" + article.Id + ".xml";
+    
+            // And finally the article (XML) to the disk
+            article.ToXElement().Save(path);
+
         }
 
     }
