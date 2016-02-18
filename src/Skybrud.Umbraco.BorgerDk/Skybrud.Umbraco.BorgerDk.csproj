@@ -183,6 +183,10 @@
       <HintPath>..\packages\Skybrud.BorgerDk.1.2.0\lib\net40\Skybrud.BorgerDk.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Skybrud.Umbraco.GridData, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Skybrud.Umbraco.GridData.1.5.1\lib\net45\Skybrud.Umbraco.GridData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Skybrud.WebApi.Json, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Skybrud.WebApi.Json.1.0.3\lib\Skybrud.WebApi.Json.dll</HintPath>
       <Private>True</Private>
@@ -306,14 +310,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\JObject\JObjectExtensions.cs" />
+    <Compile Include="Grid\Converters\BorgerDkGridConverter.cs" />
+    <Compile Include="Models\Cached\BorgerDkCachedArticle.cs" />
+    <Compile Include="Models\BorgerDkArticleSelection.cs" />
     <Compile Include="BorgerDkHelper.cs" />
+    <Compile Include="PropertyEditors\BorgerDkPropertyValueConverter.cs" />
     <Compile Include="Controllers\Api\BorgerDkController.cs" />
     <Compile Include="Exceptions\BorgerDkException.cs" />
     <Compile Include="Json\Converters\UnixDateTimeJsonConverter.cs" />
-    <Compile Include="Models\BorgerDkArticle.cs" />
     <Compile Include="Models\BorgerDkArticleSummary.cs" />
+    <Compile Include="Grid\Values\BorgerDkGridControlValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfoGenerated.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -343,7 +353,9 @@
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Table.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
     <None Include="Properties\AssemblyInfo.json" />
-    <None Include="Skybrud.Umbraco.BorgerDk.nuspec" />
+    <None Include="Skybrud.Umbraco.BorgerDk.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\ArticlesDialog.js" />
@@ -360,6 +372,7 @@
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\GridEditor.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PropertyEditor.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)..\build\UpdateAssemblyInfoJson.exe" "$(ProjectPath)" "$(TargetPath)"</PostBuildEvent>
