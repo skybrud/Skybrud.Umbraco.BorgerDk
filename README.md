@@ -13,7 +13,7 @@ The `master` branch (the one you're viewing now) contains the Umbraco 7 implemen
     * [As a property](#as-a-property)
 * [Municipalities](#municipalities)
 
-### Installation
+## Installation
 
 1. [**NuGet Package**][NuGetPackageUrl]  
 Install this NuGet package in your Visual Studio project. Makes updating easy.
@@ -24,9 +24,9 @@ Install this NuGet package in your Visual Studio project. Makes updating easy.
 3. [**ZIP file**][GitHubReleaseUrl]  
 Manually unzip and move files to the root directory of your website.
 
-# Setup
+## Setup
 
-#### In the grid
+### In the grid
 
 This package comes with the option to insert an article as a control in the Umbraco Grid. The control however needs a bit of configuration, so you have to add the editor manually.
 
@@ -64,11 +64,52 @@ You can also just add the editor to the global configuration file located at `~/
 }
 ```
 
-#### As a property
+**Usage**  
+If using our [Skybrud.Umbraco.GridData-package](https://github.com/skybrud/Skybrud.Umbraco.GridData) for showing the grid on your website, you can use the `BorgerDkGridControlValue` class (which inherits from `BorgerDkArticleSelection` used in the property editor) for the value of the Borger.dk grid control.
+
+In order for the grid package to return a strongly typed model, you should use the default `skybrud.borgerdk` editor alias as shown in the JSON examples above, or specify a custom alias either ending with `.borgerdk` or containing `.borgerdk.` - eg. `mysite.borgerdk` or `mysite.borgerdk.main`. If you use another editor alias, you should add your own grid converter to handle the model.
+
+If you're using our grid package, and already have a reference to the control holding the Borger.dk article, you can access the value shown in the Razor partial view example below (where `Model` is the control):
+
+```C#
+@using Skybrud.Umbraco.BorgerDk.Grid.Values
+@using Skybrud.Umbraco.BorgerDk.Models.Cached
+@inherits UmbracoViewPage<Skybrud.Umbraco.GridData.GridControl>
+              
+@{
+
+    BorgerDkGridControlValue value = Model.GetValue<BorgerDkGridControlValue>();
+
+    if (!value.HasSelection || !value.Article.Exists) { return; }
+
+    foreach (BorgerDkCachedMicroArticle microArticle in value.MicroArticles) {
+        <div class="BorgerDkMicroArticle">
+            <h2>@microArticle.Title</h2>
+            @Html.Raw(microArticle.Content)
+        </div>
+    }
+
+    foreach (BorgerDkCachedTextElement block in value.Blocks) {
+        <div class="BorgerDkText">
+            <h3>@block.Title</h3>
+            @Html.Raw(block.Content)
+        </div>
+    }
+
+}
+```
+
+The `value.HasSelection` property indicates whether the value has an article selection. It is necessary to check this since an editor might insert the Borger.dk grid control on a page, and then save the page without actually selecting an article, leaving the selection empty.
+
+The `value.Article` property is a reference to the cached article. When fetching an article from the Borger.dk webservice through Umbraco, it will automatically be saved/cached on the disk for later use. The `value.Article.Exists` then indicates whether the article is actually saved on the disk. If not, the example just returns since we don't have any content to show.
+
+Also in the example, the properties `value.MicroArticles` and `value.Blocks` will only contain the micro articles and text elements that the editor has selected in Umbraco, while all micro articles and text elements of the article can be accessed through `value.Article.MicroArticles` and `value.Article.Blocks`.
+
+### As a property
 
 This will be supported in the future ;)
 
-# Municipalities
+## Municipalities
 
 | ID | Name |
 |----|------|
