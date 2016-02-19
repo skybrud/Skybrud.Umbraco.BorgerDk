@@ -64,7 +64,8 @@ You can also just add the editor to the global configuration file located at `~/
 }
 ```
 
-**Usage**  
+#### Usage
+
 If using our [Skybrud.Umbraco.GridData-package](https://github.com/skybrud/Skybrud.Umbraco.GridData) for showing the grid on your website, you can use the `BorgerDkGridControlValue` class (which inherits from `BorgerDkArticleSelection` used in the property editor) for the value of the Borger.dk grid control.
 
 In order for the grid package to return a strongly typed model, you should use the default `skybrud.borgerdk` editor alias as shown in the JSON examples above, or specify a custom alias either ending with `.borgerdk` or containing `.borgerdk.` - eg. `mysite.borgerdk` or `mysite.borgerdk.main`. If you use another editor alias, you should add your own grid converter to handle the model.
