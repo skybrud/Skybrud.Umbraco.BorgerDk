@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Skybrud.Umbraco.BorgerDk")]
-[assembly: AssemblyDescription("Integration mellem Skybrud.BorgerDk og Umbraco 7")]
+[assembly: AssemblyDescription("Skybrud.Umbraco.BorgerDk is an integration between our Skybrud.BorgerDk package and Umbraco7. The package gives editors the option to insert Borger.dk articles as part of their content in their own pages in Umbraco.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Skybrud.dk")]
 [assembly: AssemblyProduct("Skybrud.Umbraco.BorgerDk")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.1")]
-[assembly: AssemblyInformationalVersion("2.0.1")]
+[assembly: AssemblyVersion("2.0.2")]
+[assembly: AssemblyInformationalVersion("2.0.2")]
