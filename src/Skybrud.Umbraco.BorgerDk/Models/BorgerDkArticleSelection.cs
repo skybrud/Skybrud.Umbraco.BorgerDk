@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.BorgerDk;
@@ -8,7 +9,7 @@ using Skybrud.Umbraco.BorgerDk.Models.Cached;
 namespace Skybrud.Umbraco.BorgerDk.Models {
 
     /// <summary>
-    /// Class representing a selection of a Borger.dk article.
+    /// Class representing a selection of a Borger.dk article as saved from either an Umbraco property editor or grid editor.
     /// </summary>
     public class BorgerDkArticleSelection {
 
@@ -67,6 +68,30 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         /// </summary>
         public BorgerDkCachedArticle Article { get; private set; }
 
+        /// <summary>
+        /// Gets an array of all selected text blocks.
+        /// </summary>
+        public BorgerDkCachedTextElement[] Blocks { get; private set; }
+
+        /// <summary>
+        /// Gets whether the selection has any text elements.
+        /// </summary>
+        public bool HasBlocks {
+            get { return Blocks.Length > 0; }
+        }
+
+        /// <summary>
+        /// Gets an array of all selected micro articles.
+        /// </summary>
+        public BorgerDkCachedMicroArticle[] MicroArticles { get; private set; }
+
+        /// <summary>
+        /// Gets whether the selection has any micro articles.
+        /// </summary>
+        public bool HasMicroArticles {
+            get { return MicroArticles.Length > 0; }
+        }
+
         #endregion
 
         #region Constructors
@@ -85,6 +110,20 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             Header = obj.GetString("header");
             Selected = obj.GetStringArray("selected");
             Article = BorgerDkCachedArticle.Load(Municipality, Domain, Id);
+            Blocks = (Article == null ? new BorgerDkCachedTextElement[0] : Article.Blocks.Where(IsSelected).ToArray());
+            MicroArticles = (Article == null ? new BorgerDkCachedMicroArticle[0] : Article.MicroArticles.Where(IsSelected).ToArray());
+        }
+
+        #endregion
+
+        #region Member methods
+
+        public bool IsSelected(BorgerDkCachedTextElement text) {
+            return text != null && Selected.Contains(text.Alias);
+        }
+
+        public bool IsSelected(BorgerDkCachedMicroArticle microArticle) {
+            return microArticle != null && Selected.Contains(microArticle.Id);
         }
 
         #endregion

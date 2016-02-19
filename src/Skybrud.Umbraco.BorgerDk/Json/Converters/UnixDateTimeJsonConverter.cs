@@ -9,7 +9,7 @@ namespace Skybrud.Umbraco.BorgerDk.Json.Converters {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             long val;
             if (value is DateTime) {
-                val = BorgerDkHelper.GetUnixTimeFromDateTime((DateTime)value);
+                val = BorgerDkHelpers.GetUnixTimeFromDateTime((DateTime)value);
             } else {
                 throw new Exception("Expected date object value.");
             }
@@ -18,7 +18,7 @@ namespace Skybrud.Umbraco.BorgerDk.Json.Converters {
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             if (reader.TokenType != JsonToken.Integer) throw new Exception("Wrong token type");
-            return BorgerDkHelper.GetDateTimeFromUnixTime((long) reader.Value);
+            return BorgerDkHelpers.GetDateTimeFromUnixTime((long) reader.Value);
         }
 
     }

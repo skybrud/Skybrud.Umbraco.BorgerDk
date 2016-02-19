@@ -11,8 +11,8 @@ using Skybrud.Umbraco.BorgerDk.Models;
 using www.borger.dk._2009.WSArticleExport.v1.types;
 
 namespace Skybrud.Umbraco.BorgerDk {
-    
-    public static class BorgerDkHelper {
+
+    public static class BorgerDkHelpers {
 
         public static string GetCachePath(BorgerDkArticle article) {
 

@@ -91,7 +91,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
                 };
 
                 // Get the articles for the endpoint (calls the Borger.dk webservice)
-                BorgerDkArticlesResult result = BorgerDkHelper.GetArticles(options);
+                BorgerDkArticlesResult result = BorgerDkHelpers.GetArticles(options);
 
                 TimeSpan ts = DateTime.UtcNow.Subtract(start);
 
@@ -154,7 +154,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
 
             try {
             
-                article = BorgerDkHelper.GetArticle(url, municipalityId, useCache);
+                article = BorgerDkHelpers.GetArticle(url, municipalityId, useCache);
             
             } catch (System.ServiceModel.FaultException ex) {
 
@@ -181,12 +181,12 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
             }
 
             try {
-                File.WriteAllText(BorgerDkHelper.GetCachePath(article), article.ToXElement() + "");
+                File.WriteAllText(BorgerDkHelpers.GetCachePath(article), article.ToXElement() + "");
             } catch (Exception ex) {
                 LogHelper.Error<BorgerDkController>("Unable to save Borger.dk article to disk: " + article.Url + " (" + article.Id + ")", ex);
             }
 
-            return BorgerDkHelper.ToJsonObject(article);
+            return BorgerDkHelpers.ToJsonObject(article);
 
         }
 
