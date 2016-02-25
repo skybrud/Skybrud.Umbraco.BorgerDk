@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.ServiceModel;
 using System.Threading;
 using System.Web;
 using System.Web.Http;
@@ -14,7 +15,6 @@ using Skybrud.WebApi.Json;
 using Skybrud.WebApi.Json.Meta;
 using Umbraco.Core.Logging;
 using Umbraco.Web.WebApi;
-using www.borger.dk._2009.WSArticleExport.v1.types;
 
 namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
 
@@ -73,46 +73,62 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
                     sortField = BorgerDkArticleSortField.Title;
                     break;
             }
-            
-            List<object> temp = new List<object>();
 
-            // Iterate through each endpoint. Since there are currently only two known endpoint, we
-            // just fetch articles for both of them at the same time.
-            foreach (BorgerDkEndpoint endpoint in BorgerDkEndpoint.Values) {
+            try {
 
-                DateTime start = DateTime.UtcNow;
+                List<object> temp = new List<object>();
 
-                // Initialize the options
-                BorgerDkGetArticlesOptions options = new BorgerDkGetArticlesOptions {
-                    Endpoint = endpoint,
-                    Query = (query ?? "").ToLower().Trim(),
-                    SortField = sortField,
-                    SortOrder = sortOrder
+                // Iterate through each endpoint. Since there are currently only two known endpoint, we
+                // just fetch articles for both of them at the same time.
+                foreach (BorgerDkEndpoint endpoint in BorgerDkEndpoint.Values) {
+
+                    DateTime start = DateTime.UtcNow;
+
+                    // Initialize the options
+                    BorgerDkGetArticlesOptions options = new BorgerDkGetArticlesOptions {
+                        Endpoint = endpoint,
+                        Query = (query ?? "").ToLower().Trim(),
+                        SortField = sortField,
+                        SortOrder = sortOrder
+                    };
+
+                    // Get the articles for the endpoint (calls the Borger.dk webservice)
+                    BorgerDkArticlesResult result = BorgerDkHelpers.GetArticles(options);
+
+                    TimeSpan ts = DateTime.UtcNow.Subtract(start);
+
+                    temp.Add(new {
+                        id = endpoint.Domain.Replace(".", ""),
+                        domain = endpoint.Domain,
+                        name = endpoint.Name,
+                        time = ts.TotalSeconds,
+                        articles = result.Articles,
+                        count = result.Articles.Length
+                    });
+
+                }
+
+                return new {
+                    sorting = new {
+                        field = sortField.ToString().ToLower(),
+                        order = sortOrder == BorgerDkSortOrder.Ascending ? "asc" : "desc"
+                    },
+                    data = temp
                 };
 
-                // Get the articles for the endpoint (calls the Borger.dk webservice)
-                BorgerDkArticlesResult result = BorgerDkHelpers.GetArticles(options);
+            } catch (EndpointNotFoundException ex) {
 
-                TimeSpan ts = DateTime.UtcNow.Subtract(start);
+                string msg = "Borger.dk's web service ser ud til at være nede i øjeblikket";
+                LogHelper.Error<BorgerDkController>(msg + ": " + ex.Message, ex);
+                return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.InternalServerError, msg + "."));
 
-                temp.Add(new {
-                    id = endpoint.Domain.Replace(".", ""),
-                    domain = endpoint.Domain,
-                    name = endpoint.Name,
-                    time = ts.TotalSeconds,
-                    articles = result.Articles,
-                    count = result.Articles.Length
-                });
+            } catch (Exception ex) {
+
+                string msg = "Der skete en fejl i kaldet til Borger.dk's web service";
+                LogHelper.Error<BorgerDkController>(msg + ": " + ex.Message, ex);
+                return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.InternalServerError, msg + "."));
 
             }
-
-            return new {
-                sorting = new {
-                    field = sortField.ToString().ToLower(),
-                    order = sortOrder == BorgerDkSortOrder.Ascending ? "asc" : "desc"
-                },
-                data = temp
-            };
 
         }
 
@@ -155,8 +171,14 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
             try {
             
                 article = BorgerDkHelpers.GetArticle(url, municipalityId, useCache);
-            
-            } catch (System.ServiceModel.FaultException ex) {
+
+            } catch (EndpointNotFoundException ex) {
+
+                string msg = "Borger.dk's web service ser ud til at være nede i øjeblikket";
+                LogHelper.Error<BorgerDkController>(msg + ": " + ex.Message, ex);
+                return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.InternalServerError, msg + "."));
+
+            } catch (FaultException ex) {
 
                 // Certain articles are protected from export
                 if (ex.Message.EndsWith("has been marked as not exportable.")) {
@@ -169,11 +191,11 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
                 }
                 
                 // Handle remaining exceptions thrown by the web service
-                LogHelper.Error<BorgerDkController>("Unable to import Borger.dk aticle with URL " + url + ": " + ex.Message, ex);
+                LogHelper.Error<BorgerDkController>("Unable to import Borger.dk article with URL " + url + ": " + ex.Message, ex);
                 return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.InternalServerError, "Der skete en fejl i forbindelse med Borger.dk", data));
             
             } catch (BorgerDkException ex) {
-                LogHelper.Error<BorgerDkController>("Unable to import Borger.dk aticle with URL " + url + ": " + ex.Message, ex);
+                LogHelper.Error<BorgerDkController>("Unable to import Borger.dk article with URL " + url + ": " + ex.Message, ex);
                 return Request.CreateResponse(JsonMetaResponse.GetError(HttpStatusCode.InternalServerError, "Der skete en fejl i forbindelse med Borger.dk: " + ex.Message, data));
             } catch (Exception ex) {
                 LogHelper.Error<BorgerDkController>("Unable to import Borger.dk aticle with URL " + url + ": " + ex.Message, ex);
