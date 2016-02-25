@@ -349,32 +349,34 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.css.map">
-      <DependentUpon>Default.css</DependentUpon>
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.css.map">
+      <DependentUpon>BorgerDk.css</DependentUpon>
     </None>
-    <None Include="packages.config" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
-    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.less" />
-    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\Table.less" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.less" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_dialog.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_table.less" />
+    <None Include="packages.config" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\EditDialog.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
     <None Include="Properties\AssemblyInfo.json" />
     <None Include="Skybrud.Umbraco.BorgerDk.nuspec">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\ArticlesDialog.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\BorgerDkDirective.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\Loader.js" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.css">
-      <DependentUpon>Default.less</DependentUpon>
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.css">
+      <DependentUpon>BorgerDk.less</DependentUpon>
     </Content>
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\Default.min.css">
-      <DependentUpon>Default.css</DependentUpon>
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.min.css">
+      <DependentUpon>BorgerDk.css</DependentUpon>
     </Content>
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\ArticlesDialog.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\Directive.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\EditDialog.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\GridEditor.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PreValueEditor.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PropertyEditor.html" />
   </ItemGroup>
   <ItemGroup />

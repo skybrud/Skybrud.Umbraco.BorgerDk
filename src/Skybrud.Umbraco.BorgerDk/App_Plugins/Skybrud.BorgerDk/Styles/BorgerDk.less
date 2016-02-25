@@ -1,0 +1,146 @@
+﻿@baseColor: #8d7758;
+@borderColor: #dddddd;
+
+
+@import "_dialog.less";
+
+.BorgerDkSelection {
+    table {
+        th {
+            text-align: left;
+            width: 150px;
+        }
+        table tbody tr + tr {
+            th, td {
+                padding-top: 2px;
+            }
+        }
+    }
+    span.value {
+        display: block;
+        &:first-letter {
+            text-transform: uppercase;
+        }
+    }
+}
+
+.BorgerDkEditArticle {
+    &.loading {
+        .BorgerDkArticle {
+            opacity: 0.7;
+        }
+    }
+}
+
+.BorgerDkUrl {
+    margin: 0;
+    button {
+        margin-left: 5px;
+        white-space: nowrap;
+    }
+    input {
+        width: auto;
+        flex-grow: 1;
+    }
+    > div {
+	    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	    display: -ms-flexbox;      /* TWEENER - IE 10 */
+	    display: -webkit-flex;     /* NEW - Chrome */
+	    display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+        height: 30px;
+    }
+}
+
+.BorgerDkExample {
+    color: #999;
+    font-style: italic;
+    font-size: 11px;
+}
+
+.BorgerDkDetails {
+    display: block;
+    margin: 10px 0 0 0;
+    text-align: left;
+    li {
+        display: block;
+        width: auto;
+        margin: 0;
+        label {
+            display: inline-block;
+            font-weight: bold;
+            width: 100px;
+            cursor: default;
+        }
+    }
+}
+
+.BorgerDkMicroArticles,
+.BorgerDkBlocks {
+    .title {
+        display: block;
+    }
+    .comment {
+        color: #999;
+    }
+    .more {
+        float: right;
+    }
+    label, input[type=checkbox] {
+        margin: 0;
+    }
+}
+
+.BorgerDkContent {
+    h4 span,
+    h4 span a {
+        color: #999;
+        font-size: 12px;
+    }
+}
+
+.BorgerDkElementContent {
+    padding: 20px;
+    h2, h3, h4 {
+        margin: 10px 0;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 12px;
+        &:before {
+            font-size: 9px;
+            content: 'H2';
+            background: #666;
+            color: #fff;
+            text-shadow: none;
+            padding: 0 3px;
+            margin-right: 5px;
+            line-height: 11px;
+        } 
+    }
+    h3 {
+        &:before {
+            content: 'H3';
+        } 
+    }
+    h4 {
+        &:before {
+            content: 'H4';
+        } 
+    }
+    ul {
+        display: initial;
+        list-style: disc;
+        margin: 0;
+        text-align: left;
+    }
+    li {
+        display: list-item;
+        margin: 0 0 0 20px;
+        list-style-type: disc;
+        text-align: left;
+        width: auto;
+    }
+}
+
+@import "_table.less";
+@import "_loader.less";
