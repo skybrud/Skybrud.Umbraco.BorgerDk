@@ -7,7 +7,7 @@
         transclude: true,
         restrict: 'E',
         replace: true,
-        templateUrl: '/App_Plugins/Skybrud.BorgerDk/Views/Directive.html',
+        templateUrl: '/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkDirective.html',
         link: function (scope) {
 
             scope.microArticles = 0;
@@ -22,6 +22,9 @@
                 notificationsService.error('Borger.dk', 'Ingen kommune angivet for Borger.dk-element.');
                 return;
             }
+
+            if (!scope.value) scope.value = { id: 0, url: '', selected: [] };
+            if (!scope.value.selected) scope.value.selected = [];
 
             function updateCounts() {
 
@@ -43,7 +46,7 @@
 
                 var d = dialogService.open({
                     modalClass: 'borgerdk-dialog',
-                    template: '/App_Plugins/Skybrud.BorgerDk/Views/EditDialog.html',
+                    template: '/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkDialog.html',
                     show: true,
                     animation: false,
                     value: scope.value,

@@ -357,7 +357,8 @@
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_table.less" />
     <None Include="packages.config" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\EditDialog.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\BorgerDkDialog.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\MunicipalityPreValueEditor.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
     <None Include="Properties\AssemblyInfo.json" />
     <None Include="Skybrud.Umbraco.BorgerDk.nuspec">
@@ -366,18 +367,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\BorgerDkDirective.js" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\Loader.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Directives\BorgerDkLoader.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Services\BorgerDkService.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.css">
       <DependentUpon>BorgerDk.less</DependentUpon>
     </Content>
     <Content Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.min.css">
       <DependentUpon>BorgerDk.css</DependentUpon>
     </Content>
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\Directive.html" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\EditDialog.html" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\GridEditor.html" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PreValueEditor.html" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PropertyEditor.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkDirective.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkDialog.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkGridEditor.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\MunicipalityPreValueEditor.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkPropertyEditor.html" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Skybrud.BorgerDkEditDialog.Controller", function ($scope, $http, $timeout, $routeParams, dialogService, notificationsService) {
+﻿angular.module("umbraco").controller("Skybrud.BorgerDkDialog.Controller", function ($scope, $http, $timeout, $routeParams, dialogService, notificationsService) {
 
     $scope.value = angular.copy($scope.dialogOptions.value);
     $scope.config = $scope.dialogOptions.config;

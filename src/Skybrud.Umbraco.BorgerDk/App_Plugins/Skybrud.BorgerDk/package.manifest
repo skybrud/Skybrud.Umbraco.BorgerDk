@@ -1,9 +1,32 @@
 ﻿{
-    "javascript": [ 
-        "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkDirective.js",
-        "/App_Plugins/Skybrud.BorgerDk/Controllers/ArticlesDialog.js"
+    "propertyEditors": [
+        {
+            "alias": "Skybrud.BorgerDk",
+            "name": "Skybrud - Borger.dk",
+            "editor": {
+                "view": "~/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkPropertyEditor.html",
+                "hideLabel": false,
+                "valueType": "JSON"
+            },
+            "prevalues": {
+                "fields": [
+                    {
+                        "label": "Kommune",
+                        "key": "municipality",
+                        "view": "~/App_Plugins/Skybrud.BorgerDk/Views/MunicipalityPreValueEditor.html"
+                    }
+                ]
+            }
+        }
     ],
-    "css": [ 
-        "/App_Plugins/Skybrud.BorgerDk/Styles/Default.css"
+    "javascript": [
+        "/App_Plugins/Skybrud.BorgerDk/Services/BorgerDkService.js",
+        "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkDirective.js",
+        "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkLoader.js",
+        "/App_Plugins/Skybrud.BorgerDk/Controllers/BorgerDkDialog.js",
+        "/App_Plugins/Skybrud.BorgerDk/Controllers/MunicipalityPreValueEditor.js"
+    ],
+    "css": [
+        "/App_Plugins/Skybrud.BorgerDk/Styles/BorgerDk.css"
     ]
 }
