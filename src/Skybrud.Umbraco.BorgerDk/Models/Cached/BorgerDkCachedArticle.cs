@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web.Hosting;
+using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Skybrud.BorgerDk;
@@ -126,18 +126,59 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         }
 
         public static string GetSavePath(BorgerDkMunicipality municipality, string domain, int articleId) {
-            return HostingEnvironment.MapPath("~/App_Data/BorgerDk/" + municipality.Code + "_" + domain.Replace(".", "") + "_" + articleId + ".xml");
+            return BorgerDkHelpers.GetCachePath(municipality, domain, articleId);
         }
 
         public static BorgerDkCachedArticle Load(BorgerDkMunicipality municipality, string domain, int articleId) {
-            if (municipality != null && !String.IsNullOrWhiteSpace(domain) && articleId > 0) {
-                string path = GetSavePath(municipality, domain, articleId);
-                if (File.Exists(path)) {
-                    return new BorgerDkCachedArticle(true, XElement.Load(path));
-                }
+
+            // Return an empty article since once or more parameters isn't valid
+            if (municipality == null || String.IsNullOrWhiteSpace(domain) || articleId == 0) {
+                return new BorgerDkCachedArticle(false, null);
             }
-            return new BorgerDkCachedArticle(false, null);
+
+            // Determine the path the cached article
+            string path = GetSavePath(municipality, domain, articleId);
+
+            // Parse the cached article if it exists on the disk
+            if (File.Exists(path)) return new BorgerDkCachedArticle(true, XElement.Load(path));
+
+            // Get the endpoint from the URL
+            BorgerDkEndpoint endpoint = BorgerDkEndpoint.GetFromDomain(domain);
+
+            // Return an empty article if "endpoint" isn't found
+            if (endpoint == null) return new BorgerDkCachedArticle(false, null);
+
+            // Get a reference to the Borger.dk service for the endpoint and municipality
+            BorgerDkService service = new BorgerDkService(endpoint, municipality);
+
+            // Return an empty article if we have attempted to download the article within the last hour
+            if (File.GetLastWriteTimeUtc(path + ".errors").AddHours(1) >= DateTime.UtcNow) {
+                return new BorgerDkCachedArticle(false, null);
+            }
+                
+            try {
+
+                // Download the article from the Borger.dk web service
+                BorgerDkArticle article = service.GetArticleFromId(articleId);
+                
+                // Save to article to th TEMP directory
+                BorgerDkHelpers.SaveToDisk(article);
+                
+                // Load and parse the XML of the cached article
+                return new BorgerDkCachedArticle(true, XElement.Load(path));
+
+            } catch (Exception ex) {
+
+                BorgerDkHelpers.EnsureTempDirectory();
+
+                File.AppendAllText(path + ".errors", "Unable to update Borger.dk article (" + Path.GetFileName(path) + "):" + ex.Message + "\r\n" + ex.StackTrace + "\r\n");
+                
+                return new BorgerDkCachedArticle(false, null);
+                
+            }
+        
         }
 
     }
+
 }

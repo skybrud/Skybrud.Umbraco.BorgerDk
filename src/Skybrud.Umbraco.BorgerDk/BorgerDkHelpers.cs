@@ -14,17 +14,34 @@ namespace Skybrud.Umbraco.BorgerDk {
 
     public static class BorgerDkHelpers {
 
-        public static string GetCachePath(BorgerDkArticle article) {
+        /// <summary>
+        /// Gets the virtual path to the Borger.dk temp directory.
+        /// </summary>
+        const string VirtualPath = "~/App_Data/TEMP/BorgerDk/";
 
-            // Generate the absolute path to the file
+        public static FileInfo[] GetCachedFiles() {
+
+            // Get a reference to the temp directory
+            DirectoryInfo directory = new DirectoryInfo(HttpContext.Current.Server.MapPath(VirtualPath));
+
+            // Return an array of all .xml files
+            return directory.GetFiles("*.xml");
+
+        }
+
+        public static string GetCachePath(BorgerDkMunicipality municipality, string domain, int articleId) {
             return HttpContext.Current.Server.MapPath(String.Format(
-                "~/App_Data/BorgerDk/{0}_{1}_{2}.{3}",
-                article.Municipality.Code,
-                article.Domain.Replace(".", ""),
-                article.Id,
+                "{0}{1}_{2}_{3}.{4}",
+                VirtualPath,
+                municipality.Code,
+                domain.Replace(".", ""),
+                articleId,
                 "xml"
             ));
+        }
 
+        public static string GetCachePath(BorgerDkArticle article) {
+            return GetCachePath(article.Municipality, article.Domain, article.Id);
         }
 
         /// <summary>
@@ -122,7 +139,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                 );
 
                 // We also save the article to the disk so we can use it in the frontend
-                SaveToAppData(article);
+                SaveToDisk(article);
 
                 return article;
 
@@ -190,28 +207,40 @@ namespace Skybrud.Umbraco.BorgerDk {
         }
 
         /// <summary>
-        /// Saves the specified <code>article</code> to the <code>~/App_Data/BorgerDk/</code> directory. If the
+        /// Saves the specified <code>article</code> to the <code>~/App_Data/TEMP/BorgerDk/</code> directory. If the
         /// directory does not already exist, it will be created.
         /// </summary>
         /// <param name="article">The instance of <see cref="Skybrud.BorgerDk.BorgerDkArticle"/> representing the
         /// article.</param>
-        public static void SaveToAppData(BorgerDkArticle article) {
+        public static void SaveToDisk(BorgerDkArticle article) {
 
             // Obviously we can't save the article if NULL
             if (article == null) throw new ArgumentNullException("article");
 
-            // Get the municipality ID
-            int municipalityId = article.Municipality.Code;
-
-            // Get a reference to the Borger.dk directory (and create it if not found)
-            DirectoryInfo directory = new DirectoryInfo(HttpContext.Current.Server.MapPath("~/App_Data/BorgerDk/"));
-            if (!directory.Exists) directory.Create();
+            // Make sure we have a directory
+            EnsureTempDirectory();
 
             // Construct the cache path
-            string path = directory.FullName + municipalityId + "_" + article.Domain.Replace(".", "") + "_" + article.Id + ".xml";
+            string path = GetCachePath(article);
     
             // And finally the article (XML) to the disk
             article.ToXElement().Save(path);
+
+        }
+
+        /// <summary>
+        /// Ensures that the Borger.dk temp directory (<code>~/App_Data/TEMP/BorgerDk/</code>) exists on disk.
+        /// </summary>
+        /// <returns>Returns an instance of <see cref="DirectoryInfo"/> representing the temp directory.</returns>
+        public static DirectoryInfo EnsureTempDirectory() {
+            
+            // Get a reference to the Borger.dk directory
+            DirectoryInfo directory = new DirectoryInfo(HttpContext.Current.Server.MapPath(VirtualPath));
+            
+            // Create the directory if it doesn't already exist
+            if (!directory.Exists) directory.Create();
+
+            return directory;
 
         }
 

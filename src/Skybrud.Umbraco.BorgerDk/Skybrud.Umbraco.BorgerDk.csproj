@@ -310,6 +310,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Api\BorgerDkMaintenanceController.cs" />
     <Compile Include="Extensions\JObject\JObjectExtensions.cs" />
     <Compile Include="Extensions\XElement\XElementExtensions.cs" />
     <Compile Include="Grid\Converters\BorgerDkGridConverter.cs" />
@@ -321,7 +322,7 @@
     <Compile Include="Models\Cached\BorgerDkCachedMicroArticle.cs" />
     <Compile Include="Models\Cached\BorgerDkCachedTextElement.cs" />
     <Compile Include="PropertyEditors\BorgerDkPropertyValueConverter.cs" />
-    <Compile Include="Controllers\Api\BorgerDkController.cs" />
+    <Compile Include="Controllers\Api\BackOffice\BorgerDkController.cs" />
     <Compile Include="Exceptions\BorgerDkException.cs" />
     <Compile Include="Json\Converters\UnixDateTimeJsonConverter.cs" />
     <Compile Include="Models\BorgerDkArticleSummary.cs" />
