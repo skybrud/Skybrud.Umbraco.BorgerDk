@@ -7,7 +7,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
     public class BorgerDkPropertyValueConverter : IPropertyValueConverter {
 
         public bool IsConverter(PublishedPropertyType propertyType) {
-            return propertyType.PropertyEditorAlias == "skybrud.borgerDk";
+            return propertyType.PropertyEditorAlias == "Skybrud.BorgerDk";
         }
 
         public object ConvertDataToSource(PublishedPropertyType propertyType, object data, bool preview) {
