@@ -110,8 +110,8 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             Header = obj.GetString("header");
             Selected = obj.GetStringArray("selected");
             Article = BorgerDkCachedArticle.Load(Municipality, Domain, Id);
-            Blocks = (Article == null ? new BorgerDkCachedTextElement[0] : Article.Blocks.Where(IsSelected).ToArray());
-            MicroArticles = (Article == null ? new BorgerDkCachedMicroArticle[0] : Article.MicroArticles.Where(IsSelected).ToArray());
+            Blocks = (Article.Exists ? new BorgerDkCachedTextElement[0] : Article.Blocks.Where(IsSelected).ToArray());
+            MicroArticles = (Article.Exists ? new BorgerDkCachedMicroArticle[0] : Article.MicroArticles.Where(IsSelected).ToArray());
         }
 
         #endregion
