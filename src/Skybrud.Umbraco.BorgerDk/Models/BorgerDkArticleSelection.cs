@@ -98,6 +98,8 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
 
         private BorgerDkArticleSelection() {
             Selected = new string[0];
+            Blocks = new BorgerDkCachedTextElement[0];
+            MicroArticles = new BorgerDkCachedMicroArticle[0];
         }
 
         protected BorgerDkArticleSelection(JObject obj) {
