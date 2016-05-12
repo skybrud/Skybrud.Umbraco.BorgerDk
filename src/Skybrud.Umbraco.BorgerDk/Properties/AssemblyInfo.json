@@ -1,10 +1,10 @@
 {
   "title": "Skybrud.Umbraco.BorgerDk",
-  "description": "Skybrud.Umbraco.BorgerDk is an integration between our Skybrud.BorgerDk package and Umbraco7. The package gives editors the option to insert Borger.dk articles as part of their content in their own pages in Umbraco.",
+  "description": "Skybrud.Umbraco.BorgerDk is an integration between our Skybrud.BorgerDk package and Umbraco 7. The package gives editors the option to insert Borger.dk articles as part of their content in their own pages in Umbraco.",
   "company": "Skybrud.dk",
   "product": "Skybrud.Umbraco.BorgerDk",
   "copyright": "Copyright © 2016",
-  "version": "2.0.5.0",
-  "informationalVersion": "2.0.5",
-  "fileVersion": "0.0.63.3"
+  "version": "2.0.6.0",
+  "informationalVersion": "2.0.6",
+  "fileVersion": "0.0.100.2"
 }
