@@ -102,6 +102,7 @@
 }
 .BorgerDkUrl {
   margin: 0;
+  display: block;
 }
 .BorgerDkUrl button {
   margin-left: 5px;
