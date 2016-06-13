@@ -350,9 +350,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.css.map">
-      <DependentUpon>BorgerDk.css</DependentUpon>
-    </None>
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_dialog.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
