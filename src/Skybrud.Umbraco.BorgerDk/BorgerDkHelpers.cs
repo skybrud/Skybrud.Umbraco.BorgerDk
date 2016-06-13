@@ -57,7 +57,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                 {"id", article.Id},
                 {"domain", article.Domain},
                 {"url", article.Url},
-                {"municipality", BorgerDkMunicipality.AssensKommune.Code},
+                {"municipality", article.Municipality.Code},
                 {"title", HttpUtility.HtmlDecode(article.Title).Trim()},
                 {"header", HttpUtility.HtmlDecode(article.Header).Trim()},
                 {"published", GetUnixTimeFromDateTime(article.Published)},
