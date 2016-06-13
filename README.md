@@ -40,7 +40,7 @@ If you wish to add the editor in a custom `package.manifest` file, it could look
         {
             "name": "Borger.dk",
             "alias": "skybrud.borgerdk",
-            "view": "/App_Plugins/Skybrud.BorgerDk/Views/GridEditor.html",
+            "view": "/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkGridEditor.html",
             "icon": "icon-school",
             "config": { 
                 "municipality": 630
@@ -56,7 +56,7 @@ You can also just add the editor to the global configuration file located at `~/
 {
     "name": "Borger.dk",
     "alias": "skybrud.borgerdk",
-    "view": "/App_Plugins/Skybrud.BorgerDk/Views/GridEditor.html",
+    "view": "/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkGridEditor.html",
     "icon": "icon-school",
     "config": { 
         "municipality": 630
