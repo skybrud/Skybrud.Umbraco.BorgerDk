@@ -120,10 +120,29 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
 
         #region Member methods
 
+        /// <summary>
+        /// Gets whether an element with the specified <code>alias</code> has been selected.
+        /// </summary>
+        /// <param name="alias">The alias (or ID) of the element.</param>
+        /// <returns>Returns <code>true</code> if a matching element has been selected, otherwise <code>false</code>.</returns>
+        public bool IsSelected(string alias) {
+            return !String.IsNullOrWhiteSpace(alias) && Selected.Contains(alias);
+        }
+
+        /// <summary>
+        /// Gets whether the specified <code>text</code> element has been selected.
+        /// </summary>
+        /// <param name="text">An instance of <see cref="BorgerDkCachedTextElement"/> representing the text element.</param>
+        /// <returns>Returns <code>true</code> if the element has been selected, otherwise <code>false</code>.</returns>
         public bool IsSelected(BorgerDkCachedTextElement text) {
             return text != null && Selected.Contains(text.Alias);
         }
 
+        /// <summary>
+        /// Gets whether the specified <code>microArticle</code> element has been selected.
+        /// </summary>
+        /// <param name="microArticle">An instance of <see cref="BorgerDkCachedMicroArticle"/> representing the micro article.</param>
+        /// <returns>Returns <code>true</code> if the micro article has been selected, otherwise <code>false</code>.</returns>
         public bool IsSelected(BorgerDkCachedMicroArticle microArticle) {
             return microArticle != null && Selected.Contains(microArticle.Id);
         }
