@@ -92,6 +92,21 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             get { return MicroArticles.Length > 0; }
         }
 
+        /// <summary>
+        /// Gets a reference to the <code>byline</code> element, or <code>null</code> if the element hasn't been
+        /// selected.
+        /// </summary>
+        public BorgerDkCachedTextElement ByLine {
+            get { return Blocks.FirstOrDefault(x => x.Alias == "byline"); }
+        }
+
+        /// <summary>
+        /// Gets whether the <code>byline</code> element has been selected.
+        /// </summary>
+        public bool HasByLine {
+            get { return Blocks.Any(x => x.Alias == "byline"); }
+        }
+
         #endregion
 
         #region Constructors
