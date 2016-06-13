@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
 using Skybrud.Umbraco.BorgerDk.Extensions.XElement;
+using Umbraco.Core;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
 
@@ -32,6 +33,13 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         /// </summary>
         public HtmlString ContentHtml {
             get { return new HtmlString(Content); }
+        }
+
+        /// <summary>
+        /// Gets the inner text of the block.
+        /// </summary>
+        public string InnerText {
+            get { return Content.StripHtml(); }
         }
 
         #endregion
