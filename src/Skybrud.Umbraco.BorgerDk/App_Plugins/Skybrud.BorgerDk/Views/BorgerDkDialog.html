@@ -48,7 +48,44 @@
                     <span class="BorgerDkUpdated">{{article.header}}</span>
                 </li>
             </ul>
-            <div class="BorgerDkContent">
+
+            <div class="BorgerDkContent" ng-if="config.mergeTypes">
+                <br />
+                <h4>
+                    Indhold
+                </h4>
+                <div class="table BorgerDkMicroArticles">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" ng-checked="all == article.all.length" ng-click="toggleAll()" />
+                                </th>
+                                <th style="width: 100%;">Beskrivelse</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="element in article.all">
+                                <td>
+                                    <input id="{{id}}_{{element.id}}" type="checkbox" ng-model="element.selected" ng-change="updateSelected(element);" />
+                                </td>
+                                <td>
+                                    <a class="more" href="#" ng-click="element.expanded = !element.expanded" prevent-default="">{{element.expanded ? 'Skjul dette indhold' : 'Vis dette indhold'}}</a>
+                                    <label class="title" for="{{id}}_{{element.id}}">
+                                        <span ng-style="{fontWeight: element.type == 'microArticle' ? 'bold' : 'normal'}">{{element.title}}</span>
+                                        <span class="comment">({{element.type == 'microArticle' ? 'mikroartikel' : element.id}})</span>
+                                    </label>
+                                    <div class="BorgerDkElementContent" ng-show="element.expanded">
+                                        <div ng-bind-html="element.content"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="BorgerDkContent" ng-if="!config.mergeTypes">
                 <br />
                 <h4>
                     Mikroartikler

@@ -3,12 +3,15 @@
     $scope.value = angular.copy($scope.dialogOptions.value);
     $scope.config = $scope.dialogOptions.config;
 
+    $scope.config.mergeTypes = !!$scope.config.mergeTypes;
+
     // Set initial values
     $scope.mode = 'insert';
     $scope.article = null;
     $scope.loading = false;
     $scope.microArticles = 0;
     $scope.blocks = 0;
+    $scope.all = 0;
 
     if (!$scope.value) $scope.value = { id: 0, url: '', selected: [] };
     if (!$scope.value.selected) $scope.value.selected = [];
@@ -95,6 +98,17 @@
         $scope.blocks < $scope.article.other.length ? $scope.selectBlocks() : $scope.clearBlocks();
     };
 
+    // Toggles all micro articles and blocks (if all are selected, they will be cleared - otherwise all will be selected)
+    $scope.toggleAll = function () {
+        if ($scope.all < $scope.article.all.length) {
+            $scope.selectMicroArticles();
+            $scope.selectBlocks();
+        } else {
+            $scope.clearMicroArticles();
+            $scope.clearBlocks();
+        }
+    };
+
     // Gets whether the element with the specified ID is selected
     function isSelected(id) {
         return $scope.value.selected.indexOf(id) >= 0;
@@ -115,16 +129,19 @@
     function updateCounts(a) {
         $scope.microArticles = 0;
         $scope.blocks = 0;
+        $scope.all = 0;
         if (!a) { a = $scope.article; }
         if (!a) return;
         angular.forEach(a.micro, function (e) {
             if (e.selected) {
                 $scope.microArticles++;
+                $scope.all++;
             }
         });
         angular.forEach(a.other, function (e) {
             if (e.selected) {
                 $scope.blocks++;
+                $scope.all++;
             }
         });
     }
@@ -192,15 +209,20 @@
             $scope.article = res;
             $scope.article.micro = [];
             $scope.article.other = [];
+            $scope.article.all = [];
             angular.forEach($scope.article.elements, function (element) {
                 if (element.type == 'kernetekst') {
                     $scope.article.micro = element.microArticles;
                     angular.forEach($scope.article.micro, function (micro) {
+                        micro.type = 'microArticle';
                         micro.selected = isSelected(micro.id);
+                        $scope.article.all.push(micro);
                     });
                 } else {
+                    element.id = element.type;
                     element.selected = isSelected(element.type);
                     $scope.article.other.push(element);
+                    $scope.article.all.push(element);
                 }
             });
 

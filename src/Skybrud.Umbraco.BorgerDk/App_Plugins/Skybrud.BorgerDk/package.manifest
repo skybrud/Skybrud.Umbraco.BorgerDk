@@ -14,6 +14,12 @@
                         "label": "Kommune",
                         "key": "municipality",
                         "view": "~/App_Plugins/Skybrud.BorgerDk/Views/MunicipalityPreValueEditor.html"
+                    },
+                    {
+                        "label": "Sammenflet typer",
+                        "key": "mergeTypes",
+                        "view": "boolean",
+                        "description": "Angiv om de to lister for henholdsvis <strong>Mikroartikler</strong> og <strong>Andet indhold</strong> skal vises i en enkelt liste i stedet."
                     }
                 ]
             }
