@@ -87,6 +87,11 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         /// </summary>
         public BorgerDkCachedMicroArticle[] MicroArticles { get; private set; }
 
+        /// <summary>
+        /// Gets the byline of the article.
+        /// </summary>
+        public string ByLine { get; protected set; }
+
         #endregion
 
         private BorgerDkCachedArticle(bool exists, XElement xml) {
@@ -113,6 +118,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
                     BorgerDkCachedTextElement text = BorgerDkCachedTextElement.Parse(element);
                     elements.Add(text);
                     blocks.Add(text);
+                    if (text.Alias == "byline") ByLine = text.InnerText;
                 }
             }
             Elements = elements.ToArray();
