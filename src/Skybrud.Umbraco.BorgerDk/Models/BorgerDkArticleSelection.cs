@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.BorgerDk;
@@ -107,6 +109,14 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             get { return Blocks.Any(x => x.Alias == "byline"); }
         }
 
+        /// <summary>
+        /// Gets whether the selection is valid. A selection is considered valid if either <see cref="HasBlocks"/> or
+        /// <see cref="HasMicroArticles"/> returns <code>true</code>.
+        /// </summary>
+        public bool IsValid {
+            get { return HasSelection && (HasBlocks || HasMicroArticles); }
+        }
+
         #endregion
 
         #region Constructors
@@ -160,6 +170,36 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         /// <returns>Returns <code>true</code> if the micro article has been selected, otherwise <code>false</code>.</returns>
         public bool IsSelected(BorgerDkCachedMicroArticle microArticle) {
             return microArticle != null && Selected.Contains(microArticle.Id);
+        }
+
+        /// <summary>
+        /// Gets the selection as a searchable text - eg. for use in Examine.
+        /// </summary>
+        /// <returns>Returns an instance of <see cref="System.String"/> with the selection as a searchable text.</returns>
+        public string AsSearchableText() {
+
+            StringBuilder sb = new StringBuilder();
+
+            // Append the "title" and "header"
+            sb.AppendLine(Title);
+            sb.AppendLine(Header);
+
+            // Append the selected block elements
+            foreach (BorgerDkCachedTextElement block in Blocks) {
+                sb.AppendLine(block.Title);
+                sb.AppendLine(Regex.Replace(block.Content, "<.*?>", ""));
+                sb.AppendLine();
+            }
+
+            // Append the selected micro articles
+            foreach (BorgerDkCachedMicroArticle micro in MicroArticles) {
+                sb.AppendLine(micro.Title);
+                sb.AppendLine(Regex.Replace(micro.Content, "<.*?>", ""));
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+
         }
 
         #endregion
