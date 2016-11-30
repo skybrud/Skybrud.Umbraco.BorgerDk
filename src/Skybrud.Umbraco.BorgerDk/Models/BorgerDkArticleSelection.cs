@@ -176,13 +176,14 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         /// Gets the selection as a searchable text - eg. for use in Examine.
         /// </summary>
         /// <returns>Returns an instance of <see cref="System.String"/> with the selection as a searchable text.</returns>
-        public string AsSearchableText() {
+        public string GetSearchableText() {
 
             StringBuilder sb = new StringBuilder();
 
             // Append the "title" and "header"
             sb.AppendLine(Title);
             sb.AppendLine(Header);
+            sb.AppendLine();
 
             // Append the selected block elements
             foreach (BorgerDkCachedTextElement block in Blocks) {
