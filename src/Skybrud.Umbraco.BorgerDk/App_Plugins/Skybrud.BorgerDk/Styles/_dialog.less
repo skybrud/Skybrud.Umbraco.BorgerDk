@@ -77,7 +77,8 @@
 
 
 
-
+.BorgerDk {
+    
     .row {
         display: flex;
     }
@@ -91,10 +92,11 @@
     }
 
     .div-table {
+        
         border: 1px solid #dbdbdb;
 
         .thead {
-            border-bottom: 2px solid #dbdbdb;
+            border-bottom: 0;
 
             .col {
                 padding: 8px;
@@ -104,6 +106,16 @@
                 font-weight: bold;
                 background-color: #f8f8f8;
             }
+        }
+
+        .tbody-wrapper {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            top: 87px;
+            border: 1px solid #ddd;
+            overflow-y: auto;
         }
 
         .tbody .row + .row {
@@ -118,4 +130,7 @@
                 vertical-align: top;
             }
         }
+
     }
+
+}

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Skybrud.BorgerDk;
-using Skybrud.Umbraco.BorgerDk.Extensions.XElement;
+using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
 

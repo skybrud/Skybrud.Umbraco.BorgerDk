@@ -3,8 +3,6 @@
     $scope.value = angular.copy($scope.dialogOptions.value);
     $scope.config = $scope.dialogOptions.config;
 
-    $scope.config.mergeTypes = !!$scope.config.mergeTypes;
-
     // Set initial values
     $scope.mode = 'insert';
     $scope.article = null;
@@ -211,6 +209,10 @@
             $scope.article.other = [];
             $scope.article.all = [];
             angular.forEach($scope.article.elements, function (element) {
+
+                // Skip the element if not allowed
+                if ($scope.config.allowedTypes.indexOf(element.type) == -1) return;
+
                 if (element.type == 'kernetekst') {
                     $scope.article.micro = element.microArticles;
                     angular.forEach($scope.article.micro, function (micro) {
@@ -224,6 +226,7 @@
                     $scope.article.other.push(element);
                     $scope.article.all.push(element);
                 }
+
             });
 
             $scope.update($scope.article);

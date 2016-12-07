@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
-using Skybrud.Umbraco.BorgerDk.Extensions.XElement;
+using Skybrud.Essentials.Xml.Extensions;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
 

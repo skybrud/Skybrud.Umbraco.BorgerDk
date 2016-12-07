@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Xml.Linq;
 using Skybrud.BorgerDk;
-using Skybrud.Umbraco.BorgerDk.Extensions.XElement;
+using Skybrud.Essentials.Xml.Extensions;
 using Skybrud.WebApi.Json;
 using Umbraco.Core.Logging;
 using Umbraco.Web.WebApi;

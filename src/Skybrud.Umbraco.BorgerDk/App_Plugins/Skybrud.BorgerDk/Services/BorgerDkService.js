@@ -399,6 +399,18 @@
                     "name": "Ærø Kommune"
                 }
             ];
+        },
+        getTypes: function () {
+            return [
+                { alias: 'kernetekst', name: 'Kernetekst', type: 'content', typeName: 'mikroartikler' },
+                { alias: 'selvbetjeningslinks', name: 'Selvbetjeningslinks', type: 'box', typeName: 'infoboks' },
+                { alias: 'anbefaler', name: 'Anbefaler', type: 'box', typeName: 'infoboks' },
+                { alias: 'huskeliste', name: 'Huskeliste', type: 'box', typeName: 'infoboks' },
+                { alias: 'lovgivning', name: 'Lovgivning', type: 'box', typeName: 'infoboks' },
+                { alias: 'faktaboks', name: 'Faktaboks', type: 'box', typeName: 'infoboks' },
+                { alias: 'regler', name: 'Regler', type: 'box', typeName: 'infoboks' },
+                { alias: 'byline', name: 'Skrevet af', type: 'box', typeName: 'byline' }
+            ];
         }
     };
 });

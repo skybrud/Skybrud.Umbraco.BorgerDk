@@ -13,7 +13,19 @@
                     {
                         "label": "Kommune",
                         "key": "municipality",
-                        "view": "~/App_Plugins/Skybrud.BorgerDk/Views/MunicipalityPreValueEditor.html"
+                        "view": "~/App_Plugins/Skybrud.BorgerDk/Views/PreValues/Municipality.html"
+                    },
+                    {
+                        "label": "Tillad brugerdefineret titel",
+                        "key": "allowCustomTitle",
+                        "view": "boolean",
+                        "description": "Hvis valgt, vil redaktøren få mulighed for enten at fravælge en overskrift, angive en brugerdefineret overskrift, eller blot benytte artiklens overskrift."
+                    },
+                    {
+                        "label": "Tilladte typer",
+                        "key": "allowedTypes",
+                        "view": "~/App_Plugins/Skybrud.BorgerDk/Views/PreValues/AllowedTypes.html",
+                        "description": "Vælg de typer af indhold, det skal være muligt for redaktørerne at vælge."
                     },
                     {
                         "label": "Sammenflet typer",
@@ -30,7 +42,9 @@
         "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkDirective.js",
         "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkLoader.js",
         "/App_Plugins/Skybrud.BorgerDk/Controllers/BorgerDkDialog.js",
-        "/App_Plugins/Skybrud.BorgerDk/Controllers/MunicipalityPreValueEditor.js"
+        "/App_Plugins/Skybrud.BorgerDk/Controllers/BorgerDkGridEditor.js",
+        "/App_Plugins/Skybrud.BorgerDk/Controllers/PreValues/AllowedTypes.js",
+        "/App_Plugins/Skybrud.BorgerDk/Controllers/PreValues/Municipality.js"
     ],
     "css": [
         "/App_Plugins/Skybrud.BorgerDk/Styles/BorgerDk.css"

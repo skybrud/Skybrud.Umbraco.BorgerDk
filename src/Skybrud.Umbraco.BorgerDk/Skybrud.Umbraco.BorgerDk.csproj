@@ -183,6 +183,10 @@
       <HintPath>..\packages\Skybrud.BorgerDk.1.2.0\lib\net40\Skybrud.BorgerDk.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Skybrud.Essentials, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Skybrud.Essentials.1.0.4\lib\net45\Skybrud.Essentials.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Skybrud.Umbraco.GridData, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Skybrud.Umbraco.GridData.1.5.1\lib\net45\Skybrud.Umbraco.GridData.dll</HintPath>
       <Private>True</Private>
@@ -311,9 +315,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Api\BorgerDkMaintenanceController.cs" />
-    <Compile Include="Extensions\JObject\JObjectExtensions.cs" />
-    <Compile Include="Extensions\XElement\XElementExtensions.cs" />
     <Compile Include="Grid\Converters\BorgerDkGridConverter.cs" />
+    <Compile Include="Models\BorgerDkArticleTitleType.cs" />
     <Compile Include="Models\Cached\BorgerDkCachedArticle.cs" />
     <Compile Include="Models\BorgerDkArticleSelection.cs" />
     <Compile Include="BorgerDkHelpers.cs" />
@@ -349,14 +352,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\BorgerDkGridEditor.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PreValues\AllowedTypes.html" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\PreValues\Municipality.html" />
     <None Include="app.config" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_dialog.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
+    <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_selection.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_table.less" />
     <None Include="packages.config" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\BorgerDkDialog.js" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\MunicipalityPreValueEditor.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\PreValues\AllowedTypes.js" />
+    <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\PreValues\Municipality.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
     <None Include="Properties\AssemblyInfo.json" />
     <None Include="Skybrud.Umbraco.BorgerDk.nuspec">
@@ -376,7 +384,6 @@
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkDirective.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkDialog.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkGridEditor.html" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\Views\MunicipalityPreValueEditor.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Views\BorgerDkPropertyEditor.html" />
   </ItemGroup>
   <ItemGroup />

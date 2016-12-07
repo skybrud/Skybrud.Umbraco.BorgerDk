@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.BorgerDk;
-using Skybrud.Umbraco.BorgerDk.Extensions.JObject;
+using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Umbraco.BorgerDk.Models.Cached;
 
 namespace Skybrud.Umbraco.BorgerDk.Models {
@@ -44,9 +44,24 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         public BorgerDkMunicipality Municipality { get; private set; }
 
         /// <summary>
-        /// Gets the title of the selected Borger.dk article.
+        /// Gets the editorial title of the section.
         /// </summary>
-        public string Title { get; private set; }
+        public string Title {
+            get {
+                switch (CustomTitleType) {
+                    case BorgerDkArticleTitleType.None: return "";
+                    case BorgerDkArticleTitleType.Custom: return CustomTitleValue;
+                    default: return Article.Title;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the selection has an editorial title.
+        /// </summary>
+        public bool HasTitle {
+            get { return !String.IsNullOrWhiteSpace(Title); }
+        }
 
         /// <summary>
         /// Gets the header of the selected Borger.dk article.
@@ -117,6 +132,10 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             get { return HasSelection && (HasBlocks || HasMicroArticles); }
         }
 
+        public BorgerDkArticleTitleType CustomTitleType { get; private set; }
+
+        public string CustomTitleValue { get; private set; }
+
         #endregion
 
         #region Constructors
@@ -133,12 +152,13 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             Url = obj.GetString("url");
             Domain = obj.GetString("domain");
             Municipality = obj.GetInt32("municipality", BorgerDkMunicipality.GetFromCode);
-            Title = obj.GetString("title");
             Header = obj.GetString("header");
             Selected = obj.GetStringArray("selected");
             Article = BorgerDkCachedArticle.Load(Municipality, Domain, Id);
             Blocks = (Article.Exists ? Article.Blocks.Where(IsSelected).ToArray() : new BorgerDkCachedTextElement[0]);
             MicroArticles = (Article.Exists ? Article.MicroArticles.Where(IsSelected).ToArray() : new BorgerDkCachedMicroArticle[0]);
+            CustomTitleType = obj.GetEnum("customTitle.type", BorgerDkArticleTitleType.Article);
+            CustomTitleValue = (obj.GetString("customTitle.value") ?? "").Trim();
         }
 
         #endregion

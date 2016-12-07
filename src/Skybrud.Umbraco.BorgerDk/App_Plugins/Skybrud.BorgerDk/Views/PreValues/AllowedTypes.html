@@ -1,0 +1,17 @@
+﻿<div class="BorgerDkAllowedTypes" ng-controller="Skybrud.BorgerDkAllowedTypesPreValueEditor.Controller">
+    <div>
+        <label>
+            <input type="checkbox" ng-model="all" ng-change="update()" /> Alle
+        </label>
+    </div>
+    <div ng-if="!all">
+        <hr />
+        <div ng-repeat="type in types">
+            <label>
+                <input type="checkbox" ng-model="type.selected" ng-change="update()" />
+                {{type.name}}
+                <small>({{type.typeName}})</small>
+            </label>
+        </div>
+    </div>
+</div>

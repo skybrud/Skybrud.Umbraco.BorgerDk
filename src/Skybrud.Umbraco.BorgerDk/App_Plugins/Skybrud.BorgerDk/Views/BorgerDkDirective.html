@@ -1,53 +1,67 @@
 ﻿<div class="BorgerDkArticle">
-    <div class="BorgerDkSelection" style="border: 1px solid #DDDDDD;">
-        <div style="background: #F8F8F8; border-bottom: 1px solid #DDDDDD; padding: 10px;">
+    <div class="BorgerDkSelection">
+        <div class="BorgerDkSelectionTitle">
             Artikel fra Borger.dk
         </div>
-        <div style="padding: 10px;">
+        <div class="BorgerDkSelectionContent">
             <div ng-show="!value.url">
                 <input type="button" class="btn" value="Indsæt artikel" ng-click="edit();" />
             </div>
             <div ng-show="value.url" style="position: relative;">
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <td>{{value.id}}</td>
-                    </tr>
-                    <tr>
-                        <th>URL</th>
-                        <td>
-                            <a href="{{value.url}}" target="_blank">
-                                {{value.url}}
-                                <i ng-class="value.icon" class="icon-out"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Titel</th>
-                        <td>{{value.title}}</td>
-                    </tr>
-                    <tr>
-                        <th>Teaser</th>
-                        <td>{{value.header}}</td>
-                    </tr>
-                    <tr>
-                        <th>Valgt indhold</th>
-                        <td>
-                            <span class="value">
-                                <span ng-show="microArticles == 0 && blocks == 0">
-                                    <em>Ingen valgte elementer</em>
+                <div class="BorgerDkBlock" ng-if="config.allowCustomTitle">
+                    <h4>Overskrift</h4>
+                    <div class="BorgerDkCustomTitle">
+                        <select ng-model="value.customTitle.type">
+                            <option value="none">Ingen overskrift</option>
+                            <option value="article">Artiklens overskrift</option>
+                            <option value="custom">Redaktionel overskrift</option>
+                        </select>
+                        <input type="text" ng-show="value.customTitle.type == 'custom'" ng-required="value.customTitle.type == 'custom'" ng-model="value.customTitle.value" placeholder="Angiv overskriften her..." />
+                    </div>
+                </div>
+                <div class="BorgerDkBlock">
+                    <h4>Artikel</h4>
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <td>{{value.id}}</td>
+                        </tr>
+                        <tr>
+                            <th>URL</th>
+                            <td>
+                                <a href="{{value.url}}" target="_blank" rel="noopener">
+                                    {{value.url}}
+                                    <i ng-class="value.icon" class="icon-out"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Titel</th>
+                            <td>{{value.title}}</td>
+                        </tr>
+                        <tr>
+                            <th>Teaser</th>
+                            <td>{{value.header}}</td>
+                        </tr>
+                        <tr>
+                            <th>Valgt indhold</th>
+                            <td>
+                                <span class="value">
+                                    <span ng-show="microArticles == 0 && blocks == 0">
+                                        <em>Ingen valgte elementer</em>
+                                    </span>
+                                    <span ng-show="microArticles > 0 || blocks > 0">
+                                        <span ng-show="microArticles == 1">én mikroartikel</span>
+                                        <span ng-show="microArticles > 1">{{microArticles}} mikroartikler</span>
+                                        <span ng-show="microArticles > 0 && blocks > 0">og</span>
+                                        <span ng-show="blocks == 1">én boks</span>
+                                        <span ng-show="blocks > 1">{{blocks}} bokse</span>
+                                    </span>
                                 </span>
-                                <span ng-show="microArticles > 0 || blocks > 0">
-                                    <span ng-show="microArticles == 1">én mikroartikel</span>
-                                    <span ng-show="microArticles > 1">{{microArticles}} mikroartikler</span>
-                                    <span ng-show="microArticles > 0 && blocks > 0">og</span>
-                                    <span ng-show="blocks == 1">én boks</span>
-                                    <span ng-show="blocks > 1">{{blocks}} bokse</span>
-                                </span>
-                            </span>
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <br />
                 <input type="button" class="btn" value="Redigér artikel" ng-click="edit(value);" />
             </div>
