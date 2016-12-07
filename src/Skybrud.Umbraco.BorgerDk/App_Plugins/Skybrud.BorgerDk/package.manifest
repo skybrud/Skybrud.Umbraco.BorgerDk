@@ -3,6 +3,8 @@
         {
             "alias": "Skybrud.BorgerDk",
             "name": "Skybrud - Borger.dk",
+            "icon": "icon-school",
+            "group": "Skybrud.dk",
             "editor": {
                 "view": "~/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkPropertyEditor.html",
                 "hideLabel": false,
