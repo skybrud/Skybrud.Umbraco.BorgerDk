@@ -163,7 +163,7 @@ namespace Skybrud.Umbraco.BorgerDk.DataTypes {
 
 
             Literal example = new Literal();
-            example.Text = "<div class=\"borgerDkExample\">Fx https://www.borger.dk/Sider/Drikkevand-og-vandforbrug.aspx</div>";
+            example.Text = "<div class=\"borgerDkExample\">Fx https://www.borger.dk/miljoe-og-energi/Drikkevand-og-vandforbrug</div>";
 
             outer.Controls.Add(example);
             outer.Controls.Add(loader);

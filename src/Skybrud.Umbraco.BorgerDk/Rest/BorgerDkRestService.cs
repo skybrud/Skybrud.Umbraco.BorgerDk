@@ -12,6 +12,7 @@ using System.Linq;
 using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Extensions;
 using Skybrud.Umbraco.BorgerDk.Rest.Jobs;
+using Umbraco.Core.Logging;
 using Umbraco.Web.BaseRest;
 using umbraco.NodeFactory;
 using www.borger.dk._2009.WSArticleExport.v1.types;
@@ -363,9 +364,11 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
                     return;
                 }
                 WriteJsonError(500, "Der skete en fejl i forbindelse med Borger.dk");
+                LogHelper.Error<BorgerDkRestService>("Der skete en fejl i forbindelse med Borger.dk", ex);
                 return;
-            } catch (Exception) {
+            } catch (Exception ex) {
                 WriteJsonError(500, "Der skete en fejl i forbindelse med Borger.dk");
+                LogHelper.Error<BorgerDkRestService>("Der skete en fejl i forbindelse med Borger.dk", ex);
                 return;
             }
 
