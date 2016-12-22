@@ -82,7 +82,7 @@ $(document).ready(function() {
 		selected = selected ? selected.split(',') : [];
 	
 		function isValidUrl(url) {
-			return (url ? url + '' : '').match(/^https:\/\/([a-z]+).borger.dk\/.+?\.aspx$/) != null;
+			return (url ? url + '' : '').match(/^https:\/\/([a-z]+).borger.dk\//) != null;
 		}
 
 		function toggle(trigger, subject) {
