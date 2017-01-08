@@ -42,6 +42,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,6 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="businesslogic, Version=1.0.5021.24868, Culture=neutral, processorArchitecture=MSIL">
@@ -113,8 +115,9 @@
     <Reference Include="MySql.Data">
       <HintPath>..\packages\MySql.Data.6.6.5\lib\net40\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Our.Umbraco.uGoLive">
       <HintPath>..\packages\UmbracoCms.Core.6.1.6\lib\Our.Umbraco.uGoLive.dll</HintPath>
@@ -232,17 +235,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BorgerDkHelpers.cs" />
     <Compile Include="DataTypes\BorgerDkData.cs" />
+    <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesData.cs" />
+    <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesDataEditor.cs" />
+    <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesDataType.cs" />
+    <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesModel.cs" />
+    <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesPrevalueEditor.cs" />
+    <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesPropertyEditorValueConverter.cs" />
     <Compile Include="Extensions\BorgerDkExtensions.cs" />
     <Compile Include="BorgerDkHelper.cs" />
     <Compile Include="DataTypes\BorgerDkDataEditor.cs" />
     <Compile Include="DataTypes\BorgerDkDataType.cs" />
     <Compile Include="DataTypes\BorgerDkPrevalueEditor.cs" />
+    <Compile Include="Interfaces\IBorgerDkArticle.cs" />
+    <Compile Include="JObjectExtensions.cs" />
     <Compile Include="Model\BorgerDkArticle.cs" />
     <Compile Include="Model\BorgerDkMicroArticle.cs" />
     <Compile Include="Model\BorgerDkMicroArticlesBlock.cs" />
     <Compile Include="Model\BorgerDkTextBlock.cs" />
     <Compile Include="Model\IBorgerDkBlock.cs" />
+    <Compile Include="Model\Json\BorgerDkJsonArticle.cs" />
+    <Compile Include="Model\Json\BorgerDkJsonBlockElement.cs" />
+    <Compile Include="Model\Json\BorgerDkJsonElement.cs" />
+    <Compile Include="Model\Json\BorgerDkJsonMicroArticle.cs" />
+    <Compile Include="Model\Json\BorgerDkJsonTextElement.cs" />
     <Compile Include="Rest\BorgerDkRestService.cs" />
     <Compile Include="Rest\BorgerDkUpdateArticlesTask.cs" />
     <Compile Include="DataTypes\DataTypeHelpers.cs" />

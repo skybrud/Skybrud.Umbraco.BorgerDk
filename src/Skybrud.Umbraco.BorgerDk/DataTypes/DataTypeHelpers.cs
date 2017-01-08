@@ -1,4 +1,5 @@
-﻿using umbraco.BusinessLogic;
+﻿using System;
+using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic.datatype;
 using umbraco.DataLayer;
 
@@ -43,6 +44,22 @@ namespace Skybrud.Umbraco.BorgerDk.DataTypes {
                 SqlHelper.CreateParameter("@datatypenodeid", dataType.DataTypeDefinitionId)
             );
             return configuration != null ? configuration.ToString() : "";
+        }
+
+        public static int GetPreValueInt32(BaseDataType dataType, string alias) {
+            return GetPreValueInt32(dataType, alias, 0);
+        }
+
+        public static int GetPreValueInt32(BaseDataType dataType, string alias, int fallback) {
+            
+            object scalar = SqlHelper.ExecuteScalar<object>(
+                "SELECT value FROM cmsDataTypePreValues WHERE datatypenodeid = @datatypenodeid AND alias = '" + alias + "'",
+                SqlHelper.CreateParameter("@datatypenodeid", dataType.DataTypeDefinitionId)
+            );
+
+            int value;
+            return Int32.TryParse(scalar + "", out value) ? value : fallback;
+        
         }
 
         public static ISqlHelper SqlHelper {

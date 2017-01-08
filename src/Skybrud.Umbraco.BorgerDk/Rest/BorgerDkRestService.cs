@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -12,7 +11,6 @@ using System.Linq;
 using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Extensions;
 using Skybrud.Umbraco.BorgerDk.Rest.Jobs;
-using Umbraco.Core.Logging;
 using Umbraco.Web.BaseRest;
 using umbraco.NodeFactory;
 using www.borger.dk._2009.WSArticleExport.v1.types;
@@ -105,12 +103,12 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
 
                     try {
 
-                        BorgerDkService service = new BorgerDkService(endpoint, BorgerDkMunicipality.FirstOrDefault(x => x.Code == municipalityId));
+                        BorgerDkService service = new BorgerDkService(endpoint, BorgerDkMunicipality.GetFromCode(municipalityId));
 
                         BorgerDkArticle article = service.GetArticleFromId(articleId);
 
                         // Generate the new XML value
-                        string value = BorgerDkHelper.ToXElement(article, selected, municipalityId, reloadInterval).ToString(SaveOptions.DisableFormatting);
+                        string value = BorgerDkHelpers.ToXElement(article, selected, municipalityId, reloadInterval).ToString(SaveOptions.DisableFormatting);
 
                         string compareStringOld = Regex.Replace(property.Value, "<lastreloaded>(.+?)<\\/lastreloaded>", "").Replace("\r", "");
                         string compareStringNew = Regex.Replace(value, "<lastreloaded>(.+?)<\\/lastreloaded>", "").Replace("\r", "");
@@ -357,18 +355,16 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
             BorgerDkArticle article;
             
             try {
-                article = BorgerDkHelper.GetArticle(url, municipalityId, useCache);
+                article = BorgerDkHelpers.GetArticle(url, municipalityId, useCache);
             } catch (System.ServiceModel.FaultException ex) {
                 if (ex.Message.StartsWith("No article found with url")) {
                     WriteJsonError(404, "Den angivne artikel blev ikke fundet på Borger.dk");
                     return;
                 }
                 WriteJsonError(500, "Der skete en fejl i forbindelse med Borger.dk");
-                LogHelper.Error<BorgerDkRestService>("Der skete en fejl i forbindelse med Borger.dk", ex);
                 return;
-            } catch (Exception ex) {
+            } catch (Exception) {
                 WriteJsonError(500, "Der skete en fejl i forbindelse med Borger.dk");
-                LogHelper.Error<BorgerDkRestService>("Der skete en fejl i forbindelse med Borger.dk", ex);
                 return;
             }
 
@@ -414,6 +410,94 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
                 elements = elements
             });
 
+        }
+
+        [RestExtensionMethod(AllowAll = true)]
+        public static void GetMicroArticles() {
+
+            string url = (Request.QueryString["url"] ?? "").Split('?')[0];
+            int municipalityId;
+
+            bool useCache = !(Request.QueryString["cache"] == "0" || Request.QueryString["cache"] == "false");
+
+            #region Validation
+
+            if (String.IsNullOrEmpty(url)) {
+                WriteJsonError(400, "Ingen adresse til borger.dk angivet");
+                return;
+            }
+
+            if (!BorgerDkService.IsValidUrl(url)) {
+                WriteJsonError(400, "Ugyldig adresse til borger.dk angivet");
+                return;
+            }
+
+            if (Request.QueryString["municipalityId"] == null) {
+                WriteJsonError(400, "Intet kommune ID angivet");
+            }
+
+            if (!Int32.TryParse(Request.QueryString["municipalityId"], out municipalityId)) {
+                WriteJsonError(400, "Ugyldigt kommune ID angivet");
+            }
+
+            #endregion
+
+            BorgerDkArticle article;
+
+            try {
+                article = BorgerDkHelpers.GetArticle(url, municipalityId, useCache);
+            } catch (System.ServiceModel.FaultException ex) {
+                if (ex.Message.StartsWith("No article found with url")) {
+                    WriteJsonError(404, "Den angivne artikel blev ikke fundet på Borger.dk");
+                    return;
+                }
+                WriteJsonError(500, "Der skete en fejl i forbindelse med Borger.dk");
+                return;
+            } catch (Exception) {
+                WriteJsonError(500, "Der skete en fejl i forbindelse med Borger.dk");
+                return;
+            }
+
+            List<object> elements = new List<object>();
+            List<object> other = new List<object>();
+
+            foreach (BorgerDkElement element in article.Elements) {
+                if (element is BorgerDkBlockElement) {
+                    BorgerDkBlockElement block = (BorgerDkBlockElement) element;
+                    foreach (var micro in block.MicroArticles) {
+                        elements.Add(new {
+                            type = "microArticle",
+                            id = micro.Id,
+                            text = micro.Title,
+                            content = micro.Content.Trim()
+                        });
+                    }
+                } else {
+                    BorgerDkTextElement block = (BorgerDkTextElement) element;
+                    if (block.Type == "byline") {
+                        continue;
+                    }
+                    other.Add(new {
+                        type = block.Type,
+                        id = block.Type,
+                        text = block.Title,
+                        content = block.Content.Trim()
+                    });
+                }
+            }
+
+            WriteJsonSuccess(new {
+                id = article.Id,
+                domain = article.Domain,
+                url = article.Url,
+                published = article.Published.ToString("yyyy-MM-dd HH:mm:ss"),
+                modified = article.Modified.ToString("yyyy-MM-dd HH:mm:ss"),
+                title = article.Title,
+                header = article.Header,
+                elements = elements,
+                other
+            });
+            
         }
 
     }

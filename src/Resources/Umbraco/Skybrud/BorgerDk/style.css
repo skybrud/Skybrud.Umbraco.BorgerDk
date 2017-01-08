@@ -216,3 +216,18 @@
 	color: #999999;
 	font-style: italic;
 }
+
+
+
+.borgerDkMicroArticles .borgerDkContentList > li { position: relative; }
+
+.borgerDkMicroArticles .borgerDkContentList > li > input {
+    margin: 0;
+    position: absolute;
+    left: 15px;
+    top: 6px;
+}
+
+.borgerDkMicroArticles .borgerDkContentList > li > label {
+    margin-left: 78px;
+}
