@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using Skybrud.BorgerDk;
+using Skybrud.Umbraco.BorgerDk.Interfaces;
 using Umbraco.Core;
 
 namespace Skybrud.Umbraco.BorgerDk.Model {
 
-    public class BorgerDkArticle {
+    public class BorgerDkArticle : IBorgerDkArticle {
 
         public int Id { get; private set; }
         public string Domain { get; private set; }
@@ -20,6 +22,18 @@ namespace Skybrud.Umbraco.BorgerDk.Model {
         public string[] Selected { get; private set; }
         public IBorgerDkBlock[] Blocks { get; private set; }
         public XElement Xml { get; private set; }
+
+        public BorgerDkMunicipality Municipality {
+            get { return BorgerDkMunicipality.GetFromCode(MunicipalityId); }
+        }
+
+        public DateTime Published {
+            get { return PublishingDate; }
+        }
+
+        public DateTime Updated {
+            get { return LastUpdated; }
+        }
 
         public bool HasSelected {
             get { return Selected.Length > 0; }

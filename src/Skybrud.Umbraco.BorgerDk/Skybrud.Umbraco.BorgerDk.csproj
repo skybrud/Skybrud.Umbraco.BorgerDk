@@ -236,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BorgerDkHelpers.cs" />
+    <Compile Include="Contants\BorgerDkConstants.cs" />
     <Compile Include="DataTypes\BorgerDkData.cs" />
     <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesData.cs" />
     <Compile Include="DataTypes\MicroArticles\BorgerDkMicroArticlesDataEditor.cs" />

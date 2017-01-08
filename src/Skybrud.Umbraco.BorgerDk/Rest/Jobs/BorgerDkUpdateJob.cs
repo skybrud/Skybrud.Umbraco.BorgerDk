@@ -153,12 +153,12 @@ namespace Skybrud.Umbraco.BorgerDk.Rest.Jobs {
 
                         try {
 
-                            BorgerDkService service = new BorgerDkService(endpoint, BorgerDkMunicipality.FirstOrDefault(x => x.Code == municipalityId));
+                            BorgerDkService service = new BorgerDkService(endpoint, BorgerDkMunicipality.GetFromCode(municipalityId));
 
                             BorgerDkArticle article = service.GetArticleFromId(articleId);
 
                             // Generate the new XML value
-                            string value = BorgerDkHelper.ToXElement(article, selected, municipalityId, reloadInterval).ToString(SaveOptions.DisableFormatting);
+                            string value = BorgerDkHelpers.ToXElement(article, selected, municipalityId, reloadInterval).ToString(SaveOptions.DisableFormatting);
 
                             string compareStringOld = Regex.Replace(property.Value, "<lastreloaded>(.+?)<\\/lastreloaded>", "").Replace("\r", "");
                             string compareStringNew = Regex.Replace(value, "<lastreloaded>(.+?)<\\/lastreloaded>", "").Replace("\r", "");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Skybrud.BorgerDk;
@@ -70,7 +71,7 @@ namespace Skybrud.Umbraco.BorgerDk.DataTypes {
             SetupChildControls();
 
             // Get the selected municipality id
-            Municipality = BorgerDkMunicipality.FirstOrDefault(x => x.Code.ToString() == ConfigurationMunicipalityId);
+            Municipality = BorgerDkMunicipality.FirstOrDefault(x => x.Code.ToString(CultureInfo.InvariantCulture) == ConfigurationMunicipalityId);
             MandatoryTypes = ConfigurationMandatoryContentTypes;
             AllowedTypes = ConfigurationAllowedContentTypes;
         
