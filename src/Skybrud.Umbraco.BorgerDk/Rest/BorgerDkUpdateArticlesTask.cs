@@ -79,7 +79,19 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
                 #region Loop through all documents
 
                 foreach (IPublishedContent content in UmbracoContext.Current.ContentCache.GetAtRoot()) {
-                    UpdateContent(content);
+
+                    try {
+
+                        UpdateContent(content);
+
+                    } catch (Exception ex) {
+
+                        LogHelper.Error<BorgerDkUpdateArticlesTask>("Unable to update content item with ID " + content.Id, ex);
+
+                        AppendToLog("Failed updating content item with ID **{0}** (name: {1})", content.Id, content.Name);
+
+                    }
+                
                 }
 
                 #endregion
@@ -192,20 +204,32 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
         }
 
         private void UpdateContent(IPublishedContent content) {
-            
+
             foreach (IPublishedContentProperty property in content.Properties) {
 
-                object value = content.GetPropertyValue(property.Alias);
-                
-                BorgerDkMicroArticlesModel model = value as BorgerDkMicroArticlesModel;
-                string str = value == null ? null : value.ToString();
+                // Ignore typical richtext property aliases (since these might contain macros, and macros are bad)
+                if (property.Alias == "skyRichTextContent") continue;
+                if (property.Alias == "skyAccordionBody") continue;
 
-                if (model != null) {
-                    UpdateArticleFromModel(content, property, (BorgerDkMicroArticlesModel) value);
-                } else if (str != null) {
-                    if (str.StartsWith("<article><id>")) {
-                        UpdateArticleFromXml(content, property, value + "");
+                try {
+
+                    object value = content.GetPropertyValue(property.Alias);
+                    
+                    BorgerDkMicroArticlesModel model = value as BorgerDkMicroArticlesModel;
+                    string str = value == null ? null : value.ToString();
+
+                    if (model != null) {
+                        UpdateArticleFromModel(content, property, (BorgerDkMicroArticlesModel)value);
+                    } else if (str != null) {
+                        if (str.StartsWith("<article><id>")) {
+                            UpdateArticleFromXml(content, property, value + "");
+                        }
                     }
+
+                } catch (Exception) {
+
+                    AppendToLog("Unable to get value for property \"" + property.Alias + "\" of page with ID " + content.Id);
+                
                 }
 
             }
