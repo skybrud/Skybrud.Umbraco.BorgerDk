@@ -6,11 +6,15 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Skybrud.BorgerDk;
 using System.Linq;
 using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Extensions;
+using Skybrud.Umbraco.BorgerDk.Model.Json;
 using Skybrud.Umbraco.BorgerDk.Rest.Jobs;
+using Umbraco.Core.Logging;
 using Umbraco.Web.BaseRest;
 using umbraco.NodeFactory;
 using www.borger.dk._2009.WSArticleExport.v1.types;
@@ -30,6 +34,132 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
             HttpContext.Current.Response.Write(new JavaScriptSerializer().Serialize(new {
                 bacon = true
             }));
+            HttpContext.Current.Response.End();
+
+        }
+
+        [RestExtensionMethod(AllowAll = true)]
+        public static void UpdateArticlesOnDisk() {
+
+            // Check for permissions
+            if (!HasValidLogin) {
+                WriteJsonError(HttpStatusCode.Forbidden, "Access denied");
+                return;
+            }
+
+            // Read from input
+            bool forceUpdate = Request.QueryString["forceUpdate"] == "1";
+
+            // Get a list of all existing Borger.dk articles
+            Dictionary<string, DateTime> lookup = new Dictionary<string, DateTime>();
+            foreach (BorgerDkEndpoint endpoint in BorgerDkEndpoint.Values) {
+                using (ArticleExportClient service = endpoint.GetClient()) {
+                    foreach (ArticleDescription article in service.GetAllArticles()) {
+                        lookup.Add(endpoint.Domain + "_" + article.ArticleID, article.LastUpdated);
+                    }
+                }
+            }
+
+            // Declare the path to the storage directory
+            string storagePath = HttpContext.Current.Server.MapPath("~/App_Data/Skybrud.BorgerDk/");
+
+            // Throw an error if the dictionary doesn't yet exist
+            if (!Directory.Exists(storagePath)) {
+                HttpContext.Current.Response.ContentType = "application/json";
+                HttpContext.Current.Response.Write(JsonConvert.SerializeObject(new { meta = new { code = 500, error = "Storage directory does not exist." } }));
+                HttpContext.Current.Response.End();
+                return;
+            }
+
+
+            List<object> result = new List<object>();
+            foreach (FileInfo file in new DirectoryInfo(storagePath).GetFiles("*.json")) {
+
+                BorgerDkJsonArticle cached = BorgerDkJsonArticle.GetFromJson(File.ReadAllText(file.FullName));
+
+                string[] pieces = (file.Name.Split('.')[0] + "__0__0__").Split(new []{"__"}, StringSplitOptions.None);
+
+                string endpointDomain = pieces[0].Replace("_", ".");
+
+                int articleId;
+                int municipalityId;
+
+                // Skip the file if we can't properly parse the filename
+                if (!Int32.TryParse(pieces[1], out articleId) || !Int32.TryParse(pieces[2], out municipalityId)) continue;
+                
+                // Get the last updated timestamp of the article (or the file skip if not found)
+                DateTime articleLastUpdated;
+                if (!lookup.TryGetValue(endpointDomain + "_" + articleId, out articleLastUpdated)) continue;
+
+                // Parse the municipality
+                BorgerDkMunicipality municipality = BorgerDkMunicipality.GetFromCode(municipalityId);
+
+                if (file.LastWriteTime < articleLastUpdated || forceUpdate) {
+
+                    try {
+                        
+                        // Get the endpoint from the domain
+                        BorgerDkEndpoint endpoint = BorgerDkEndpoint.GetFromDomain(endpointDomain);
+
+                        // Initialize a new service from the endpoint and municipality
+                        BorgerDkService service = new BorgerDkService(endpoint, municipality);
+
+                        // Get the article from the webservice
+                        BorgerDkArticle article = service.GetArticleFromId(articleId);
+
+                        // Save the article to the disk
+                        BorgerDkHelpers.SaveToCacheFile(article);
+
+                        result.Add(new {
+                            municipality = municipality.Code,
+                            domain = endpointDomain,
+                            status = (int) HttpStatusCode.OK,
+                            message = "Article was successfully updated.",
+                            article = new {
+                                id = articleId,
+                                title = article.Title,
+                                url = article.Url
+                            }
+                        });
+
+                    } catch(Exception ex) {
+
+                        result.Add(new {
+                            municipality = municipality.Code,
+                            domain = endpointDomain,
+                            status = (int) HttpStatusCode.InternalServerError,
+                            message = "Unable to update article.",
+                            article = new {
+                                id = articleId,
+                                title = cached.Title,
+                                url = cached.Url
+                            }
+                        });
+
+                        LogHelper.Error<BorgerDkRestService>("Unable to update Borger.dk article with ID " + articleId, ex);
+                    
+                    }
+
+                } else {
+
+                    result.Add(new {
+                        municipality = municipality.Code,
+                        domain = endpointDomain,
+                        status = (int) HttpStatusCode.NotModified,
+                        message = "Article is already up-to-date.",
+                        article = new {
+                            id = articleId,
+                            title = cached.Title,
+                            url = cached.Url
+                        }
+                    });
+                
+                }
+
+            }
+
+            HttpContext.Current.Response.ContentType = "application/json";
+            HttpContext.Current.Response.Write(JsonConvert.SerializeObject(new { data = result }));
             HttpContext.Current.Response.End();
 
         }
