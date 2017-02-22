@@ -172,6 +172,9 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
                 WriteJsonError(HttpStatusCode.Forbidden, "Access denied");
                 return;
             }
+            
+            WriteJsonError(HttpStatusCode.Forbidden, "This endpoint method is deprecated.");
+            return;
 
             // Read from input
             bool forceUpdate = Request.QueryString["forceUpdate"] == "1";
@@ -308,7 +311,6 @@ namespace Skybrud.Umbraco.BorgerDk.Rest {
             WriteJsonSuccess(log);
 
         }
-
 
         [RestExtensionMethod(AllowAll = true)]
         public static void UpdateAllArticlesInSteps(int pagesPerCycles) {
