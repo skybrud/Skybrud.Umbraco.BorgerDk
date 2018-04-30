@@ -108,3 +108,4 @@ Backup*/
 UpgradeLog*.XML
 node_modules/
 files/
+src/.vs/
