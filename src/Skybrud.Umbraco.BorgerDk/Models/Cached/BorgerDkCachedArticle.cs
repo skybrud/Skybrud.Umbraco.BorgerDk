@@ -44,7 +44,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         /// <summary>
         /// Gets the municipality of the article.
         /// </summary>
-        public BorgerDkMunicipality Municipality { get; private set; }
+        public Skybrud.BorgerDk.BorgerDkMunicipality Municipality { get; private set; }
 
         /// <summary>
         /// Gets the timestamp for when the article was first published.
@@ -102,7 +102,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
             Id = xml.GetElementValue<int>("id");
             Url = xml.GetElementValue("url");
             Domain = xml.GetElementValue("domain");
-            Municipality = xml.GetElementValue("municipality", BorgerDkMunicipality.GetFromCode);
+            Municipality = xml.GetElementValue("municipality", Skybrud.BorgerDk.BorgerDkMunicipality.GetFromCode);
             Published = xml.GetElementValue("publishingdate", DateTime.Parse);
             LastUpdated = xml.GetElementValue("lastupdated", DateTime.Parse);
             Title = xml.GetElementValue("title");
@@ -130,11 +130,20 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
 
         }
 
+        public static string GetSavePath(int municipalityCode, string domain, int articleId) {
+            return BorgerDkHelpers.GetCachePath(municipalityCode, domain, articleId);
+        }
+
         public static string GetSavePath(BorgerDkMunicipality municipality, string domain, int articleId) {
             return BorgerDkHelpers.GetCachePath(municipality, domain, articleId);
         }
 
-        public static BorgerDkCachedArticle Load(BorgerDkMunicipality municipality, string domain, int articleId) {
+        public static string GetSavePath(Skybrud.BorgerDk.BorgerDkMunicipality municipality, string domain, int articleId) {
+            return BorgerDkHelpers.GetCachePath(municipality, domain, articleId);
+        }
+
+        public static BorgerDkCachedArticle Load(Skybrud.BorgerDk.BorgerDkMunicipality municipality, string domain, int articleId) {
+
 
             // Return an empty article since once or more parameters isn't valid
             if (municipality == null || String.IsNullOrWhiteSpace(domain) || articleId == 0) {

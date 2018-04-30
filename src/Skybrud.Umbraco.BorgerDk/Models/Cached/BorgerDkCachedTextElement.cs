@@ -1,6 +1,8 @@
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Skybrud.Essentials.Xml.Extensions;
 using Umbraco.Core;
 
@@ -16,21 +18,25 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         /// <summary>
         /// Gets the title of the text element (block).
         /// </summary>
+        [JsonProperty("title")]
         public string Title { get; protected set; }
 
         /// <summary>
         /// Gets the raw HTML of the block including the title.
         /// </summary>
+        [JsonIgnore]
         public string Html { get; protected set; }
 
         /// <summary>
         /// Gets the content making up the content of the block.
         /// </summary>
+        [JsonProperty("content")]
         public string Content { get; protected set; }
 
         /// <summary>
         /// Gets the HTML string making up the content of the block.
         /// </summary>
+        [JsonIgnore]
         public HtmlString ContentHtml {
             get { return new HtmlString(Content); }
         }
@@ -38,6 +44,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         /// <summary>
         /// Gets the inner text of the block.
         /// </summary>
+        [JsonIgnore]
         public string InnerText {
             get { return Content.StripHtml(); }
         }

@@ -1,4 +1,5 @@
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
 
@@ -10,11 +11,13 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Cached {
         /// <summary>
         /// Gets the instance of <see cref="XElement"/> the micro article was parsed from.
         /// </summary>
+        [JsonIgnore]
         public XElement XElement { get; protected set; }
 
         /// <summary>
         /// Gets the alias (or ID if you will) of the element.
         /// </summary>
+        [JsonProperty("alias", Order = -10)]
         public string Alias { get; protected set; }
 
         /// <summary>

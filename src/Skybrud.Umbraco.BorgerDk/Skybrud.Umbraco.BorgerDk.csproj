@@ -316,6 +316,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\BorgerDkMaintenanceController.cs" />
     <Compile Include="Grid\Converters\BorgerDkGridConverter.cs" />
+    <Compile Include="Models\BorgerDkMunicipality.cs" />
     <Compile Include="Models\BorgerDkArticleTitleType.cs" />
     <Compile Include="Models\Cached\BorgerDkCachedArticle.cs" />
     <Compile Include="Models\BorgerDkArticleSelection.cs" />

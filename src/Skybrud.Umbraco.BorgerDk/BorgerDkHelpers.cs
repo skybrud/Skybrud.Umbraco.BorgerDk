@@ -9,6 +9,7 @@ using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Exceptions;
 using Skybrud.Umbraco.BorgerDk.Models;
 using www.borger.dk._2009.WSArticleExport.v1.types;
+using BorgerDkMunicipality = Skybrud.Umbraco.BorgerDk.Models.BorgerDkMunicipality;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
@@ -29,19 +30,27 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        public static string GetCachePath(BorgerDkArticle article) {
+            return GetCachePath(article.Municipality, article.Domain, article.Id);
+        }
+
         public static string GetCachePath(BorgerDkMunicipality municipality, string domain, int articleId) {
+            return GetCachePath(municipality.Code, domain, articleId);
+        }
+
+        public static string GetCachePath(Skybrud.BorgerDk.BorgerDkMunicipality municipality, string domain, int articleId) {
+            return GetCachePath(municipality.Code, domain, articleId);
+        }
+
+        public static string GetCachePath(int municipalityCode, string domain, int articleId) {
             return HttpContext.Current.Server.MapPath(String.Format(
                 "{0}{1}_{2}_{3}.{4}",
                 VirtualPath,
-                municipality.Code,
+                municipalityCode,
                 domain.Replace(".", ""),
                 articleId,
                 "xml"
             ));
-        }
-
-        public static string GetCachePath(BorgerDkArticle article) {
-            return GetCachePath(article.Municipality, article.Domain, article.Id);
         }
 
         /// <summary>
@@ -110,7 +119,7 @@ namespace Skybrud.Umbraco.BorgerDk {
             BorgerDkEndpoint endpoint = BorgerDkEndpoint.GetFromUrl(url);
 
             // Get the municipality
-            BorgerDkMunicipality municipality = BorgerDkMunicipality.FirstOrDefault(x => x.Code == municipalityId);
+            Skybrud.BorgerDk.BorgerDkMunicipality municipality = Skybrud.BorgerDk.BorgerDkMunicipality.FirstOrDefault(x => x.Code == municipalityId);
 
             // Some input validation
             if (endpoint == null) throw new BorgerDkException("Den angivne URL er på et ukendt domæne.");
