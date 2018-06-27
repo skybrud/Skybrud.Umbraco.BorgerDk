@@ -136,8 +136,7 @@ namespace Skybrud.Umbraco.BorgerDk {
             // Declare a name for the article in the cache
             string cacheName = "BorgerDk_Url:" + url + "_Kommune:" + municipalityId;
 
-
-
+            // Attempt to get the article from the cache (or add it if not present)
             return (BorgerDkArticle) RuntimeCache.GetCacheItem(cacheName, () => GetArticleCallback(endpoint, municipality, url), TimeSpan.FromHours(6));
 
 
