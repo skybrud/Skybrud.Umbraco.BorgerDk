@@ -2,12 +2,14 @@
 using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Caching;
 using Newtonsoft.Json.Linq;
 using Skybrud.BorgerDk;
 using Skybrud.BorgerDk.Elements;
 using Skybrud.Umbraco.BorgerDk.Exceptions;
 using Skybrud.Umbraco.BorgerDk.Models;
+using Umbraco.Core;
+using Umbraco.Core.Cache;
+using Umbraco.Core.IO;
 using www.borger.dk._2009.WSArticleExport.v1.types;
 using BorgerDkMunicipality = Skybrud.Umbraco.BorgerDk.Models.BorgerDkMunicipality;
 
@@ -20,10 +22,12 @@ namespace Skybrud.Umbraco.BorgerDk {
         /// </summary>
         const string VirtualPath = "~/App_Data/TEMP/BorgerDk/";
 
+        private static IRuntimeCacheProvider RuntimeCache => ApplicationContext.Current.ApplicationCache.RuntimeCache;
+
         public static FileInfo[] GetCachedFiles() {
 
             // Get a reference to the temp directory
-            DirectoryInfo directory = new DirectoryInfo(HttpContext.Current.Server.MapPath(VirtualPath));
+            DirectoryInfo directory = new DirectoryInfo(IOHelper.MapPath(VirtualPath));
 
             // Return an array of all .xml files
             return directory.GetFiles("*.xml");
@@ -43,7 +47,7 @@ namespace Skybrud.Umbraco.BorgerDk {
         }
 
         public static string GetCachePath(int municipalityCode, string domain, int articleId) {
-            return HttpContext.Current.Server.MapPath(String.Format(
+            return IOHelper.MapPath(String.Format(
                 "{0}{1}_{2}_{3}.{4}",
                 VirtualPath,
                 municipalityCode,
@@ -126,35 +130,34 @@ namespace Skybrud.Umbraco.BorgerDk {
             if (municipality == null) throw new BorgerDkException("En kommune med det angivne ID blev ikke fundet.");
             if (!endpoint.IsValidUrl(url)) throw new BorgerDkException("Den angivne URL er ikke gyldig.");
 
+            // Return the article directly as caching is disabled
+            if (!useCache) return GetArticleCallback(endpoint, municipality, url);
+
             // Declare a name for the article in the cache
             string cacheName = "BorgerDk_Url:" + url + "_Kommune:" + municipalityId;
 
-            if (!useCache || HttpContext.Current.Cache[cacheName] == null) {
 
-                // Initialize the service
-                BorgerDkService service = new BorgerDkService(endpoint, municipality);
 
-                // TODO: Add some caching here?
-                int articleId = service.GetArticleIdFromUrl(url);
+            return (BorgerDkArticle) RuntimeCache.GetCacheItem(cacheName, () => GetArticleCallback(endpoint, municipality, url), TimeSpan.FromHours(6));
 
-                // Get the article from the ID
-                BorgerDkArticle article = service.GetArticleFromId(articleId);
 
-                // Add the article to the runtime cache (for six hours)
-                HttpContext.Current.Cache.Add(
-                    cacheName, article, null, DateTime.Now.AddHours(6),
-                    Cache.NoSlidingExpiration,
-                    CacheItemPriority.High, null
-                );
+        }
 
-                // We also save the article to the disk so we can use it in the frontend
-                SaveToDisk(article);
+        private static BorgerDkArticle GetArticleCallback(BorgerDkEndpoint endpoint, Skybrud.BorgerDk.BorgerDkMunicipality municipality, string url) {
 
-                return article;
+            // Initialize the service
+            BorgerDkService service = new BorgerDkService(endpoint, municipality);
 
-            }
+            // TODO: Add some caching here?
+            int articleId = service.GetArticleIdFromUrl(url);
 
-            return HttpContext.Current.Cache[cacheName] as BorgerDkArticle;
+            // Get the article from the ID
+            BorgerDkArticle article = service.GetArticleFromId(articleId);
+
+            // We also save the article to the disk so we can use it in the frontend
+            SaveToDisk(article);
+
+            return article;
 
         }
 
@@ -244,7 +247,7 @@ namespace Skybrud.Umbraco.BorgerDk {
         public static DirectoryInfo EnsureTempDirectory() {
             
             // Get a reference to the Borger.dk directory
-            DirectoryInfo directory = new DirectoryInfo(HttpContext.Current.Server.MapPath(VirtualPath));
+            DirectoryInfo directory = new DirectoryInfo(IOHelper.MapPath(VirtualPath));
             
             // Create the directory if it doesn't already exist
             if (!directory.Exists) directory.Create();
