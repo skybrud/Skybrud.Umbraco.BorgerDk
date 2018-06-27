@@ -361,6 +361,10 @@
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_loader.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_selection.less" />
     <None Include="App_Plugins\Skybrud.BorgerDk\Styles\_table.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\BorgerDkDialog.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\Controllers\PreValues\AllowedTypes.js" />
