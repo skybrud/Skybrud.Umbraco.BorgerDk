@@ -313,6 +313,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\BorgerDkArticlesUpdatedArgs.cs" />
     <Compile Include="Controllers\Api\BorgerDkMaintenanceController.cs" />
     <Compile Include="Grid\Converters\BorgerDkGridConverter.cs" />
     <Compile Include="Models\BorgerDkMunicipality.cs" />

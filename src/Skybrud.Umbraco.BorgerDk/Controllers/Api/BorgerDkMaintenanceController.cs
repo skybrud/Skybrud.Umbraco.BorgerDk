@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Xml.Linq;
 using Skybrud.BorgerDk;
 using Skybrud.Essentials.Xml.Extensions;
+using Skybrud.Umbraco.BorgerDk.Events;
 using Skybrud.WebApi.Json;
 using Umbraco.Core.Logging;
 using Umbraco.Web.WebApi;
@@ -14,7 +15,9 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
 
     [JsonOnlyConfiguration]
     public class BorgerDkMaintenanceController : UmbracoApiController {
-        
+
+        public static event EventHandler<BorgerDkArticlesUpdatedArgs> ArticlesUpdated;
+
         [HttpGet]
         public object UpdateArticles(int limit = 30) {
 
@@ -37,6 +40,8 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
             ).ToArray();
 
             int total = files.Length;
+
+            List<BorgerDkArticle> articles = new List<BorgerDkArticle>();
 
             foreach (var file in files.Take(limit)) {
 
@@ -66,6 +71,8 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
                     // Save the article to disk
                     BorgerDkHelpers.SaveToDisk(article);
 
+                    articles.Add(article);
+
                     results.Add(new {
                         id = article.Id,
                         url = article.Url,
@@ -87,6 +94,8 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers.Api {
                 }
 
             }
+
+            ArticlesUpdated?.Invoke(this, new BorgerDkArticlesUpdatedArgs(articles.ToArray()));
 
             return new {
                 total,
