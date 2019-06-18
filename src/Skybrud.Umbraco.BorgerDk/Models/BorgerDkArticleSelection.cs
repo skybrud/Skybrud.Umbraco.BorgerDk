@@ -4,9 +4,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Skybrud.BorgerDk;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Umbraco.BorgerDk.Models.Cached;
+using Umbraco.Core.Logging;
 
 namespace Skybrud.Umbraco.BorgerDk.Models {
 
@@ -169,7 +169,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             Id = obj.GetInt32("id");
             Url = obj.GetString("url");
             Domain = obj.GetString("domain");
-            Municipality = new BorgerDkMunicipality(municipality);
+            Municipality = municipality == null ? null : new BorgerDkMunicipality(municipality);
             Header = obj.GetString("header");
             Selected = obj.GetStringArray("selected");
             Article = BorgerDkCachedArticle.Load(municipality, Domain, Id);
@@ -253,7 +253,12 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         /// <returns>Returns an instance of <see cref="BorgerDkArticleSelection"/>.</returns>
         public static BorgerDkArticleSelection Deserialize(string str) {
             if (str == null || !str.StartsWith("{") || !str.EndsWith("}")) return new BorgerDkArticleSelection();
+            try {
             return Parse(JsonConvert.DeserializeObject<JObject>(str));
+            } catch (Exception ex) {
+                LogHelper.Error<BorgerDkArticleSelection>("Unable to parse Borger.dk article JSON", ex);
+                return new BorgerDkArticleSelection();
+            }
         }
         
         /// <summary>
