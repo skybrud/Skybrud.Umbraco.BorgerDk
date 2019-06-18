@@ -227,14 +227,14 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
             // Append the selected block elements
             foreach (BorgerDkCachedTextElement block in Blocks) {
                 sb.AppendLine(block.Title);
-                sb.AppendLine(Regex.Replace(block.Content, "<.*?>", ""));
+                sb.AppendLine(Regex.Replace(block.Content, "<.*?>", Environment.NewLine));
                 sb.AppendLine();
             }
 
             // Append the selected micro articles
             foreach (BorgerDkCachedMicroArticle micro in MicroArticles) {
                 sb.AppendLine(micro.Title);
-                sb.AppendLine(Regex.Replace(micro.Content, "<.*?>", ""));
+                sb.AppendLine(Regex.Replace(micro.Content, "<.*?>", Environment.NewLine));
                 sb.AppendLine();
             }
 
@@ -254,7 +254,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models {
         public static BorgerDkArticleSelection Deserialize(string str) {
             if (str == null || !str.StartsWith("{") || !str.EndsWith("}")) return new BorgerDkArticleSelection();
             try {
-            return Parse(JsonConvert.DeserializeObject<JObject>(str));
+                return Parse(JsonConvert.DeserializeObject<JObject>(str));
             } catch (Exception ex) {
                 LogHelper.Error<BorgerDkArticleSelection>("Unable to parse Borger.dk article JSON", ex);
                 return new BorgerDkArticleSelection();
