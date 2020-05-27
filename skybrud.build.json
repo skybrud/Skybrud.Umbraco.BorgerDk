@@ -1,0 +1,39 @@
+{
+  "tasks": {
+    "postBuild": [
+      {
+        "alias": "zip",
+        "destination": "releases/github/{packageName}.v{version}.zip",
+        "files": [
+          {
+            "source": "src/{packageName}/bin/Release/net472/",
+            "destination": "bin/",
+            "patterns": [
+              "Skybrud.Integrations.BorgerDk.dll",
+              "Skybrud.Integrations.BorgerDk.xml",
+              "{packageName}.dll",
+              "{packageName}.xml"
+            ]
+          },
+          {
+            "source": "src/{packageName}/App_Plugins/Skybrud.BorgerDk",
+            "destination": "App_Plugins/Skybrud.BorgerDk/",
+            "patterns": [
+              "**/*.js",
+              "**/*.css",
+              "**/*.html",
+              "**/*.xml",
+              "package.manifest"
+            ]
+          },
+          {
+            "source": "src",
+            "patterns": [
+              "LICENSE.html"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
