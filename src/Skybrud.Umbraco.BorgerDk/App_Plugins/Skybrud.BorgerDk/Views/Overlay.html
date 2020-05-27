@@ -1,0 +1,145 @@
+﻿<div class="BorgerDkOverlay" ng-controller="Skybrud.BorgerDk.Overlay.Controller" ng-class="{loading: loading}">
+    <umb-editor-view>
+        <umb-editor-header
+            name="model.title"
+            hide-icon="true"
+            hide-alias="true"
+            name-locked="true"
+            hide-description="true">
+        </umb-editor-header>
+        <umb-editor-container>
+            <div style="margin-bottom: 15px;">
+                <button type="button" ng-click="model.value = {url: ''}; changed();" class="btn btn-default btn-sm">Clear</button>
+                <button type="button" ng-click="model.value = {url: 'https://www.borger.dk/sundhed-og-sygdom/coronavirus-covid-19'}; changed();" class="btn btn-default btn-sm">Test1</button>
+                <button type="button" ng-click="model.value = {url: 'https://www.borger.dk/sundhed-og-sygdom/hello-world'}; changed();" class="btn btn-default btn-sm">Test2</button>
+            </div>
+            <umb-box>
+                <umb-box-content>
+                    <div>
+                        <div class="BorgerDkUrl">
+                            <strong>Sidens adresse</strong>
+                            <div>
+                                <input type="text" ng-model="model.value.url" placeholder="Indtast artiklens URL her..." ng-change="changed()" />
+                                <button class="btn" title="Genindlæs artikel" type="button" ng-click="reload()" ng-disabled="!validUrl">
+                                    <i class="icon icon-refresh"></i>
+                                </button>
+                                <em style="line-height: 30px; padding: 0 15px;">eller</em>
+                                <button class="btn" title="Vælg artikel fra liste" type="button" ng-click="search()" style="white-space: nowrap;">
+                                    <i class="icon icon-search"></i>
+                                    Søg efter artikel
+                                </button>
+                            </div>
+                        </div>
+                        <div ng-if="article.url">
+                            <h3>Artikel</h3>
+                            <div>
+                                <table class="table details">
+                                    <tr>
+                                        <th>ID</th>
+                                        <td>{{article.id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Publiceret</th>
+                                        <td>{{article.publishDate * 1000 | date: 'yyyy-MM-dd HH:mm'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ændret</th>
+                                        <td>{{article.updateDate * 1000 | date: 'yyyy-MM-dd HH:mm'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Titel</th>
+                                        <td>{{article.title}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Teaser</th>
+                                        <td>{{article.header}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Skrevet af</th>
+                                        <td>{{article.byline}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <h3>Vælg indhold</h3>
+                            <div class="BorgerDkElements">
+                                <div ng-repeat="el in elements">
+                                    <div ng-if="el.microArticles">
+                                        <div class="BorgerDkElement BorgerDkElement-{{el.id}}">
+                                            <umb-toggle
+                                                checked="el.selected"
+                                                show-labels="true"
+                                                label-on="Mikroartikler"
+                                                label-off="Mikroartikler"
+                                                label-position="right"
+                                                on-click="toggle(el);"/>
+                                        </div>
+                                        <div class="BorgerDkElement BorgerDkMicroArticle" ng-repeat="micro in el.microArticles">
+                                            <div class="BorgerDkElementTitle">
+                                                <div>
+                                                    <umb-toggle
+                                                        disabled="el.selected"
+                                                        checked="micro.selected || el.selected"
+                                                        show-labels="true"
+                                                        label-on="{{micro.title}}"
+                                                        label-off="{{micro.title}}"
+                                                        label-position="right"
+                                                        on-click="toggle(micro);"/>
+                                                </div>
+                                                <div>
+                                                    <a href="#" ng-click="micro.expanded = !micro.expanded" prevent-default="">{{micro.expanded ? 'Skjul indhold' : 'Vis indhold'}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="BorgerDkElementContent" ng-show="micro.expanded">
+                                                <div ng-bind-html="micro.content"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="!el.microArticles">
+                                        <div class="BorgerDkElement">
+                                            <div class="BorgerDkElementTitle">
+                                                <div>
+                                                    <umb-toggle
+                                                        checked="el.selected"
+                                                        show-labels="true"
+                                                        label-on="{{el.title}}"
+                                                        label-off="{{el.title}}"
+                                                        label-position="right"
+                                                        on-click="toggle(el);"/>
+                                                    <span class="BorgerDkElementId">({{el.id}})</span>
+                                                </div>
+                                                <div>
+                                                    <a href="#" ng-click="el.expanded = !el.expanded" prevent-default="">{{el.expanded ? 'Skjul indhold' : 'Vis indhold'}}</a>
+                                                </div>
+                                            </div>
+                                            <div class="BorgerDkElementContent" ng-show="el.expanded">
+                                                <div ng-bind-html="el.content"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <umb-load-indicator ng-if="loading" />
+                    </div>
+                </umb-box-content>
+            </umb-box>
+        </umb-editor-container>
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button
+                    type="button"
+                    button-style="link"
+                    label-key="general_close"
+                    action="model.close()">
+                </umb-button>
+                <umb-button
+                    disabled="!article.elements || model.value.selection.length == 0"
+                    type="button"
+                    action="model.submit(model)"
+                    button-style="success"
+                    label-key="general_submit">
+                </umb-button>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+    </umb-editor-view>
+</div>

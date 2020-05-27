@@ -1,54 +1,13 @@
 ﻿{
-    "propertyEditors": [
-        {
-            "alias": "Skybrud.BorgerDk",
-            "name": "Skybrud - Borger.dk",
-            "icon": "icon-school",
-            "group": "Skybrud.dk",
-            "editor": {
-                "view": "~/App_Plugins/Skybrud.BorgerDk/Views/BorgerDkPropertyEditor.html",
-                "hideLabel": false,
-                "valueType": "JSON"
-            },
-            "prevalues": {
-                "fields": [
-                    {
-                        "label": "Kommune",
-                        "key": "municipality",
-                        "view": "~/App_Plugins/Skybrud.BorgerDk/Views/PreValues/Municipality.html"
-                    },
-                    {
-                        "label": "Tillad brugerdefineret titel",
-                        "key": "allowCustomTitle",
-                        "view": "boolean",
-                        "description": "Hvis valgt, vil redaktøren få mulighed for enten at fravælge en overskrift, angive en brugerdefineret overskrift, eller blot benytte artiklens overskrift."
-                    },
-                    {
-                        "label": "Tilladte typer",
-                        "key": "allowedTypes",
-                        "view": "~/App_Plugins/Skybrud.BorgerDk/Views/PreValues/AllowedTypes.html",
-                        "description": "Vælg de typer af indhold, det skal være muligt for redaktørerne at vælge."
-                    },
-                    {
-                        "label": "Sammenflet typer",
-                        "key": "mergeTypes",
-                        "view": "boolean",
-                        "description": "Angiv om de to lister for henholdsvis <strong>Mikroartikler</strong> og <strong>Andet indhold</strong> skal vises i en enkelt liste i stedet."
-                    }
-                ]
-            }
-        }
-    ],
-    "javascript": [
-        "/App_Plugins/Skybrud.BorgerDk/Services/BorgerDkService.js",
-        "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkDirective.js",
-        "/App_Plugins/Skybrud.BorgerDk/Directives/BorgerDkLoader.js",
-        "/App_Plugins/Skybrud.BorgerDk/Controllers/BorgerDkDialog.js",
-        "/App_Plugins/Skybrud.BorgerDk/Controllers/BorgerDkGridEditor.js",
-        "/App_Plugins/Skybrud.BorgerDk/Controllers/PreValues/AllowedTypes.js",
-        "/App_Plugins/Skybrud.BorgerDk/Controllers/PreValues/Municipality.js"
-    ],
-    "css": [
-        "/App_Plugins/Skybrud.BorgerDk/Styles/BorgerDk.css"
-    ]
+  "javascript": [
+    "/App_Plugins/Skybrud.BorgerDk/Scripts/Services/BorgerDkService.js",
+    "/App_Plugins/Skybrud.BorgerDk/Scripts/Controllers/AllowedTypes.js",
+    "/App_Plugins/Skybrud.BorgerDk/Scripts/Controllers/Editor.js",
+    "/App_Plugins/Skybrud.BorgerDk/Scripts/Controllers/Municipality.js",
+    "/App_Plugins/Skybrud.BorgerDk/Scripts/Controllers/Overlay.js",
+    "/App_Plugins/Skybrud.BorgerDk/Scripts/Controllers/SearchOverlay.js"
+  ],
+  "css": [
+    "/App_Plugins/Skybrud.BorgerDk/Styles/BorgerDk.css"
+  ]
 }
