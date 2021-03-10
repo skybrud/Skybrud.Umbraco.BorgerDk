@@ -11,7 +11,7 @@ using Umbraco.Core.Scoping;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
-    public class BorgerDkService {
+    public partial class BorgerDkService {
 
         private readonly IScopeProvider _scopeProvider;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,11 +8,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
+using Newtonsoft.Json;
 using Skybrud.Essentials.Strings;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Integrations.BorgerDk.Elements;
 using Skybrud.Integrations.BorgerDk.Exceptions;
-using Skybrud.Umbraco.BorgerDk.Models;
+using Skybrud.Umbraco.BorgerDk.Models.Import;
 using Skybrud.WebApi.Json;
 using Umbraco.Core.Composing;
 using Umbraco.Core.IO;
@@ -38,113 +38,14 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
         [HttpGet]
         [AllowAnonymous]
         public object Import() {
-
-            StringBuilder sb = new StringBuilder();
-
-            AppendLine(sb, "Starting new import from Borger.dk");
-
-            Dictionary<string, BorgerDkArticleDescription> fromApi = new Dictionary<string, BorgerDkArticleDescription>();
-
-            foreach (BorgerDkEndpoint endpoint in BorgerDkEndpoint.Values) {
-
-                Stopwatch sw1 = Stopwatch.StartNew();
-
-                AppendLine(sb, " Fetching articles from " + endpoint.Domain);
-
-                BorgerDkHttpService borgerdk = new BorgerDkHttpService(endpoint);
-
-                BorgerDkArticleDescription[] list = borgerdk.GetArticleList();
-
-                sw1.Stop();
-
-                AppendLine(sb, "  Found " + list.Length + " articles in " + sw1.ElapsedMilliseconds + " ms");
-        
-                foreach (BorgerDkArticleDescription row in list) {
-                    fromApi.Add(endpoint.Domain + "_" + row.Id, row);
-                }
-
-            }
-
-            sb.AppendLine();
-
-
-
-
-            Stopwatch sw2 = Stopwatch.StartNew();
-
-            AppendLine(sb, "Fetching existing articles from the database.");
-
-            BorgerDkService service = new BorgerDkService();
-
-            var all = service.GetAllArticlesDtos();
-
-            sw2.Stop();
-
-            AppendLine(sb, " Found " + all.Count + " articles in " + sw2.ElapsedMilliseconds + " ms");
-
-            sb.AppendLine();
-
-
-
-            Stopwatch sw3 = Stopwatch.StartNew();
-
-            AppendLine(sb, "Synchronizing articles.");
-
-            foreach (BorgerDkArticleDto dto in all) {
-
-                string left = "  The article with unique ID \"" + dto.Id + "\"";
-
-                if (fromApi.TryGetValue(dto.Domain + "_" + dto.ArticleId, out var value)) {
-
-                    if (value.UpdateDate > dto.UpdateDate) {
-
-                        AppendLine(sb, left + " was updated since the last import.");
-
-                        service.Import(dto.Meta);
-
-                        AppendLine(sb, left + " was updated in the database.");
-
-                    } else {
-
-                        AppendLine(sb, left + " is up-to-date.");
-
-                    }
-
-                } else {
-
-                    AppendLine(sb, left + " was deleted in the web service.");
-
-                }
-
-            }
-
-            sw3.Stop();
-
-            AppendLine(sb, " Completed in " + sw3.ElapsedMilliseconds + " ms");
-
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine();
-
-
-
-
-
-            string path = IOHelper.MapPath("~/App_Data/LOGS/BorgerDk/" + DateTime.UtcNow.ToString("yyyyMMdd") + ".txt");
+            
+            ImportJob result = _borgerdk.Import();
+            
+            string path = IOHelper.MapPath("~/App_Data/LOGS/BorgerDk/" + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".txt");
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            File.AppendAllText(path, sb.ToString(), Encoding.UTF8);
+            File.AppendAllText(path, JsonConvert.SerializeObject(result), Encoding.UTF8);
 
-
-
-
-            return new { log = sb.ToString().Split('\n')};
-
-
-        }
-
-        private void AppendLine(StringBuilder builder, string line) {
-
-            builder.AppendLine(DateTime.UtcNow.ToString("[HH:mm:ss] ") + line);
+            return result;
 
         }
 
