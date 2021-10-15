@@ -1,3 +1,23 @@
+<table>
+  <thead>
+    <tr>
+      <td align="left">
+        :warning:
+      </td>
+      <td align="left" width="100%">
+          <strong>NOTICE</strong>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="2">
+          This branch is for the <strong>Umbraco 7</strong> version of this package. For the Umbraco 8 package, see <a href="https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v3/main"><strong>v3/main</strong></a> branch.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 Skybrud.Umbraco.BorgerDk
 ========================
 
@@ -16,13 +36,13 @@ The `master` branch (the one you're viewing now) contains the Umbraco 7 implemen
 ## Installation
 
 1. [**NuGet Package**][NuGetPackageUrl]  
-Install this NuGet package in your Visual Studio project. Makes updating easy.
+    Install this NuGet package in your Visual Studio project. Makes updating easy.
+    ```
+    Install-Package Skybrud.Umbraco.BorgerDk -Version 2.2.4
+    ```
 
-2. [**Umbraco package**][UmbracoPackageUrl]  
-<s>Install this Umbraco package via the developer section in Umbraco.</s>
-
-3. [**ZIP file**][GitHubReleaseUrl]  
-Manually unzip and move files to the root directory of your website.
+2. [**ZIP file**][GitHubReleaseUrl]  
+  Manually unzip and move files to the root directory of your website.
 
 ## Setup
 
