@@ -3,7 +3,7 @@ Skybrud.Umbraco.BorgerDk
 
 This repository covers the integration between our [**Skybrud.Integrations.BorgerDk**](https://github.com/skybrud/Skybrud.Integrations.BorgerDk) package and Umbraco. This gives editors the option to insert Borger.dk articles as part of their content in their own pages in Umbraco.
 
-The `master` branch (the one you're viewing now) contains the Umbraco 7 implementation, while an older implementation for Umbraco 6 can be found in the <code>[v1.x](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v1.x)</code> branch.
+The `v3/main` branch (the one you're viewing now) contains the Umbraco 8 implementation, while an older implementations for Umbraco 7 and Umbraco 6 can be found in the [`v2/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v2/main) and [`v1/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v1/main) branches respectively.
 
 ## List of contents
 
@@ -18,10 +18,7 @@ The `master` branch (the one you're viewing now) contains the Umbraco 7 implemen
 1. [**NuGet Package**][NuGetPackageUrl]  
 Install this NuGet package in your Visual Studio project. Makes updating easy.
 
-2. [**Umbraco package**][UmbracoPackageUrl]  
-<s>Install this Umbraco package via the developer section in Umbraco.</s>
-
-3. [**ZIP file**][GitHubReleaseUrl]  
+2. [**ZIP file**][GitHubReleaseUrl]  
 Manually unzip and move files to the root directory of your website.
 
 ## Setup
