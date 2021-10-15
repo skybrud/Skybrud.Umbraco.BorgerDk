@@ -16,7 +16,7 @@
     <PackageTags>Skybrud, Umbraco, Borger.dk, selvbetjening, web service, artikel</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</PackageProjectUrl>
-    <PackageIconUrl>http://www.skybrud.dk/img/5431sk/icon/favicon.ico</PackageIconUrl>
+    <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</RepositoryUrl>
   </PropertyGroup>
@@ -34,6 +34,7 @@
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.xml" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
+    <None Include="../build/Limbo.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <ItemGroup>
