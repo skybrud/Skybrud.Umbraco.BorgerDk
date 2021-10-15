@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
+using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
     public partial class BorgerDkService {
-
 
         public ImportJob Import() {
 
@@ -30,6 +33,13 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        public void WriteToLog(ImportJob job) {
+
+            string path = IOHelper.MapPath($"~/App_Data/LOGS/BorgerDk/{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.AppendAllText(path, JsonConvert.SerializeObject(job), Encoding.UTF8);
+
+        }
 
         private bool FetchArticleList(ImportJob job, out Dictionary<string, BorgerDkArticleDescription> articles) {
 

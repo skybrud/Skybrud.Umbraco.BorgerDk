@@ -1,4 +1,5 @@
-﻿using Skybrud.Umbraco.BorgerDk.Migrations;
+﻿using Skybrud.Umbraco.BorgerDk.Composers;
+using Skybrud.Umbraco.BorgerDk.Migrations;
 using Umbraco.Core.Composing;
 using Umbraco.Core.Logging;
 using Umbraco.Core.Migrations;
@@ -23,7 +24,7 @@ namespace Skybrud.Umbraco.BorgerDk.Components {
         }
 
         public void Initialize() {
-
+            
             MigrationPlan plan = new MigrationPlan("Skybrud.Umbraco.BorgerDk");
 
             plan.From(string.Empty).To<BorgerDkCreateTableMigration>("2.0.0-alpha001");

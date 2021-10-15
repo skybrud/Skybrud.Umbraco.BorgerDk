@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
-using Newtonsoft.Json;
 using Skybrud.Essentials.Strings;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Integrations.BorgerDk.Elements;
 using Skybrud.Integrations.BorgerDk.Exceptions;
+using Skybrud.Umbraco.BorgerDk.Composers;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
+using Skybrud.Umbraco.BorgerDk.Scheduling;
 using Skybrud.WebApi.Json;
 using Umbraco.Core.Composing;
-using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
+using Umbraco.Core.Sync;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 
@@ -28,25 +27,37 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
     [JsonOnlyConfiguration]
     [PluginController("Skybrud")]
     public class BorgerDkController : UmbracoAuthorizedApiController {
-
+        
+        private readonly IServerRegistrar _serverRegistrar;
         private readonly BorgerDkService _borgerdk;
+        private readonly BorgerDkImportTaskSettings _importSettings;
 
-        public BorgerDkController(BorgerDkService borgerdk) {
+        public BorgerDkController(IServerRegistrar serverRegistrar, BorgerDkService borgerdk, BorgerDkImportTaskSettings importSettings) {
+            _serverRegistrar = serverRegistrar;
             _borgerdk = borgerdk;
+            _importSettings = importSettings;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public object Import() {
             
+            // Run a new import
             ImportJob result = _borgerdk.Import();
             
-            string path = IOHelper.MapPath("~/App_Data/LOGS/BorgerDk/" + DateTime.UtcNow.ToString("yyyyMMddHHmmss") + ".txt");
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            File.AppendAllText(path, JsonConvert.SerializeObject(result), Encoding.UTF8);
+            // Save the result to the disk
+            _borgerdk.WriteToLog(result);
 
+            // Return the result for the API
             return result;
 
+        }
+
+        public object GetSettings() {
+            return new {
+                role = _serverRegistrar.GetCurrentServerRole().ToString(),
+                import = _importSettings
+            };
         }
 
         public object GetEndpoints() {
