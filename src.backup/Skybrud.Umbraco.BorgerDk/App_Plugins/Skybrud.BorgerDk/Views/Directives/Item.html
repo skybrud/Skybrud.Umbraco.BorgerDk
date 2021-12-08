@@ -1,0 +1,41 @@
+﻿<li class="skybrud-borgerdk-item">
+    <div class="skybrud-borgerdk-item-content">
+        <div class="skybrud-borgerdk-item-title">
+            <div class="skybrud-borgerdk-item-icon">
+                <i ng-show="item.icon" class="{{item.icon}}"></i>
+            </div>
+            <div class="skybrud-borgerdk-item-name">
+                {{item.name}}
+                <span ng-if="item.items.length > 0">
+                    <button type="button" ng-click="item.expanded = !item.expanded;">({{item.expanded ? 'Vis mindre' : 'Vis mere'}})</button>
+                </span>
+                <button class="skybrud-borgerdk-item-debug" type="button" ng-click="debug(item);">(debug)</button>
+                <div class="skybrud-borgerdk-item-message" ng-if="item.message">{{item.message}}</div>
+            </div>
+            <div class="skybrud-borgerdk-item-duration" ng-if="item.duration !== null">
+                {{item.duration | number:2}}s
+            </div>
+        </div>
+        <div ng-if="item.exception" class="skybrud-borgerdk-item-exception">
+            <table class="table details">
+                <tr>
+                    <th>Type</th>
+                    <td>{{item.exception.ClassName}}</td>
+                </tr>
+                <tr>
+                    <th>Message</th>
+                    <td>{{item.exception.Message}}</td>
+                </tr>
+                <tr>
+                    <th>Stack trace</th>
+                    <td>
+                        <div class="skybrud-borgerdk-item-exception-stacktrace">{{item.exception.StackTraceString}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <ul ng-if="item.items.length > 0" ng-show="item.expanded">
+        <skybrud-borgerdk-item ng-repeat="child in item.items" item="child"></skybrud-borgerdk-item>
+    </ul>
+</li>

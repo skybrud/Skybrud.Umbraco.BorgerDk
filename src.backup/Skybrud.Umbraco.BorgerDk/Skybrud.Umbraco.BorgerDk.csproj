@@ -1,13 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
+
   <PropertyGroup>
     <Version>3.0.0-beta003</Version>
     <Authors>Anders Bjerner</Authors>
     <Company>Limbo</Company>
     <Copyright>Copyright © 2021</Copyright>
   </PropertyGroup>
+
   <PropertyGroup>
     <PackageId>Skybrud.Umbraco.BorgerDk</PackageId>
     <PackageTags>Skybrud, Umbraco, Borger.dk, selvbetjening, web service, artikel</PackageTags>
@@ -17,33 +20,37 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</RepositoryUrl>
   </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="Skybrud.Essentials" Version="1.1.30" />
+    <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.0" />
     <PackageReference Include="Skybrud.WebApi.Json" Version="1.1.0" />
     <PackageReference Include="UmbracoCms.Web" Version="8.6.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.256001">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.css" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.xml" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
-    <None Include="../build/Limbo.png" Pack="true" PackagePath="\" />
+    <None Include="../build/Limbo.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
+
   <ItemGroup>
     <Content Update="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.css">
       <DependentUpon>BorgerDk.less</DependentUpon>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <Content Update="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.min.css">
       <DependentUpon>BorgerDk.css</DependentUpon>
     </Content>
   </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release' AND '$(BuildTools)'=='1'">
     <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
   </Target>
+
 </Project>

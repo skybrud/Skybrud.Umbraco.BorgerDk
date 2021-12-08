@@ -1,0 +1,188 @@
+﻿.BorgerDkAllowedTypes {
+    label small {
+        display: inline;
+    }
+}
+
+
+
+.BorgerDkOverlay {
+    table.table.list {
+        border: 1px solid #e9e9eb;
+        box-shadow: none;
+
+        > thead > tr > th {
+            background: #F5F4F4;
+        }
+
+        > thead > tr > th,
+        > tbody > tr > td {
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        td.fw {
+            width: 100%;
+        }
+
+
+
+        tbody > tr > td:first-child {
+            border-left: initial;
+        }
+    }
+
+    h3 {
+        font-size: 18.75px;
+        line-height: 18.75px;
+        margin: 0 0 10px 0;
+    }
+
+    .BorgerDkElementContent {
+        margin-top: 10px;
+        max-width: 750px;
+        border: 1px solid #e9e9eb;
+        padding: 10px;
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        ul > li {
+            list-style-type: none;
+            padding-left: 0;
+            position: relative;
+            padding: 0;
+
+            a {
+                padding-left: 35px;
+
+                &:after {
+                    content: "";
+                    width: 20px;
+                    height: 20px;
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    background-color: #284d62;
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        ul > li + li, ul + p {
+            margin-top: 10px;
+        }
+
+        ul > li > a:before {
+            content: "";
+            width: .8125rem;
+            height: .8125rem;
+            width: 10px;
+            height: 10px;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLXByZWZpeD0nZmFzJyBkYXRhLWljb249J2xvbmctYXJyb3ctcmlnaHQnIGNsYXNzPSdzdmctaW5saW5lLS1mYSBmYS1sb25nLWFycm93LXJpZ2h0IGZhLXctMTQnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDQ0OCA1MTInPjxwYXRoIGZpbGw9JyNmZmYnIGQ9J00yNTQuNTQ0IDE1NC40MjdMMzIwLjExOCAyMjBIMjRjLTEzLjI1NSAwLTI0IDEwLjc0NS0yNCAyNHYyNGMwIDEzLjI1NSAxMC43NDUgMjQgMjQgMjRoMjk2LjExOGwtNjUuNTc0IDY1LjU3M2MtOS4zNzMgOS4zNzMtOS4zNzMgMjQuNTY5IDAgMzMuOTQxbDE2Ljk3MSAxNi45NzFjOS4zNzMgOS4zNzMgMjQuNTY5IDkuMzczIDMzLjk0MSAwTDQ0MC45NyAyNzIuOTdjOS4zNzMtOS4zNzMgOS4zNzMtMjQuNTY5IDAtMzMuOTQxTDMwNS40NTYgMTAzLjUxNWMtOS4zNzMtOS4zNzMtMjQuNTY5LTkuMzczLTMzLjk0MSAwbC0xNi45NzEgMTYuOTcxYy05LjM3MyA5LjM3Mi05LjM3MyAyNC41NjggMCAzMy45NDF6Jy8+PC9zdmc+);
+            background-size: 10px 10px;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            z-index: 1;
+        }
+    }
+
+    h3 {
+        margin: 15px 0 3px 0;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    table.details {
+        border: 1px solid #e9e9eb;
+        box-shadow: none;
+
+        th, td {
+            padding: 5px 10px;
+            vertical-align: top;
+        }
+    }
+
+    &.loading .umb-box-content {
+        opacity: 0.5;
+    }
+
+    .btn.btn-sm {
+        padding: 3px 10px;
+        font-size: 13px;
+    }
+}
+
+
+
+
+.BorgerDkUrl {
+    > div {
+        display: flex;
+    }
+    input {
+        flex: 1;
+        margin: 0 10px 0 0;
+    }
+    button.btn {
+        height: 32px;
+    }
+}
+
+.umb-editor.umb-editor--medium.BorgerDkOverlay {
+    width: 1000px;
+}
+
+
+
+
+
+
+.BorgerDkElements {
+    border: 1px solid #e9e9eb;
+    border-top: 0;
+}
+
+.BorgerDkElement {
+    padding: 10px;
+    border-top: 1px solid #e9e9eb;
+}
+
+.BorgerDkElement-kernetekst {
+    background: #f5f4f4;
+}
+
+.BorgerDkElementTitle {
+    display: flex;
+
+    > div:first-child {
+        display: flex;
+        flex: 1;
+    }
+
+    .BorgerDkElementId {
+        padding-left: 5px;
+        color: #999;
+    }
+}
+
+.BorgerDkMicroArticle {
+    padding: 10px;
+    border-top: 1px solid #e9e9eb;
+    padding-left: 25px;
+}
+
+
+.BorgerDkSearchOverlay.loading {
+    .umb-box-content > div {
+        opacity: 0.5;
+    }
+}
+
+@import "_dashboard.less";

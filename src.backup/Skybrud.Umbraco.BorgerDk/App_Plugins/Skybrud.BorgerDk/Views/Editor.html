@@ -1,0 +1,42 @@
+﻿<div ng-controller="Skybrud.BorgerDk.Controller">
+    <div ng-if="!model.value">
+        <button type="button" ng-click="edit()" class="btn btn-default">Indsæt artikel</button>
+    </div>
+    <div ng-if="model.value">
+        <table class="table details">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td>{{model.value.id}}</td>
+                </tr>
+                <tr>
+                    <th>URL</th>
+                    <td>
+                        <a href="{{model.value.url}}" target="_blank" rel="noopener">
+                            {{model.value.url}}
+                            <i ng-class="value.icon" class="icon-out"></i>
+                        </a>
+                    </td>
+                </tr>
+            <tr>
+                <th>Titel</th>
+                <td>{{model.value.title}}</td>
+            </tr>
+            <tr>
+                <th>Teaser</th>
+                <td>{{model.value.header}}</td>
+            </tr>
+            <tr>
+                <th>Skrevet af</th>
+                <td>{{model.value.byline}}</td>
+            </tr>
+            <tr>
+                <th>Valgt indhold</th>
+                <td>{{summary}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" ng-click="edit()" class="btn btn-default">Rediger</button>
+        <button type="button" ng-click="reset()" class="btn btn-default">Nulstil</button>
+    </div>
+</div>
