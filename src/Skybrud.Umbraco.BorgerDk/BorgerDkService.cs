@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using NPoco;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
-using Umbraco.Core.Composing;
-using Umbraco.Core.Logging;
-using Umbraco.Core.Persistence;
-using Umbraco.Core.Scoping;
+using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Scoping;
+using Umbraco.Cms.Infrastructure.Persistence;
+using Umbraco.Extensions;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
@@ -15,18 +16,15 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         private readonly IScopeProvider _scopeProvider;
 
-        private readonly ILogger _logger;
+        private readonly ILogger<BorgerDkService> _logger;
+        private readonly IIOHelper _iOHelper;
 
         #region Constructors
 
-        public BorgerDkService() {
-            _scopeProvider = Current.ScopeProvider;
-            _logger = Current.Logger;
-        }
-
-        public BorgerDkService(IScopeProvider scopeProvider, ILogger logger) {
+        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IIOHelper iOHelper) {
             _scopeProvider = scopeProvider;
             _logger = logger;
+            _iOHelper = iOHelper;
         }
 
         #endregion
@@ -49,7 +47,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                     return scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
 
                 } catch (Exception ex) {
-                    _logger.Error<BorgerDkService>("Unable to insert redirect into the database", ex);
+                    _logger.LogError(ex, "Unable to insert redirect into the database");
                     throw new Exception("Unable to insert redirect into the database", ex);
                 }
 
@@ -78,7 +76,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                     return dto?.Meta;
 
                 } catch (Exception ex) {
-                    _logger.Error<BorgerDkService>("Unable to insert redirect into the database", ex);
+                    _logger.LogError(ex, "Unable to insert redirect into the database");
                     throw new Exception("Unable to insert redirect into the database", ex);
                 }
 
@@ -123,7 +121,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                     return scope.Database.Fetch<BorgerDkArticleDto>(sql).Select(x => new BorgerDkArticleModel(x)).ToArray();
 
                 } catch (Exception ex) {
-                    _logger.Error<BorgerDkService>("Unable to fetch all articles from the database.", ex);
+                    _logger.LogError(ex, "Unable to fetch all articles from the database.");
                     throw new Exception("Unable to fetch all articles from the database.", ex);
                 }
 
@@ -146,7 +144,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                     return scope.Database.Fetch<BorgerDkArticleDto>(sql);
 
                 } catch (Exception ex) {
-                    _logger.Error<BorgerDkService>("Unable to fetch all articles from the database.", ex);
+                    _logger.LogError(ex, "Unable to fetch all articles from the database.");
                     throw new Exception("Unable to fetch all articles from the database.", ex);
                 }
 

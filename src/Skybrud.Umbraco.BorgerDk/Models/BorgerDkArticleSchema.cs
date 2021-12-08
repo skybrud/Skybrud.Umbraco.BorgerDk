@@ -1,6 +1,6 @@
 ﻿using System;
 using NPoco;
-using Umbraco.Core.Persistence.DatabaseAnnotations;
+using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace Skybrud.Umbraco.BorgerDk.Models {
 

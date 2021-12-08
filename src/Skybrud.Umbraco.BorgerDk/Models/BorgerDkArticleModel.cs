@@ -1,9 +1,8 @@
-﻿using System;
-using Skybrud.Essentials.Time;
+﻿using Skybrud.Essentials.Time;
 using Skybrud.Integrations.BorgerDk;
-using Umbraco.Core;
 
-namespace Skybrud.Umbraco.BorgerDk.Models {
+namespace Skybrud.Umbraco.BorgerDk.Models
+{
 
     public class BorgerDkArticleModel {
 

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
-using Umbraco.Core.IO;
-using Umbraco.Core.Logging;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
@@ -35,7 +34,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         public void WriteToLog(ImportJob job) {
 
-            string path = IOHelper.MapPath($"~/App_Data/LOGS/BorgerDk/{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
+            string path = _iOHelper.MapPath($"~/App_Data/LOGS/BorgerDk/{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.AppendAllText(path, JsonConvert.SerializeObject(job), Encoding.UTF8);
 
@@ -70,7 +69,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
                 } catch (Exception ex) {
 
-                    _logger.Error<BorgerDkService>(ex, "Failed fetching articles for endpoint {Endpoint}.", endpoint.Domain);
+                    _logger.LogError(ex, "Failed fetching articles for endpoint {Endpoint}.", endpoint.Domain);
 
                     endpointTask.Failed(ex);
 
@@ -102,7 +101,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             } catch (Exception ex) {
 
-                _logger.Error<BorgerDkService>(ex, "Failed fetching existing articles for the database.");
+                _logger.LogError(ex, "Failed fetching existing articles for the database.");
 
                 task.Failed(ex);
 

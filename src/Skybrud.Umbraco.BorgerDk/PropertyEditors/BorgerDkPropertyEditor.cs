@@ -1,22 +1,27 @@
 ﻿using Skybrud.Integrations.BorgerDk;
-using Umbraco.Core.Logging;
-using Umbraco.Core.PropertyEditors;
+using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.PropertyEditors;
 
-namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
+namespace Skybrud.Umbraco.BorgerDk.PropertyEditors
+{
 
     [DataEditor("Skybrud.BorgerDk", EditorType.PropertyValue, "Skybrud Borger.dk", "/App_Plugins/Skybrud.BorgerDk/Views/Editor.html", ValueType = ValueTypes.Json, Group = "Skybrud.dk", Icon = "icon-school")]
     public class BorgerDkPropertyEditor : DataEditor {
+        private readonly IOHelper _iOHelper;
 
-        public BorgerDkPropertyEditor(ILogger logger) : base(logger) { }
+        public BorgerDkPropertyEditor(IDataValueEditorFactory dataValueEditorFactory, IOHelper iOHelper) : base(dataValueEditorFactory)
+        {
+            _iOHelper = iOHelper;
+        }
 
         /// <inheritdoc />
-        protected override IConfigurationEditor CreateConfigurationEditor() => new BorgerDkConfigurationEditor();
+        protected override IConfigurationEditor CreateConfigurationEditor() => new BorgerDkConfigurationEditor(_iOHelper);
 
     }
 
     public class BorgerDkConfigurationEditor : ConfigurationEditor<BorgerDkConfiguration> {
 
-        public BorgerDkConfigurationEditor() { }
+        public BorgerDkConfigurationEditor(IOHelper iOHelper) : base(iOHelper) { }
 
     }
 

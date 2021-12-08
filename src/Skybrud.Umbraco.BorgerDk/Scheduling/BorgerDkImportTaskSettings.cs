@@ -1,9 +1,7 @@
 ﻿using System;
-using Skybrud.Umbraco.BorgerDk.Components;
-using Umbraco.Core.Sync;
 
 namespace Skybrud.Umbraco.BorgerDk.Scheduling {
-    
+
     /// <summary>
     /// Class representing the settings for the Borger.dk import task. The class is registered with the DI container as
     /// a singleton, and the settings can thereby be modified by a component - ideally running before

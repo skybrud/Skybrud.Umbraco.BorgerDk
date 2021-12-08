@@ -1,16 +1,30 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models.Published;
-using Umbraco.Core;
-using Umbraco.Core.Models.PublishedContent;
-using Umbraco.Core.PropertyEditors;
+using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.PropertyEditors;
+using Umbraco.Cms.Core.Scoping;
+using Umbraco.Extensions;
 
-namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
+namespace Skybrud.Umbraco.BorgerDk.PropertyEditors
+{
 
     public class BorgerDkValueConverter : PropertyValueConverterBase {
+        private readonly IScopeProvider _scopeProvider;
+        private readonly ILogger<BorgerDkService> _logger;
+        private readonly IIOHelper _iOHelper;
+
+        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IIOHelper iOHelper)
+        {
+            _scopeProvider = scopeProvider;
+            _logger = logger;
+            _iOHelper = iOHelper;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the converter supports a property type.
@@ -33,7 +47,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
                 int articleId = json.GetInt32("id");
 
-                BorgerDkArticle article = new BorgerDkService().GetArticleById(domain, municipality, articleId);
+                BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _iOHelper).GetArticleById(domain, municipality, articleId);
 
                 return new BorgerDkPublishedArticle(json, article);
 
