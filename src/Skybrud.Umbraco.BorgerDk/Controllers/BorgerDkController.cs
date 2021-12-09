@@ -13,7 +13,6 @@ using Skybrud.Integrations.BorgerDk.Elements;
 using Skybrud.Integrations.BorgerDk.Exceptions;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
-using Skybrud.WebApi.Json;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Web.BackOffice.Controllers;
@@ -24,7 +23,6 @@ using Umbraco.Cms.Web.Common.Attributes;
 namespace Skybrud.Umbraco.BorgerDk.Controllers
 {
 
-    [JsonOnlyConfiguration]
     [PluginController("Skybrud")]
     public class BorgerDkController : UmbracoAuthorizedApiController
     {
@@ -33,10 +31,10 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
         private readonly BorgerDkService _borgerdk;
         private readonly BorgerDkImportTaskSettings _importSettings;
         private readonly ILogger<BorgerDkController> _logger;
-        private readonly HttpContextAccessor _httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAppPolicyCache _runtimeCache;
 
-        public BorgerDkController(IServerRoleAccessor serverRoleAccessor, BorgerDkService borgerdk, BorgerDkImportTaskSettings importSettings, ILogger<BorgerDkController> logger, HttpContextAccessor httpContextAccessor, AppCaches appCaches) {
+        public BorgerDkController(IServerRoleAccessor serverRoleAccessor, BorgerDkService borgerdk, BorgerDkImportTaskSettings importSettings, ILogger<BorgerDkController> logger, IHttpContextAccessor httpContextAccessor, AppCaches appCaches) {
             _serverRoleAccessor = serverRoleAccessor;
             _borgerdk = borgerdk;
             _importSettings = importSettings;
@@ -67,7 +65,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
             };
         }
 
-        public object GetEndpoints() {
+        public static object GetEndpoints() {
 
             return BorgerDkEndpoint.Values.Select(x => new {
                 domain = x.Domain,
@@ -84,12 +82,12 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
                 endpoint = BorgerDkEndpoint.GetFromDomain(domain);
             }
 
-            BorgerDkHttpService service = new BorgerDkHttpService(endpoint);
+            BorgerDkHttpService service = new(endpoint);
 
             IEnumerable<BorgerDkArticleDescription> articles = (IEnumerable<BorgerDkArticleDescription>) _runtimeCache.Get("BorgerDkArticleList:" + endpoint.Domain, () => service.GetArticleList(), TimeSpan.FromMinutes(10));
 
             if (string.IsNullOrWhiteSpace(text) == false) {
-                articles = articles.Where(x => x.Title.IndexOf(text, StringComparison.CurrentCultureIgnoreCase) >= 0);
+                articles = articles.Where(x => x.Title.Contains(text, StringComparison.CurrentCultureIgnoreCase));
             }
 
             return articles.Select(x => new {
@@ -121,7 +119,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
             }
 
             // Initialize a new service instance
-            BorgerDkHttpService http = new BorgerDkHttpService(endpoint);
+            BorgerDkHttpService http = new(endpoint);
 
             // Look up the ID of the article with the specified URL
             BorgerDkArticleShortDescription item;
@@ -153,7 +151,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
 
 
 
-            List<object> elements = new List<object>();
+            List<object> elements = new();
 
             foreach (BorgerDkElement element in article.Elements) {
 

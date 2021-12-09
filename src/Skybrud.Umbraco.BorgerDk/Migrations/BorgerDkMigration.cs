@@ -31,11 +31,11 @@ namespace Skybrud.Umbraco.BorgerDk.Migration {
                 return;
             }
 
-            MigrationPlan plan = new MigrationPlan("Skybrud.Umbraco.BorgerDk");
+            MigrationPlan plan = new("Skybrud.Umbraco.BorgerDk");
 
             plan.From(string.Empty).To<BorgerDkCreateTableMigration>("2.0.0-alpha001");
 
-            Upgrader upgrader = new Upgrader(plan);
+            Upgrader upgrader = new(plan);
             upgrader.Execute(_migrationPlanExecutor, _scopeProvider, _keyValueService);
         }
     }

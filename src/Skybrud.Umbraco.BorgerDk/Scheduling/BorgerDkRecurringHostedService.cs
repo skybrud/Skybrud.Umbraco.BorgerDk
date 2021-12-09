@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Infrastructure.HostedServices;
 
-namespace Skybrud.Umbraco.BorgerDk.Scheduling
-{
+namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
     public class BorgerDkRecurringHostedService : RecurringHostedServiceBase {
         
@@ -26,10 +25,10 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling
         private readonly IServerRoleAccessor _serverRoleAccessor;
         private readonly ILogger<BorgerDkRecurringHostedService> _logger;
         private readonly IScopeProvider _scopeProvider;
-        private readonly IOHelper _iOHelper;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         private static TimeSpan HowOftenWeRepeat => TimeSpan.FromMinutes(5);
-        private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(1);
+        private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(5);
         private const string TaskName = "BorgerDkRecurringHostedService";
 
         public BorgerDkRecurringHostedService(
@@ -40,7 +39,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling
             IServerRoleAccessor serverRoleAccessor,
             ILogger<BorgerDkRecurringHostedService> logger,
             IScopeProvider scopeProvider,
-            IOHelper iOHelper)
+            IHostingEnvironment hostingEnvironment)
             : base(HowOftenWeRepeat, DelayBeforeWeStart) {
             _borgerDkService = borgerDkService;
             _importSettings = importSettings;
@@ -49,7 +48,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling
             _serverRoleAccessor = serverRoleAccessor;
             _logger = logger;
             _scopeProvider = scopeProvider;
-            _iOHelper = iOHelper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public override Task PerformExecuteAsync(object state) {
@@ -73,11 +72,11 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling
 
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine(EssentialsTime.Now.Iso8601);
 
             if (!ShouldRun(TaskName, _importSettings.ImportInterval)) {
-                sb.AppendLine("> Exiting as now supposed to run yet.");
+                sb.AppendLine("> Exiting as not supposed to run yet.");
                 AppendToLog(TaskName, sb);
                 return Task.CompletedTask;
             }
@@ -99,19 +98,30 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling
         }
 
         public DateTime GetLastRunTime(string taskName) {
-            string path = _iOHelper.MapPath($"/App_Data/Skybrud/BorgerDk/Tasks/{taskName}/LastRunTime.txt");
-            return File.Exists(path) ? File.GetLastWriteTime(path) : DateTime.MinValue;
+
+            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
+
+            string path = Path.Combine(pathParts);
+
+            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
+
+            return File.Exists(fullPath) ? File.GetLastWriteTime(fullPath) : DateTime.MinValue;
         }
         
         public DateTime GetLastRunTimeUtc(string taskName) {
-            string path = _iOHelper.MapPath($"/App_Data/Skybrud/BorgerDk/Tasks/{taskName}/LastRunTime.txt");
-            return File.Exists(path) ? File.GetLastWriteTimeUtc(path) : DateTime.MinValue;
+            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
+
+            string path = Path.Combine(pathParts);
+
+            string fullPath = _hostingEnvironment.MapPathContentRoot(path); 
+
+            return File.Exists(fullPath) ? File.GetLastWriteTimeUtc(fullPath) : DateTime.MinValue;
         }
 
         public bool ShouldRun(string taskName, DateTime now, int hour, int minute, DayOfWeek[] weekdays) {
 
             // Determine when the task is supposed to run on the current day
-            DateTime scheduled = new DateTime(now.Year, now.Month, now.Day, hour, minute, 0);
+            DateTime scheduled = new(now.Year, now.Month, now.Day, hour, minute, 0);
 
             // Return "false" if we haven't reached the scheduled time yet
             if (now < scheduled) return false;
@@ -141,20 +151,28 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling
 
         public void SetLastRunTime(string taskName) {
 
-            string path = _iOHelper.MapPath($"/App_Data/Skybrud/BorgerDk/Tasks/{taskName}/LastRunTime.txt");
+            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            File.WriteAllText(path, "Hello there!", Encoding.UTF8);
+            string path = Path.Combine(pathParts);
+
+            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+            File.WriteAllText(fullPath, "Hello there!", Encoding.UTF8);
 
         }
 
         public void AppendToLog(string taskName, StringBuilder stringBuilder) {
 
-            string path = _iOHelper.MapPath($"/App_Data/Skybrud/BorgerDk/Tasks/{taskName}/Log.txt");
+            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "log.text" };
 
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            string path = Path.Combine(pathParts);
 
-            File.AppendAllText(path, stringBuilder.ToString(), Encoding.UTF8);
+            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+
+            File.AppendAllText(fullPath, stringBuilder.ToString(), Encoding.UTF8);
 
         }
 

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>3.0.0-beta003</Version>
+    <Version>4.0.0-beta001</Version>
     <Authors>Anders Bjerner</Authors>
     <Company>Limbo</Company>
     <Copyright>Copyright © 2021</Copyright>
@@ -18,16 +18,13 @@
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Skybrud.WebApi.Json" Version="1.1.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.256001">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
     <PackageReference Include="Umbraco.Cms.Core" Version="9.1.2" />
     <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.1.2" />
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.1.2" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="../build/Skybrud.Umbraco.BorgerDk.targets" PackagePath="build\Skybrud.Umbraco.BorgerDk.targets" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.js" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.css" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.html" />

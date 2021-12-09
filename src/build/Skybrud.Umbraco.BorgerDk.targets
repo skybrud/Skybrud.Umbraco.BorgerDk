@@ -1,0 +1,28 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--Based on: https://github.com/bergmania/Bergmania.OpenStreetMap/blob/main/Bergmania.OpenStreetMap/build/Bergmania.OpenStreetMap.targets -->
+
+  <PropertyGroup>
+    <SkybrudBorgerDkContentFilesPath>$(MSBuildThisFileDirectory)..\content\App_Plugins\Skybrud.BorgerDk\**\*.*</SkybrudBorgerDkContentFilesPath>
+  </PropertyGroup>
+
+  <Target Name="CopySkybrudBorgerDkAssets" BeforeTargets="Build">
+    <ItemGroup>
+      <SkybrudBorgerDkContentFiles Include="$(SkybrudBorgerDkContentFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying Skybrud.Umbraco.BorgerDk files: $(SkybrudBorgerDkContentFilesPath) - #@(SkybrudBorgerDkContentFiles->Count()) files"  Importance="high" />
+    <Copy
+      SourceFiles="@(SkybrudBorgerDkContentFiles)"
+      DestinationFiles="@(SkybrudBorgerDkContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\Skybrud.BorgerDk\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="ClearSkybrudBorgerDkAssets" BeforeTargets="Clean">
+    <ItemGroup>
+      <SkybrudBorgerDkDir Include="$(MSBuildProjectDirectory)\App_Plugins\Skybrud.BorgerDk\" />
+    </ItemGroup>
+    <Message Text="Clear old Skybrud.Umbraco.BorgerDk files"  Importance="high" />
+    <RemoveDir Directories="@(SkybrudBorgerDkDir)"  />
+  </Target>
+
+</Project>

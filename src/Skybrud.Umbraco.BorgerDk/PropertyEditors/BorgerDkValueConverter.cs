@@ -5,25 +5,24 @@ using Skybrud.Essentials.Json;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models.Published;
-using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Scoping;
 using Umbraco.Extensions;
 
-namespace Skybrud.Umbraco.BorgerDk.PropertyEditors
-{
+namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
     public class BorgerDkValueConverter : PropertyValueConverterBase {
         private readonly IScopeProvider _scopeProvider;
         private readonly ILogger<BorgerDkService> _logger;
-        private readonly IIOHelper _iOHelper;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IIOHelper iOHelper)
+        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment)
         {
             _scopeProvider = scopeProvider;
             _logger = logger;
-            _iOHelper = iOHelper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors
 
                 int articleId = json.GetInt32("id");
 
-                BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _iOHelper).GetArticleById(domain, municipality, articleId);
+                BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment).GetArticleById(domain, municipality, articleId);
 
                 return new BorgerDkPublishedArticle(json, article);
 

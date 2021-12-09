@@ -8,6 +8,7 @@ using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
+using Umbraco.Cms.Core;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
@@ -15,7 +16,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         public ImportJob Import() {
 
-            ImportJob job = new ImportJob { Name = "Importing articles from Borger.dk web service" };
+            ImportJob job = new() { Name = "Importing articles from Borger.dk web service" };
 
             job.Start();
 
@@ -34,9 +35,12 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         public void WriteToLog(ImportJob job) {
 
-            string path = _iOHelper.MapPath($"~/App_Data/LOGS/BorgerDk/{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            File.AppendAllText(path, JsonConvert.SerializeObject(job), Encoding.UTF8);
+            string path = Path.Combine(Constants.SystemDirectories.LogFiles, "borgerdk", $"{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
+
+            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+            File.AppendAllText(fullPath, JsonConvert.SerializeObject(job), Encoding.UTF8);
 
         }
 
@@ -53,7 +57,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                 try {
 
                     // Initialize a new service instance for the endpoint
-                    BorgerDkHttpService borgerdk = new BorgerDkHttpService(endpoint);
+                    BorgerDkHttpService borgerdk = new(endpoint);
 
                     // Fetch the article list
                     BorgerDkArticleDescription[] list = borgerdk.GetArticleList();
@@ -138,7 +142,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                                 BorgerDkEndpoint endpoint = BorgerDkEndpoint.GetFromDomain(dto.Domain);
 
                                 // Initialize a new service instance from the endpoint
-                                BorgerDkHttpService service = new BorgerDkHttpService(endpoint);
+                                BorgerDkHttpService service = new(endpoint);
 
                                 // Get the municipality from the code
                                 BorgerDkMunicipality municipality = BorgerDkMunicipality.GetFromCode(dto.Municipality);
@@ -211,7 +215,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                 return;
             }
 
-            List<string> message = new List<string> {
+            List<string> message = new() {
                 $"updated {updated} {(updated == 1 ? "article" : "articles")}",
                 $"skipped {skipped} {(skipped == 1 ? "article" : "articles")}"
             };

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using NPoco;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
-using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Extensions;
@@ -17,14 +17,14 @@ namespace Skybrud.Umbraco.BorgerDk {
         private readonly IScopeProvider _scopeProvider;
 
         private readonly ILogger<BorgerDkService> _logger;
-        private readonly IIOHelper _iOHelper;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         #region Constructors
 
-        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IIOHelper iOHelper) {
+        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment) {
             _scopeProvider = scopeProvider;
             _logger = logger;
-            _iOHelper = iOHelper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         #endregion

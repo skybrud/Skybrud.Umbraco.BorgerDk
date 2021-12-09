@@ -54,7 +54,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Published {
             Title = article.Title;
             Header = article.Header;
 
-            List<BorgerDkPublishedElement> elements = new List<BorgerDkPublishedElement>();
+            List<BorgerDkPublishedElement> elements = new();
 
             foreach (BorgerDkElement element in article.Elements) {
 
@@ -64,7 +64,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Published {
 
                 } else if (element is BorgerDkBlockElement block) {
 
-                    List<BorgerDkPublishedMicroArticle> micros = new List<BorgerDkPublishedMicroArticle>();
+                    List<BorgerDkPublishedMicroArticle> micros = new();
 
                     foreach (var micro in block.MicroArticles) {
 
