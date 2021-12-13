@@ -1,16 +1,14 @@
-﻿using Skybrud.Umbraco.BorgerDk.Components;
-using Umbraco.Core;
-using Umbraco.Core.Composing;
+﻿using Skybrud.Umbraco.BorgerDk.Migration;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Notifications;
 
 namespace Skybrud.Umbraco.BorgerDk.Composers {
 
-    [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-    public class BorgerDkMigrationComposer : IUserComposer {
-
-        public void Compose(Composition composition) {
-            composition.Components().Append<BorgerDkMigrationComponent>();
+    public class BorgerDkMigrationComposer : IComposer {
+        public void Compose(IUmbracoBuilder builder) {
+            builder.AddNotificationHandler<UmbracoApplicationStartingNotification, BorgerDkMigration>();
         }
-
     }
 
 }

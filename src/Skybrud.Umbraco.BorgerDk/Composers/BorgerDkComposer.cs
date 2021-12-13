@@ -1,30 +1,31 @@
-﻿using Skybrud.Umbraco.BorgerDk.Caching;
-using Skybrud.Umbraco.BorgerDk.Components;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Skybrud.Umbraco.BorgerDk.Caching;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
-using Umbraco.Core;
-using Umbraco.Core.Cache;
-using Umbraco.Core.Composing;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
 
-namespace Skybrud.Umbraco.BorgerDk.Composers {
+namespace Skybrud.Umbraco.BorgerDk.Composers
+{
 
-    public class BorgerDkComposer : IUserComposer {
+    public class BorgerDkComposer : IComposer {
 
-        public void Compose(Composition composition) {
-            
-            composition.Register<BorgerDkService>();
-            composition.Register<BorgerDkImportTaskSettings>(Lifetime.Singleton);
-            composition.RegisterUnique(CreateSearchIndexCacheRefresher);
+        //public void Compose(Composition composition) {
 
-            composition.Register<BorgerDkTaskRunner>(Lifetime.Singleton);
-            composition.Components().Append<BorgerDkTaskRunnerComponent>();
+        //    composition.RegisterUnique(CreateSearchIndexCacheRefresher);
 
+
+        //}
+
+        //private static BorgerDkCacheRefresher CreateSearchIndexCacheRefresher(IFactory factory) {
+        //    var appCaches = factory.GetInstance<AppCaches>();
+        //    return new BorgerDkCacheRefresher(appCaches);
+        //}
+
+        public void Compose(IUmbracoBuilder builder) {
+            builder.Services.AddTransient<BorgerDkService>();
+            builder.Services.AddSingleton<BorgerDkImportTaskSettings>();
+            builder.Services.AddHostedService<BorgerDkRecurringHostedService>();
         }
-
-        private static BorgerDkCacheRefresher CreateSearchIndexCacheRefresher(IFactory factory) {
-            var appCaches = factory.GetInstance<AppCaches>();
-            return new BorgerDkCacheRefresher(appCaches);
-        }
-
     }
 
 }

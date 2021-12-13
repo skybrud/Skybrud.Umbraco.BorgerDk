@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using NPoco;
 using Skybrud.Essentials.Json;
 using Skybrud.Integrations.BorgerDk;
-using Umbraco.Core.Persistence.DatabaseAnnotations;
+using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace Skybrud.Umbraco.BorgerDk.Models {
 

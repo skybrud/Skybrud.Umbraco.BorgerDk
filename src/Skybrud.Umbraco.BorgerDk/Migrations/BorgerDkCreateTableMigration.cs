@@ -1,5 +1,5 @@
 ﻿using Skybrud.Umbraco.BorgerDk.Models;
-using Umbraco.Core.Migrations;
+using Umbraco.Cms.Infrastructure.Migrations;
 
 namespace Skybrud.Umbraco.BorgerDk.Migrations {
 
@@ -7,7 +7,7 @@ namespace Skybrud.Umbraco.BorgerDk.Migrations {
 
         public BorgerDkCreateTableMigration(IMigrationContext context) : base(context) { }
 
-        public override void Migrate() {
+        protected override void Migrate() {
             if (TableExists(BorgerDkArticleSchema.TableName)) return;
             Create.Table<BorgerDkArticleSchema>().Do();
         }

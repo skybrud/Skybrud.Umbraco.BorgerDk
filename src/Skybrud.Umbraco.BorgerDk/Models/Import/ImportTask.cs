@@ -34,7 +34,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Import {
         public string Message { get; set; }
 
         [JsonProperty("items", Order = 998)]
-        public List<ImportTask> Items = new List<ImportTask>();
+        public List<ImportTask> Items = new();
 
         public ImportTask AddTask(string name) {
             var item = new ImportTask { Name = name, Parent = this };

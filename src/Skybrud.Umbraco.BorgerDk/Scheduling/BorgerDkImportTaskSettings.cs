@@ -1,9 +1,7 @@
 ﻿using System;
-using Skybrud.Umbraco.BorgerDk.Components;
-using Umbraco.Core.Sync;
 
 namespace Skybrud.Umbraco.BorgerDk.Scheduling {
-    
+
     /// <summary>
     /// Class representing the settings for the Borger.dk import task. The class is registered with the DI container as
     /// a singleton, and the settings can thereby be modified by a component - ideally running before
@@ -25,17 +23,6 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         public BorgerDkImportTaskState State { get; set; }
 
         /// <summary>
-        /// Gets or sets the delay before the import task should run the first time after an Umbraco reboot. Default is five minutes.
-        /// </summary>
-        public TimeSpan TaskDelay { get; set; }
-
-        /// <summary>
-        /// Gets or sets the interval between each time the task should run. As the task internally has some logic to determine
-        /// whether it should start an import, the task should ideally run very often. Default is five minutes.
-        /// </summary>
-        public TimeSpan TaskInterval { get; set; }
-
-        /// <summary>
         /// Gets or sets the interval between each time the import should run. Default is 12 hours.
         /// </summary>
         public TimeSpan ImportInterval { get; set; }
@@ -46,18 +33,12 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         /// </summary>
         public bool LogResults { get; set; }
 
-        public string Hej { get; }
-
         #endregion
 
         #region Constructors
 
         public BorgerDkImportTaskSettings() {
 
-            Hej = State.ToString();
-
-            TaskDelay = TimeSpan.FromMinutes(5);
-            TaskInterval = TimeSpan.FromMinutes(5);
             ImportInterval = TimeSpan.FromHours(12);
             LogResults = true;
 
