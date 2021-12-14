@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Skybrud.Essentials.Time;
+﻿using Skybrud.Essentials.Time;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
 using System;
 using System.IO;
@@ -8,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Hosting;
-using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Infrastructure.HostedServices;
@@ -91,26 +89,13 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         }
 
         public DateTime GetLastRunTime(string taskName) {
-
-            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
-
-            string path = Path.Combine(pathParts);
-
-            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
-
-            return File.Exists(fullPath) ? File.GetLastWriteTime(fullPath) : DateTime.MinValue;
-
+            string path = Path.Combine(GetTaskDirectoryPath(taskName), "LastRunTime.txt");
+            return File.Exists(path) ? File.GetLastWriteTime(path) : DateTime.MinValue;
         }
         
         public DateTime GetLastRunTimeUtc(string taskName) {
-
-            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
-
-            string path = Path.Combine(pathParts);
-
-            string fullPath = _hostingEnvironment.MapPathContentRoot(path); 
-
-            return File.Exists(fullPath) ? File.GetLastWriteTimeUtc(fullPath) : DateTime.MinValue;
+            string path = Path.Combine(GetTaskDirectoryPath(taskName), "LastRunTime.txt");
+            return File.Exists(path) ? File.GetLastWriteTimeUtc(path) : DateTime.MinValue;
         }
 
         public bool ShouldRun(string taskName, DateTime now, int hour, int minute, DayOfWeek[] weekdays) {
@@ -146,33 +131,42 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
         public void SetLastRunTime(string taskName) {
 
-            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
+            // Make sure we have a valid directory to save to
+            EnsureTaskDirectory(taskName, out string directory);
 
-            string path = Path.Combine(pathParts);
-
-            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-            File.WriteAllText(fullPath, "Hello there!", Encoding.UTF8);
+            // Calculate the path to the fiule
+            string path = Path.Combine(directory, "LastRunTime.txt");
+            
+            // Save the file to the disk
+            File.WriteAllText(path, "Hello there!", Encoding.UTF8);
 
         }
 
         public void AppendToLog(string taskName, StringBuilder stringBuilder) {
 
-            string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "log.text" };
+            // Make sure we have a valid directory to save to
+            EnsureTaskDirectory(taskName, out string directory);
 
-            string path = Path.Combine(pathParts);
+            // Calculate the path to the fiule
+            string path = Path.Combine(directory, "Log.txt");
 
-            string fullPath = _hostingEnvironment.MapPathContentRoot(path);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-
-            File.AppendAllText(fullPath, stringBuilder.ToString(), Encoding.UTF8);
+            // Append the string builder value to the file on disk
+            File.AppendAllText(path, stringBuilder.ToString(), Encoding.UTF8);
 
         }
 
         public bool ShouldRun(string taskName, TimeSpan interval) {
             return GetLastRunTimeUtc(taskName) < DateTime.UtcNow.Subtract(interval);
+        }
+
+        private string GetTaskDirectoryPath(string taskName) {
+            var path = Path.Combine(Constants.SystemDirectories.Umbraco, "Skybrud.BorgerDk", "Tasks", taskName);
+            return _hostingEnvironment.MapPathContentRoot(path);
+        }
+
+        private void EnsureTaskDirectory(string taskName, out string path) {
+            path = GetTaskDirectoryPath(taskName);
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         }
 
     }
