@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Skybrud.Essentials.Strings;
 using Skybrud.Essentials.Strings.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
@@ -16,7 +17,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         public ImportJob Import() {
 
-            ImportJob job = new() { Name = "Importing articles from Borger.dk web service" };
+            ImportJob job = new() { Name = "Importing articles from the Borger.dk web service" };
 
             job.Start();
 
@@ -35,7 +36,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         public void WriteToLog(ImportJob job) {
 
-            string path = Path.Combine(Constants.SystemDirectories.LogFiles, "borgerdk", $"{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
+            string path = Path.Combine(Constants.SystemDirectories.LogFiles, BorgerDkPackage.Alias, $"{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
 
             string fullPath = _hostingEnvironment.MapPathContentRoot(path);
 
@@ -99,7 +100,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
                 result = GetAllArticlesDtos();
 
-                task.AppendToMessage($"Found {result.Count} articles").Completed();
+                task.AppendToMessage($"Found {result.Count} {StringUtils.ToPlural("article", result.Count)}").Completed();
 
                 return true;
 
@@ -216,8 +217,8 @@ namespace Skybrud.Umbraco.BorgerDk {
             }
 
             List<string> message = new() {
-                $"updated {updated} {(updated == 1 ? "article" : "articles")}",
-                $"skipped {skipped} {(skipped == 1 ? "article" : "articles")}"
+                $"updated {updated} {StringUtils.ToPlural("article", updated)}",
+                $"skipped {skipped} {StringUtils.ToPlural("article", skipped)}"
             };
 
 

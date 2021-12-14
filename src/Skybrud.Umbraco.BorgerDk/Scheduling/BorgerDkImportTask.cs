@@ -13,7 +13,7 @@ using Umbraco.Cms.Infrastructure.HostedServices;
 
 namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
-    public class BorgerDkRecurringHostedService : RecurringHostedServiceBase {
+    public class BorgerDkImportTask : RecurringHostedServiceBase {
         
         private readonly BorgerDkService _borgerDkService;
         private readonly BorgerDkImportTaskSettings _importSettings;
@@ -25,10 +25,8 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         private static TimeSpan HowOftenWeRepeat => TimeSpan.FromMinutes(5);
         
         private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(5);
-        
-        private const string TaskName = "BorgerDkRecurringHostedService";
 
-        public BorgerDkRecurringHostedService(
+        public BorgerDkImportTask(
             BorgerDkService borgerDkService,
             BorgerDkImportTaskSettings importSettings,
             IRuntimeState runtimeState,
@@ -65,9 +63,9 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
             StringBuilder sb = new();
             sb.AppendLine(EssentialsTime.Now.Iso8601);
 
-            if (!ShouldRun(TaskName, _importSettings.ImportInterval)) {
+            if (!ShouldRun(_importSettings.ImportInterval)) {
                 sb.AppendLine("> Exiting as not supposed to run yet.");
-                AppendToLog(TaskName, sb);
+                AppendToLog(sb);
                 return Task.CompletedTask;
             }
 
@@ -78,11 +76,11 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
             if (_importSettings.LogResults) _borgerDkService.WriteToLog(result);
 
             // Make sure we save that the job has run
-            SetLastRunTime(TaskName);
+            SetLastRunTime();
 
             // Write a bit to the log
             sb.AppendLine($"> Import finished with status {result.Status}.");
-            AppendToLog(TaskName, sb);
+            AppendToLog(sb);
 
             return Task.CompletedTask;
 
@@ -117,19 +115,25 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
         }
 
-        public bool ShouldRun(string taskName, int hour) {
+        public bool ShouldRun(int hour) {
+            string taskName = GetType().FullName;
             return ShouldRun(taskName, DateTime.Now, hour, 0, null);
         }
 
-        public bool ShouldRun(string taskName, int hour, int minute) {
+        public bool ShouldRun(int hour, int minute) {
+            string taskName = GetType().FullName;
             return ShouldRun(taskName, DateTime.Now, hour, minute, null);
         }
 
-        public bool ShouldRun(string taskName, int hour, int minute, params DayOfWeek[] weekdays) {
+        public bool ShouldRun(int hour, int minute, params DayOfWeek[] weekdays) {
+            string taskName = GetType().FullName;
             return ShouldRun(taskName, DateTime.Now, hour, minute, weekdays);
         }
 
-        public void SetLastRunTime(string taskName) {
+        public void SetLastRunTime() {
+
+            // Get the task name
+            string taskName = GetType().FullName;
 
             // Make sure we have a valid directory to save to
             EnsureTaskDirectory(taskName, out string directory);
@@ -142,7 +146,10 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
         }
 
-        public void AppendToLog(string taskName, StringBuilder stringBuilder) {
+        public void AppendToLog(StringBuilder stringBuilder) {
+
+            // Get the task name
+            string taskName = GetType().FullName;
 
             // Make sure we have a valid directory to save to
             EnsureTaskDirectory(taskName, out string directory);
@@ -155,12 +162,13 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
         }
 
-        public bool ShouldRun(string taskName, TimeSpan interval) {
+        public bool ShouldRun(TimeSpan interval) {
+            string taskName = GetType().FullName;
             return GetLastRunTimeUtc(taskName) < DateTime.UtcNow.Subtract(interval);
         }
 
         private string GetTaskDirectoryPath(string taskName) {
-            var path = Path.Combine(Constants.SystemDirectories.Umbraco, "Skybrud.BorgerDk", "Tasks", taskName);
+            string path = Path.Combine(Constants.SystemDirectories.Umbraco, BorgerDkPackage.Alias, "Tasks", taskName);
             return _hostingEnvironment.MapPathContentRoot(path);
         }
 
