@@ -31,7 +31,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         /// <param name="propertyType">The property type.</param>
         /// <returns>A value indicating whether the converter supports a property type.</returns>
         public override bool IsConverter(IPublishedPropertyType propertyType) {
-            return propertyType.EditorAlias == "Skybrud.BorgerDk";
+            return propertyType.EditorAlias == BorgerDkPropertyEditor.EditorAlias;
         }
         
         public override object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object source, bool preview) {

@@ -3,8 +3,14 @@ using Umbraco.Cms.Core.PropertyEditors;
 
 namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
-    [DataEditor("Skybrud.BorgerDk", EditorType.PropertyValue, "Skybrud Borger.dk", "/App_Plugins/Skybrud.BorgerDk/Views/Editor.html", ValueType = ValueTypes.Json, Group = "Skybrud.dk", Icon = "icon-school")]
+    [DataEditor(EditorAlias, EditorType.PropertyValue, "Skybrud Borger.dk", EditorView, ValueType = ValueTypes.Json, Group = "Skybrud.dk", Icon = EditorIcon)]
     public class BorgerDkPropertyEditor : DataEditor {
+
+        internal const string EditorAlias = "Skybrud.BorgerDk";
+
+        internal const string EditorIcon = "icon-school color-skybrud";
+
+        internal const string EditorView = "/App_Plugins/Skybrud.BorgerDk/Views/Editor.html";
         
         private readonly IIOHelper _iOHelper;
 
