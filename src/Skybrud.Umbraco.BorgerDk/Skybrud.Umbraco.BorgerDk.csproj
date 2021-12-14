@@ -19,9 +19,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
-    <PackageReference Include="Umbraco.Cms.Core" Version="9.1.2" />
-    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.1.2" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.1.2" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="9.0.0" />
+    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="../build/Skybrud.Umbraco.BorgerDk.targets" PackagePath="build\Skybrud.Umbraco.BorgerDk.targets" />
