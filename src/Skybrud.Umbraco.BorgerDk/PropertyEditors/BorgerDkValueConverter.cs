@@ -14,12 +14,12 @@ using Umbraco.Extensions;
 namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
     public class BorgerDkValueConverter : PropertyValueConverterBase {
+        
         private readonly IScopeProvider _scopeProvider;
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment)
-        {
+        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
@@ -36,23 +36,20 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         
         public override object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object source, bool preview) {
 
-            if (source is string str && str.DetectIsJson()) {
+            // Return null right away if "source" isn't a valid JSON string
+            if (source is not string str || !str.DetectIsJson()) return null;
 
-                JObject json = JsonUtils.ParseJsonObject(str);
+            JObject json = JsonUtils.ParseJsonObject(str);
 
-                string domain = json.GetString("domain");
+            string domain = json.GetString("domain");
 
-                int municipality = json.GetInt32("municipality");
+            int municipality = json.GetInt32("municipality");
 
-                int articleId = json.GetInt32("id");
+            int articleId = json.GetInt32("id");
 
-                BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment).GetArticleById(domain, municipality, articleId);
+            BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment).GetArticleById(domain, municipality, articleId);
 
-                return new BorgerDkPublishedArticle(json, article);
-
-            }
-
-            return null;
+            return new BorgerDkPublishedArticle(json, article);
 
         }
         
