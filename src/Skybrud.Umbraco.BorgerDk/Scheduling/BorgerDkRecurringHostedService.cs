@@ -21,41 +21,33 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         private readonly BorgerDkImportTaskSettings _importSettings;
 
         private readonly IRuntimeState _runtimeState;
-        private readonly IContentService _contentService;
         private readonly IServerRoleAccessor _serverRoleAccessor;
-        private readonly ILogger<BorgerDkRecurringHostedService> _logger;
-        private readonly IScopeProvider _scopeProvider;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         private static TimeSpan HowOftenWeRepeat => TimeSpan.FromMinutes(5);
+        
         private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(5);
+        
         private const string TaskName = "BorgerDkRecurringHostedService";
 
         public BorgerDkRecurringHostedService(
             BorgerDkService borgerDkService,
             BorgerDkImportTaskSettings importSettings,
             IRuntimeState runtimeState,
-            IContentService contentService,
             IServerRoleAccessor serverRoleAccessor,
-            ILogger<BorgerDkRecurringHostedService> logger,
-            IScopeProvider scopeProvider,
             IHostingEnvironment hostingEnvironment)
             : base(HowOftenWeRepeat, DelayBeforeWeStart) {
             _borgerDkService = borgerDkService;
             _importSettings = importSettings;
             _runtimeState = runtimeState;
-            _contentService = contentService;
             _serverRoleAccessor = serverRoleAccessor;
-            _logger = logger;
-            _scopeProvider = scopeProvider;
             _hostingEnvironment = hostingEnvironment;
         }
 
         public override Task PerformExecuteAsync(object state) {
+            
             // Don't do anything if the site is not running.
-            if (_runtimeState.Level != RuntimeLevel.Run) {
-                return Task.CompletedTask;
-            }            
+            if (_runtimeState.Level != RuntimeLevel.Run) return Task.CompletedTask;
 
             switch (_importSettings.State) {
 
@@ -66,7 +58,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
                 // If the state is set to "Auto", we check the current role of the server
                 case BorgerDkImportTaskState.Auto: {
                     ServerRole role = _serverRoleAccessor.CurrentServerRole;
-                    if (role == ServerRole.Subscriber || role == ServerRole.Unknown) return Task.CompletedTask;
+                    if (role is ServerRole.Subscriber or ServerRole.Unknown) return Task.CompletedTask;
                     break;
                 }
 
@@ -95,6 +87,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
             AppendToLog(TaskName, sb);
 
             return Task.CompletedTask;
+
         }
 
         public DateTime GetLastRunTime(string taskName) {
@@ -106,9 +99,11 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
             string fullPath = _hostingEnvironment.MapPathContentRoot(path);
 
             return File.Exists(fullPath) ? File.GetLastWriteTime(fullPath) : DateTime.MinValue;
+
         }
         
         public DateTime GetLastRunTimeUtc(string taskName) {
+
             string[] pathParts = new string[] { Constants.SystemDirectories.Umbraco, "borgerdk", "tasks", $"{taskName}", "lastruntime.text" };
 
             string path = Path.Combine(pathParts);
@@ -179,5 +174,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         public bool ShouldRun(string taskName, TimeSpan interval) {
             return GetLastRunTimeUtc(taskName) < DateTime.UtcNow.Subtract(interval);
         }
+
     }
+
 }

@@ -1,11 +1,11 @@
 ﻿using System;
+using Umbraco.Cms.Core.Sync;
 
 namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
     /// <summary>
     /// Class representing the settings for the Borger.dk import task. The class is registered with the DI container as
-    /// a singleton, and the settings can thereby be modified by a component - ideally running before
-    /// <see cref="BorgerDkTaskRunnerComponent"/>.
+    /// a singleton, and the settings can thereby be modified by a component.
     /// </summary>
     public class BorgerDkImportTaskSettings {
 
@@ -18,7 +18,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         ///
         /// The default value is <see cref="BorgerDkImportTaskState.Auto"/> where the task will check the role of the
         /// server to find out whether the task should run or not. If the server role is either
-        /// <see cref="ServerRole.Replica"/> or <see cref="ServerRole.Unknown"/>, the task will not run.
+        /// <see cref="ServerRole.Subscriber"/> or <see cref="ServerRole.Unknown"/>, the task will not run.
         /// </summary>
         public BorgerDkImportTaskState State { get; set; }
 

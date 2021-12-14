@@ -8,15 +8,16 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
 
-namespace Skybrud.Umbraco.BorgerDk.Migration {
+namespace Skybrud.Umbraco.BorgerDk.Notifications.Handlers {
 
-    public class BorgerDkMigration : INotificationHandler<UmbracoApplicationStartingNotification> {
+    public class BorgerDkMigrationHandler : INotificationHandler<UmbracoApplicationStartingNotification> {
+        
         private readonly IScopeProvider _scopeProvider;
         private readonly IMigrationPlanExecutor _migrationPlanExecutor;
         private readonly IKeyValueService _keyValueService;
         private readonly IRuntimeState _runtimeState;
 
-        public BorgerDkMigration(IScopeProvider scopeProvider,
+        public BorgerDkMigrationHandler(IScopeProvider scopeProvider,
             IMigrationPlanExecutor migrationPlanExecutor,
             IKeyValueService keyValueService,
             IRuntimeState runtimeState) {
@@ -27,9 +28,8 @@ namespace Skybrud.Umbraco.BorgerDk.Migration {
         }
 
         public void Handle(UmbracoApplicationStartingNotification notification) {
-            if (_runtimeState.Level < RuntimeLevel.Run) {
-                return;
-            }
+            
+            if (_runtimeState.Level < RuntimeLevel.Run)  return;
 
             MigrationPlan plan = new("Skybrud.Umbraco.BorgerDk");
 
@@ -37,6 +37,9 @@ namespace Skybrud.Umbraco.BorgerDk.Migration {
 
             Upgrader upgrader = new(plan);
             upgrader.Execute(_migrationPlanExecutor, _scopeProvider, _keyValueService);
+
         }
+
     }
+
 }
