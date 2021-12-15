@@ -20,11 +20,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         
         private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(5);
 
-        public BorgerDkImportTask(
-            BorgerDkService borgerDkService,
-            BorgerDkImportTaskSettings importSettings,
-            TaskHelper taskHelper)
-            : base(HowOftenWeRepeat, DelayBeforeWeStart) {
+        public BorgerDkImportTask(BorgerDkService borgerDkService, BorgerDkImportTaskSettings importSettings, TaskHelper taskHelper) : base(HowOftenWeRepeat, DelayBeforeWeStart) {
             _borgerDkService = borgerDkService;
             _importSettings = importSettings;
             _taskHelper = taskHelper;
@@ -43,7 +39,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
                 // If the state is set to "Auto", we check the current role of the server
                 case BorgerDkImportTaskState.Auto: {
-                    ServerRole role = _taskHelper.CurrentServerRole;
+                    ServerRole role = _taskHelper.ServerRole;
                     if (role is ServerRole.Subscriber or ServerRole.Unknown) return Task.CompletedTask;
                     break;
                 }
