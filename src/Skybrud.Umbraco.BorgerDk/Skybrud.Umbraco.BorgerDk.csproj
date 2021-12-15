@@ -3,7 +3,7 @@
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>4.0.0-beta00003</Version>
+    <Version>4.0.0-beta001</Version>
     <Authors>Anders Bjerner</Authors>
     <Company>Limbo</Company>
     <Copyright>Copyright © 2021</Copyright>
