@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Skybrud.Essentials.Umbraco" Version="1.0.0-alpha001" />
     <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
+    <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
     <PackageReference Include="Umbraco.Cms.Core" Version="9.0.0" />
     <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.0.0" />
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />

@@ -147,7 +147,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
             }
 
             // Make sure to import/update the article
-            _borgerdk.Import(article);
+            _borgerdk.Import(article, useCache: true);
 
 
 

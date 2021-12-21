@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Skybrud.Umbraco.BorgerDk.Caching;
+using Skybrud.Umbraco.BorgerDk.Options;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -25,6 +26,7 @@ namespace Skybrud.Umbraco.BorgerDk.Composers
             builder.Services.AddTransient<BorgerDkService>();
             builder.Services.AddSingleton<BorgerDkImportTaskSettings>();
             builder.Services.AddHostedService<BorgerDkImportTask>();
+            builder.Services.AddSingleton<BorgerDkCachingService>();
         }
     }
 

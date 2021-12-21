@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NPoco;
 using Skybrud.Integrations.BorgerDk;
+using Skybrud.Umbraco.BorgerDk.Caching;
 using Skybrud.Umbraco.BorgerDk.Models;
 using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Scoping;
@@ -18,13 +20,18 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly BorgerDkCachingService borgerDkCachingService;
 
         #region Constructors
 
-        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment) {
+        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCachingService borgerDkCachingService) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
+            this.borgerDkCachingService = borgerDkCachingService;
+
+            // Makes sure the cache is created
+            GetAllArticlesDtos();
         }
 
         #endregion
@@ -32,6 +39,9 @@ namespace Skybrud.Umbraco.BorgerDk {
         private BorgerDkArticleDto GetArticleDtoById(string domain, int municipality, int articleId) {
 
             string id = domain + "_" + municipality + "_" + articleId;
+
+            var cachedResult = borgerDkCachingService.GetArticle(id);
+            if(cachedResult != null) return cachedResult;
 
             using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
 
@@ -43,8 +53,12 @@ namespace Skybrud.Umbraco.BorgerDk {
                         .From<BorgerDkArticleDto>()
                         .Where<BorgerDkArticleDto>(x => x.Id == id);
 
+                    var dto = scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
+
+                    borgerDkCachingService.CacheArticle(dto);
+
                     // Make the call to the database
-                    return scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
+                    return dto;
 
                 } catch (Exception ex) {
                     _logger.LogError(ex, "Unable to insert redirect into the database");
@@ -59,6 +73,9 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             string id = domain + "_" + municipality + "_" + articleId;
 
+            var cachedResult = borgerDkCachingService.GetArticle(id);
+            if (cachedResult != null) return cachedResult?.Meta;
+
             using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
 
                 try {
@@ -72,22 +89,26 @@ namespace Skybrud.Umbraco.BorgerDk {
                     // Make the call to the database
                     var dto = scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
 
+                    borgerDkCachingService.CacheArticle(dto);
+
                     // Return the article
                     return dto?.Meta;
 
                 } catch (Exception ex) {
-                    _logger.LogError(ex, "Unable to insert redirect into the database");
-                    throw new Exception("Unable to insert redirect into the database", ex);
-                }
+                    _logger.LogError(ex, "Unable to get article from the database");
+                    throw new Exception("Unable to get article from the database", ex);
+}
+}
+}
 
-            }
-
-        }
-
-        public void Import(BorgerDkArticle article) {
+        public void Import(BorgerDkArticle article, bool useCache = false) {
 
             // Get the article DTO (if it already exists in the db)
             BorgerDkArticleDto dto = GetArticleDtoById(article.Domain, article.Municipality.Code, article.Id);
+
+            if (useCache && dto != null) {
+                return;
+            }
 
             using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
 
@@ -99,6 +120,8 @@ namespace Skybrud.Umbraco.BorgerDk {
                     dto.UpdateDate = DateTime.UtcNow;
                     scope.Database.Update(dto);
                 }
+
+                borgerDkCachingService.CacheArticle(dto);
                 
                 // TODO: notify other servers about the change
 
@@ -117,8 +140,12 @@ namespace Skybrud.Umbraco.BorgerDk {
                         .Select<BorgerDkArticleDto>()
                         .From<BorgerDkArticleDto>();
 
+                    var dtos = scope.Database.Fetch<BorgerDkArticleDto>(sql);
+
+                    borgerDkCachingService.CacheArticles(dtos);
+
                     // Make the call to the database
-                    return scope.Database.Fetch<BorgerDkArticleDto>(sql).Select(x => new BorgerDkArticleModel(x)).ToArray();
+                    return dtos.Select(x => new BorgerDkArticleModel(x)).ToArray();
 
                 } catch (Exception ex) {
                     _logger.LogError(ex, "Unable to fetch all articles from the database.");
@@ -127,6 +154,16 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             }
 
+        }
+
+        public BorgerDkArticleModel[] GetAllArticles(bool usecache) {
+
+            if(usecache) {
+                var cachedResult = borgerDkCachingService.GetAllArticles();
+                if (cachedResult != null) return cachedResult.Select(x => new BorgerDkArticleModel(x)).ToArray();
+            }
+
+            return GetAllArticles();
         }
 
         public List<BorgerDkArticleDto> GetAllArticlesDtos() {
@@ -140,8 +177,12 @@ namespace Skybrud.Umbraco.BorgerDk {
                         .Select<BorgerDkArticleDto>()
                         .From<BorgerDkArticleDto>();
 
+                    var dtos = scope.Database.Fetch<BorgerDkArticleDto>(sql);
+
+                    borgerDkCachingService.CacheArticles(dtos);
+
                     // Make the call to the database
-                    return scope.Database.Fetch<BorgerDkArticleDto>(sql);
+                    return dtos;
 
                 } catch (Exception ex) {
                     _logger.LogError(ex, "Unable to fetch all articles from the database.");
@@ -150,6 +191,16 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             }
 
+        }
+
+        public List<BorgerDkArticleDto> GetAllArticlesDtos(bool usecache) {
+
+            if (usecache) {
+                var cachedResult = borgerDkCachingService.GetAllArticles();
+                if (cachedResult != null) return cachedResult.ToList();
+            }
+
+            return GetAllArticlesDtos();
         }
 
     }
