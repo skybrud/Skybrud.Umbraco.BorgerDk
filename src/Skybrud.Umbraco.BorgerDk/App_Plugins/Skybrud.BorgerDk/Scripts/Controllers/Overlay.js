@@ -103,7 +103,7 @@
 
         article.elements.forEach(function (el) {
 
-            if ($scope.model.config.allowedTypes.length === 0 || $scope.model.config.allowedTypes.indexOf(el.id) >= 0) {
+            if (!$scope.model.config.allowedTypes || $scope.model.config.allowedTypes && ($scope.model.config.allowedTypes.length === 0 || $scope.model.config.allowedTypes.indexOf(el.id) >= 0)) {
 
                 $scope.elements.push(el);
 
