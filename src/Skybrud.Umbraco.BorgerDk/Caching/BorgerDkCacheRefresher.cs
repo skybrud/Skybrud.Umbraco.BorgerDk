@@ -1,6 +1,7 @@
 ﻿using Skybrud.Umbraco.BorgerDk.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Sync;
@@ -21,7 +22,6 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
         public override string Name => "BorgerDkCacheRefresher";
 
         public override void RefreshAll() {
-            borgerDkCachingService.RefreshCache();
             base.RefreshAll();
         }
 
@@ -36,13 +36,11 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
         }
 
         public void Refresh(BorgerDkArticleDto dto) {
-            borgerDkCachingService.CacheArticle(dto);
             OnCacheUpdated(NotificationFactory.Create<BorgerDkCacheRefresherNotification>(dto, MessageType.RefreshByInstance));
         }
 
         public void RefreshAll(List<BorgerDkArticleDto> dtos) {
-            borgerDkCachingService.CacheArticles(dtos);
-            OnCacheUpdated(NotificationFactory.Create<BorgerDkCacheRefresherNotification>(dtos, MessageType.RefreshAll));
+            OnCacheUpdated(NotificationFactory.Create<BorgerDkCacheRefresherNotification>(dtos.Select(x => x.Id), MessageType.RefreshAll));
         }
     }
 

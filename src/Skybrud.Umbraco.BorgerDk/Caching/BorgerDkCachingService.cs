@@ -59,6 +59,12 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
             }
         }
 
+        public void CacheArticles(IEnumerable<string> article) {
+            foreach (var item in article) {
+                CacheArticle(item);
+            }
+        }
+
         public void RefreshCache() {
             using (IScope scope = scopeProvider.CreateScope(autoComplete: true)) {
 

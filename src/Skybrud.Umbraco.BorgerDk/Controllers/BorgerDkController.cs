@@ -148,7 +148,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
             string refreshArticle = _httpContextAccessor.HttpContext.Request.Query["refresh"];
 
             // Make sure to import/update the article
-            if(refreshArticle == "true") {
+            if (refreshArticle == "true") {
                 _borgerdk.Import(article);
             } else {
                 _borgerdk.Import(article, useCache: true);
