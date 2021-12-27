@@ -1,8 +1,8 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NPoco;
 using Skybrud.Essentials.Json;
 using Skybrud.Integrations.BorgerDk;
+using System;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace Skybrud.Umbraco.BorgerDk.Models {

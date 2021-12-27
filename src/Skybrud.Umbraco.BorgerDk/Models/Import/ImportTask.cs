@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Skybrud.Essentials.Json.Converters.Time;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Newtonsoft.Json;
-using Skybrud.Essentials.Json.Converters.Time;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Import {
-    
+
     public class ImportTask {
 
         [JsonIgnore]

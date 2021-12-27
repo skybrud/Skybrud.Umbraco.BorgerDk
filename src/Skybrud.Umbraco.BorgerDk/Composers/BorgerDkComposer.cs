@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Skybrud.Umbraco.BorgerDk.Caching;
-using Skybrud.Umbraco.BorgerDk.Options;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 
-namespace Skybrud.Umbraco.BorgerDk.Composers
-{
+namespace Skybrud.Umbraco.BorgerDk.Composers {
 
     public class BorgerDkComposer : IComposer {
 

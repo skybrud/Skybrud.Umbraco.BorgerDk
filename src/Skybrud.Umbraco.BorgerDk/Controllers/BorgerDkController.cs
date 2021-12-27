@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +8,11 @@ using Skybrud.Integrations.BorgerDk.Elements;
 using Skybrud.Integrations.BorgerDk.Exceptions;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Web.BackOffice.Controllers;
@@ -20,12 +20,10 @@ using Umbraco.Cms.Web.Common.Attributes;
 
 // ReSharper disable AssignNullToNotNullAttribute
 
-namespace Skybrud.Umbraco.BorgerDk.Controllers
-{
+namespace Skybrud.Umbraco.BorgerDk.Controllers {
 
     [PluginController("Skybrud")]
-    public class BorgerDkController : UmbracoAuthorizedApiController
-    {
+    public class BorgerDkController : UmbracoAuthorizedApiController {
 
         private readonly IServerRoleAccessor _serverRoleAccessor;
         private readonly BorgerDkService _borgerdk;
@@ -46,10 +44,10 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
         [HttpGet]
         [AllowAnonymous]
         public object Import() {
-            
+
             // Run a new import
             ImportJob result = _borgerdk.Import();
-            
+
             // Save the result to the disk
             _borgerdk.WriteToLog(result);
 
@@ -84,7 +82,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
 
             BorgerDkHttpService service = new(endpoint);
 
-            IEnumerable<BorgerDkArticleDescription> articles = (IEnumerable<BorgerDkArticleDescription>) _runtimeCache.Get("BorgerDkArticleList:" + endpoint.Domain, () => service.GetArticleList(), TimeSpan.FromMinutes(10));
+            IEnumerable<BorgerDkArticleDescription> articles = (IEnumerable<BorgerDkArticleDescription>)_runtimeCache.Get("BorgerDkArticleList:" + endpoint.Domain, () => service.GetArticleList(), TimeSpan.FromMinutes(10));
 
             if (string.IsNullOrWhiteSpace(text) == false) {
                 articles = articles.Where(x => x.Title.Contains(text, StringComparison.CurrentCultureIgnoreCase));
@@ -146,8 +144,15 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
             }
 
+
+            string refreshArticle = _httpContextAccessor.HttpContext.Request.Query["refresh"];
+
             // Make sure to import/update the article
-            _borgerdk.Import(article, useCache: true);
+            if(refreshArticle == "true") {
+                _borgerdk.Import(article);
+            } else {
+                _borgerdk.Import(article, useCache: true);
+            }
 
 
 

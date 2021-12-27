@@ -2,7 +2,7 @@
 using Umbraco.Cms.Core.PropertyEditors;
 
 namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
-    
+
     public class BorgerDkConfiguration {
 
         [ConfigurationField("municipality", "Municipality", "/App_Plugins/Skybrud.BorgerDk/Views/Municipality.html", Description = "Select the municipality to be used.")]

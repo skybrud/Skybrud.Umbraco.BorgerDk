@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Skybrud.Essentials.Json.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Integrations.BorgerDk.Elements;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Published {
 

@@ -35,7 +35,7 @@
 
     };
 
-    function update() {
+    function update(usecache = true) {
 
         // Clear the article if the user entered a URL from another article
         if ($scope.article && $scope.article.url && $scope.article.url !== $scope.model.value.url) {
@@ -48,6 +48,10 @@
             url: $scope.model.value.url,
             municipality: $scope.model.config.municipality
         };
+
+        if (!usecache) {
+            params.push({ key: "refresh", value: "true" });
+        }
 
         $http.get("/umbraco/backoffice/Skybrud/BorgerDk/GetArticleByUrl", { params: params }).then(function (r) {
 
@@ -126,8 +130,8 @@
         setArticle(null);
     };
 
-    $scope.reload = function() {
-        if ($scope.model.value && $scope.model.value.url) update();
+    $scope.reload = function () {
+        if ($scope.model.value && $scope.model.value.url) update(false);
     };
 
     $scope.toggle = function(element) {

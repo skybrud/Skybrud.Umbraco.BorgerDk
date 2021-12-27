@@ -11,7 +11,7 @@ using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
 namespace Skybrud.Umbraco.BorgerDk.Notifications.Handlers {
 
     public class BorgerDkMigrationHandler : INotificationHandler<UmbracoApplicationStartingNotification> {
-        
+
         private readonly IScopeProvider _scopeProvider;
         private readonly IMigrationPlanExecutor _migrationPlanExecutor;
         private readonly IKeyValueService _keyValueService;
@@ -28,8 +28,8 @@ namespace Skybrud.Umbraco.BorgerDk.Notifications.Handlers {
         }
 
         public void Handle(UmbracoApplicationStartingNotification notification) {
-            
-            if (_runtimeState.Level < RuntimeLevel.Run)  return;
+
+            if (_runtimeState.Level < RuntimeLevel.Run) return;
 
             MigrationPlan plan = new("Skybrud.Umbraco.BorgerDk");
 

@@ -1,6 +1,6 @@
-﻿using System.Text.RegularExpressions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Skybrud.Integrations.BorgerDk.Elements;
+using System.Text.RegularExpressions;
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Published {
 
