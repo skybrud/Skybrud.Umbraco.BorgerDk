@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using NPoco;
+using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,14 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
         private readonly IScopeProvider _scopeProvider;
         private readonly ILogger<BorgerDkCache> _logger;
         private readonly MemoryCacheEntryOptions _cacheEntryOptions;
+        private readonly BorgerDkService _borgerDkService;
         public List<string> CurrentlyCachedIds { get; set; } = new List<string>();
 
-        public BorgerDkCache(IMemoryCache cache, IScopeProvider scopeProvider, ILogger<BorgerDkCache> logger) {
+        public BorgerDkCache(IMemoryCache cache, IScopeProvider scopeProvider, ILogger<BorgerDkCache> logger, BorgerDkService borgerDkService) {
             _cache = cache;
             _scopeProvider = scopeProvider;
             _logger = logger;
+            _borgerDkService = borgerDkService;
             _cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromDays(1));
 
@@ -98,20 +101,52 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
             ClearArticles(CurrentlyCachedIds);
         }
 
-        public BorgerDkArticleDto GetArticle(string articleId) {
-            return _cache.Get<BorgerDkArticleDto>(articleId);
+        public BorgerDkArticleDto GetArticleDtoById(string domain, int municipality, int articleId) {
+            string id = domain + "_" + municipality + "_" + articleId;
+            var cacheResult = GetArticleCacheDtoById(id);
+            if (cacheResult != null) {
+                return cacheResult;
+            }
+            return _borgerDkService.GetArticleDtoById(domain, municipality, articleId);
+
         }
 
-        public IEnumerable<BorgerDkArticleDto> GetArticles(IEnumerable<string> articleId) {
+        private BorgerDkArticleDto GetArticleCacheDtoById(string id) {
+            var cacheResult = _cache.Get<BorgerDkArticleDto>(id);
+            if (cacheResult != null) {
+                return cacheResult;
+            }
+            return null;
+        }
+
+        public BorgerDkArticle GetArticleById(string domain, int municipality, int articleId) {
+            string id = domain + "_" + municipality + "_" + articleId;
+            var cacheResult = GetArticleCacheById(id);
+            if (cacheResult != null) {
+                return cacheResult;
+            }
+            return _borgerDkService.GetArticleById(domain, municipality, articleId);
+
+        }
+
+        private BorgerDkArticle GetArticleCacheById(string id) {
+            var cacheResult = _cache.Get<BorgerDkArticleDto>(id);
+            if (cacheResult != null) {
+                return cacheResult?.Meta;
+            }
+            return null;
+        }
+
+        public IEnumerable<BorgerDkArticleDto> GetCachedArticlesByIds(IEnumerable<string> articleId) {
             var list = new List<BorgerDkArticleDto>();
             foreach (var item in articleId) {
-                list.Add(GetArticle(item));
+                list.Add(GetArticleCacheDtoById(item));
             }
             return list;
         }
 
-        public IEnumerable<BorgerDkArticleDto> GetAllArticles() {
-            return GetArticles(CurrentlyCachedIds);
+        public IEnumerable<BorgerDkArticleDto> GetAllCachedArticles() {
+            return GetCachedArticlesByIds(CurrentlyCachedIds);
         }
     }
 }
