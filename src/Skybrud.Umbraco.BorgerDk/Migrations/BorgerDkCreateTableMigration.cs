@@ -8,7 +8,10 @@ namespace Skybrud.Umbraco.BorgerDk.Migrations {
         public BorgerDkCreateTableMigration(IMigrationContext context) : base(context) { }
 
         protected override void Migrate() {
-            if (TableExists(BorgerDkArticleSchema.TableName)) return;
+            if (TableExists(BorgerDkArticleSchema.TableName)) {
+                return;
+            }
+
             Create.Table<BorgerDkArticleSchema>().Do();
         }
 

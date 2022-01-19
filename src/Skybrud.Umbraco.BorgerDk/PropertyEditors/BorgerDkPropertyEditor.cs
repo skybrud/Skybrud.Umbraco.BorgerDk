@@ -3,14 +3,14 @@ using Umbraco.Cms.Core.PropertyEditors;
 
 namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
-    [DataEditor(EditorAlias, EditorType.PropertyValue, "Skybrud Borger.dk", EditorView, ValueType = ValueTypes.Json, Group = "Skybrud.dk", Icon = EditorIcon)]
+    [DataEditor(_editorAlias, EditorType.PropertyValue, "Skybrud Borger.dk", _editorView, ValueType = ValueTypes.Json, Group = "Skybrud.dk", Icon = _editorIcon)]
     public class BorgerDkPropertyEditor : DataEditor {
 
-        internal const string EditorAlias = "Skybrud.BorgerDk";
+        internal const string _editorAlias = "Skybrud.BorgerDk";
 
-        internal const string EditorIcon = "icon-school color-skybrud";
+        internal const string _editorIcon = "icon-school color-skybrud";
 
-        internal const string EditorView = "/App_Plugins/Skybrud.BorgerDk/Views/Editor.html";
+        internal const string _editorView = "/App_Plugins/Skybrud.BorgerDk/Views/Editor.html";
 
         private readonly IIOHelper _iOHelper;
 
@@ -19,8 +19,9 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         }
 
         /// <inheritdoc />
-        protected override IConfigurationEditor CreateConfigurationEditor() => new BorgerDkConfigurationEditor(_iOHelper);
-
+        protected override IConfigurationEditor CreateConfigurationEditor() {
+            return new BorgerDkConfigurationEditor(_iOHelper);
+        }
     }
 
 }

@@ -29,7 +29,9 @@ namespace Skybrud.Umbraco.BorgerDk.Notifications.Handlers {
 
         public void Handle(UmbracoApplicationStartingNotification notification) {
 
-            if (_runtimeState.Level < RuntimeLevel.Run) return;
+            if (_runtimeState.Level < RuntimeLevel.Run) {
+                return;
+            }
 
             MigrationPlan plan = new("Skybrud.Umbraco.BorgerDk");
 

@@ -6,25 +6,25 @@ using Umbraco.Cms.Core.Sync;
 namespace Skybrud.Umbraco.BorgerDk.Caching {
 
     public class BorgerDkCacheRefresherNotificationHandler : INotificationHandler<BorgerDkCacheRefresherNotification> {
-        private readonly BorgerDkCachingService borgerDkCachingService;
+        private readonly BorgerDkCachingService _borgerDkCachingService;
 
         public BorgerDkCacheRefresherNotificationHandler(BorgerDkCachingService borgerDkCachingService) {
-            this.borgerDkCachingService = borgerDkCachingService;
+            _borgerDkCachingService = borgerDkCachingService;
         }
 
         public void Handle(BorgerDkCacheRefresherNotification notification) {
             if (notification.MessageType == MessageType.RefreshAll) {
                 if (notification.MessageObject.ToString() == string.Empty) {
-                    borgerDkCachingService.RefreshCache();
+                    _borgerDkCachingService.RefreshCache();
                 } else {
-                    borgerDkCachingService.CacheArticles(notification.MessageObject as IEnumerable<string>);
+                    _borgerDkCachingService.CacheArticles(notification.MessageObject as IEnumerable<string>);
                 }
             } else if (notification.MessageType == MessageType.RefreshById) {
-                borgerDkCachingService.CacheArticle(notification.MessageObject as string);
+                _borgerDkCachingService.CacheArticle(notification.MessageObject as string);
             } else if (notification.MessageType == MessageType.RemoveById) {
-                borgerDkCachingService.ClearArticle(notification.MessageObject as string);
+                _borgerDkCachingService.ClearArticle(notification.MessageObject as string);
             } else if (notification.MessageType == MessageType.RefreshByInstance) {
-                borgerDkCachingService.CacheArticle(notification.MessageObject as BorgerDkArticleDto);
+                _borgerDkCachingService.CacheArticle(notification.MessageObject as BorgerDkArticleDto);
             }
         }
     }

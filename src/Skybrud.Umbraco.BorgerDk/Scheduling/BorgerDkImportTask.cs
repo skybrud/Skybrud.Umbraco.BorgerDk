@@ -29,7 +29,9 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         public override Task PerformExecuteAsync(object state) {
 
             // Don't do anything if the site is not running.
-            if (_taskHelper.RuntimeLevel != RuntimeLevel.Run) return Task.CompletedTask;
+            if (_taskHelper.RuntimeLevel != RuntimeLevel.Run) {
+                return Task.CompletedTask;
+            }
 
             switch (_importSettings.State) {
 
@@ -40,7 +42,10 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
                 // If the state is set to "Auto", we check the current role of the server
                 case BorgerDkImportTaskState.Auto: {
                         ServerRole role = _taskHelper.ServerRole;
-                        if (role is ServerRole.Subscriber or ServerRole.Unknown) return Task.CompletedTask;
+                        if (role is ServerRole.Subscriber or ServerRole.Unknown) {
+                            return Task.CompletedTask;
+                        }
+
                         break;
                     }
 
@@ -59,7 +64,9 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
             ImportJob result = _borgerDkService.Import();
 
             // Save the result to the disk
-            if (_importSettings.LogResults) _borgerDkService.WriteToLog(result);
+            if (_importSettings.LogResults) {
+                _borgerDkService.WriteToLog(result);
+            }
 
             // Make sure we save that the job has run
             _taskHelper.SetLastRunTime(this);

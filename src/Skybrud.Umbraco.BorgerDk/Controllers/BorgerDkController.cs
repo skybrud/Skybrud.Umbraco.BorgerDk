@@ -82,7 +82,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
 
             BorgerDkHttpService service = new(endpoint);
 
-            IEnumerable<BorgerDkArticleDescription> articles = (IEnumerable<BorgerDkArticleDescription>)_runtimeCache.Get("BorgerDkArticleList:" + endpoint.Domain, () => service.GetArticleList(), TimeSpan.FromMinutes(10));
+            IEnumerable<BorgerDkArticleDescription> articles = (IEnumerable<BorgerDkArticleDescription>) _runtimeCache.Get("BorgerDkArticleList:" + endpoint.Domain, () => service.GetArticleList(), TimeSpan.FromMinutes(10));
 
             if (string.IsNullOrWhiteSpace(text) == false) {
                 articles = articles.Where(x => x.Title.Contains(text, StringComparison.CurrentCultureIgnoreCase));
@@ -109,7 +109,9 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
 
             // Get the endpoint from the domain/URL
             BorgerDkEndpoint endpoint = BorgerDkEndpoint.GetFromUrl(url);
-            if (endpoint == null) return BadRequest("Den angivne URL er ikke gyldig.");
+            if (endpoint == null) {
+                return BadRequest("Den angivne URL er ikke gyldig.");
+            }
 
             // Parse the municipality code
             if (BorgerDkMunicipality.TryGetFromCode(municipalityCode, out BorgerDkMunicipality municipality) == false) {
@@ -124,15 +126,15 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
             try {
                 item = http.GetArticleIdFromUrl(url);
             } catch (BorgerDkNotFoundException) {
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Artiklen med den angivne URL blev ikke fundet.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Artiklen med den angivne URL blev ikke fundet.");
             } catch (BorgerDkNotExportableException) {
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Artiklen med den angivne URL er låst for eksport fra Borger.dk.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Artiklen med den angivne URL er låst for eksport fra Borger.dk.");
             } catch (BorgerDkException ex) {
                 _logger.LogError(ex, ex.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int) HttpStatusCode.InternalServerError, ex.Message);
             } catch (Exception ex) {
                 _logger.LogError(ex, "Der skete en fejl i kaldet til Borger.dk.");
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
             }
 
             // Get the article via the web service
@@ -141,7 +143,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
                 article = http.GetArticleFromId(item.Id, municipality);
             } catch (Exception ex) {
                 _logger.LogError(ex, "Der skete en fejl i kaldet til Borger.dk.");
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
             }
 
 

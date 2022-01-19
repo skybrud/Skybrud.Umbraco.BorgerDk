@@ -21,8 +21,13 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             job.Start();
 
-            if (!FetchArticleList(job, out Dictionary<string, BorgerDkArticleDescription> fromApi)) return job;
-            if (!FetchArticlesFromDatabase(job, out List<BorgerDkArticleDto> fromDb)) return job;
+            if (!FetchArticleList(job, out Dictionary<string, BorgerDkArticleDescription> fromApi)) {
+                return job;
+            }
+
+            if (!FetchArticlesFromDatabase(job, out List<BorgerDkArticleDto> fromDb)) {
+                return job;
+            }
 
             SynchronizeArticles(job, fromApi, fromDb);
 
@@ -84,7 +89,9 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             }
 
-            if (task.Status != ImportStatus.Failed) task.Completed();
+            if (task.Status != ImportStatus.Failed) {
+                task.Completed();
+            }
 
             return task.Status != ImportStatus.Failed;
 

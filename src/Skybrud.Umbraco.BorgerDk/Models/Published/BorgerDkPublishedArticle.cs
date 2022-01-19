@@ -49,7 +49,9 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Published {
 
             Article = article;
 
-            if (article == null) return;
+            if (article == null) {
+                return;
+            }
 
             Title = article.Title;
             Header = article.Header;
@@ -74,8 +76,9 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Published {
 
                     }
 
-                    if (micros.Any()) elements.Add(new BorgerDkPublishedBlockElement(micros));
-
+                    if (micros.Any()) {
+                        elements.Add(new BorgerDkPublishedBlockElement(micros));
+                    }
                 }
 
             }

@@ -19,15 +19,15 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         private readonly IScopeProvider _scopeProvider;
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly BorgerDkCachingService borgerDkCachingService;
-        private readonly BorgerDkCacheRefresher borgerDkCacheRefresher;
+        private readonly BorgerDkCachingService _borgerDkCachingService;
+        private readonly BorgerDkCacheRefresher _borgerDkCacheRefresher;
 
         public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCachingService borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
-            this.borgerDkCachingService = borgerDkCachingService;
-            this.borgerDkCacheRefresher = borgerDkCacheRefresher;
+            _borgerDkCachingService = borgerDkCachingService;
+            _borgerDkCacheRefresher = borgerDkCacheRefresher;
         }
 
         /// <summary>
@@ -36,13 +36,15 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         /// <param name="propertyType">The property type.</param>
         /// <returns>A value indicating whether the converter supports a property type.</returns>
         public override bool IsConverter(IPublishedPropertyType propertyType) {
-            return propertyType.EditorAlias == BorgerDkPropertyEditor.EditorAlias;
+            return propertyType.EditorAlias == BorgerDkPropertyEditor._editorAlias;
         }
 
         public override object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object source, bool preview) {
 
             // Return null right away if "source" isn't a valid JSON string
-            if (source is not string str || !str.DetectIsJson()) return null;
+            if (source is not string str || !str.DetectIsJson()) {
+                return null;
+            }
 
             JObject json = JsonUtils.ParseJsonObject(str);
 
@@ -52,7 +54,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
             int articleId = json.GetInt32("id");
 
-            BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment, borgerDkCachingService, borgerDkCacheRefresher).GetArticleById(domain, municipality, articleId);
+            BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment, _borgerDkCachingService, _borgerDkCacheRefresher).GetArticleById(domain, municipality, articleId);
 
             return new BorgerDkPublishedArticle(json, article);
 

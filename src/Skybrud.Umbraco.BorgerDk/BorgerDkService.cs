@@ -19,8 +19,8 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly BorgerDkCachingService borgerDkCachingService;
-        private readonly BorgerDkCacheRefresher borgerDkCacheRefresher;
+        private readonly BorgerDkCachingService _borgerDkCachingService;
+        private readonly BorgerDkCacheRefresher _borgerDkCacheRefresher;
 
         #region Constructors
 
@@ -28,8 +28,8 @@ namespace Skybrud.Umbraco.BorgerDk {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
-            this.borgerDkCachingService = borgerDkCachingService;
-            this.borgerDkCacheRefresher = borgerDkCacheRefresher;
+            _borgerDkCachingService = borgerDkCachingService;
+            _borgerDkCacheRefresher = borgerDkCacheRefresher;
         }
 
         #endregion
@@ -38,30 +38,29 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             string id = domain + "_" + municipality + "_" + articleId;
 
-            var cachedResult = borgerDkCachingService.GetArticle(id);
-            if (cachedResult != null) return cachedResult;
+            var cachedResult = _borgerDkCachingService.GetArticle(id);
+            if (cachedResult != null) {
+                return cachedResult;
+            }
 
-            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
+            using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
+            try {
 
-                try {
+                // Generate the SQL for the query
+                Sql<ISqlContext> sql = scope.SqlContext.Sql()
+                    .Select<BorgerDkArticleDto>()
+                    .From<BorgerDkArticleDto>()
+                    .Where<BorgerDkArticleDto>(x => x.Id == id);
 
-                    // Generate the SQL for the query
-                    Sql<ISqlContext> sql = scope.SqlContext.Sql()
-                        .Select<BorgerDkArticleDto>()
-                        .From<BorgerDkArticleDto>()
-                        .Where<BorgerDkArticleDto>(x => x.Id == id);
+                var dto = scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
 
-                    var dto = scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
+                _borgerDkCacheRefresher.Refresh(dto);
 
-                    borgerDkCacheRefresher.Refresh(dto);
+                return dto;
 
-                    return dto;
-
-                } catch (Exception ex) {
-                    _logger.LogError(ex, "Unable to insert redirect into the database");
-                    throw new Exception("Unable to insert redirect into the database", ex);
-                }
-
+            } catch (Exception ex) {
+                _logger.LogError(ex, "Unable to insert redirect into the database");
+                throw new Exception("Unable to insert redirect into the database", ex);
             }
 
         }
@@ -70,31 +69,31 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             string id = domain + "_" + municipality + "_" + articleId;
 
-            var cachedResult = borgerDkCachingService.GetArticle(id);
-            if (cachedResult != null) return cachedResult?.Meta;
+            var cachedResult = _borgerDkCachingService.GetArticle(id);
+            if (cachedResult != null) {
+                return cachedResult?.Meta;
+            }
 
-            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
+            using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
+            try {
 
-                try {
+                // Generate the SQL for the query
+                Sql<ISqlContext> sql = scope.SqlContext.Sql()
+                    .Select<BorgerDkArticleDto>()
+                    .From<BorgerDkArticleDto>()
+                    .Where<BorgerDkArticleDto>(x => x.Id == id);
 
-                    // Generate the SQL for the query
-                    Sql<ISqlContext> sql = scope.SqlContext.Sql()
-                        .Select<BorgerDkArticleDto>()
-                        .From<BorgerDkArticleDto>()
-                        .Where<BorgerDkArticleDto>(x => x.Id == id);
+                // Make the call to the database
+                var dto = scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
 
-                    // Make the call to the database
-                    var dto = scope.Database.FirstOrDefault<BorgerDkArticleDto>(sql);
+                _borgerDkCacheRefresher.Refresh(dto);
 
-                    borgerDkCacheRefresher.Refresh(dto);
+                // Return the article
+                return dto?.Meta;
 
-                    // Return the article
-                    return dto?.Meta;
-
-                } catch (Exception ex) {
-                    _logger.LogError(ex, "Unable to get article from the database");
-                    throw new Exception("Unable to get article from the database", ex);
-                }
+            } catch (Exception ex) {
+                _logger.LogError(ex, "Unable to get article from the database");
+                throw new Exception("Unable to get article from the database", ex);
             }
         }
 
@@ -107,45 +106,40 @@ namespace Skybrud.Umbraco.BorgerDk {
                 return;
             }
 
-            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
-
-                if (dto == null) {
-                    dto = new BorgerDkArticleDto(article);
-                    scope.Database.Insert(dto);
-                } else {
-                    dto.Meta = article;
-                    dto.UpdateDate = DateTime.UtcNow;
-                    scope.Database.Update(dto);
-                }
-
-                borgerDkCacheRefresher.Refresh(dto);
+            using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
+            if (dto == null) {
+                dto = new BorgerDkArticleDto(article);
+                scope.Database.Insert(dto);
+            } else {
+                dto.Meta = article;
+                dto.UpdateDate = DateTime.UtcNow;
+                scope.Database.Update(dto);
             }
+
+            _borgerDkCacheRefresher.Refresh(dto);
 
         }
 
         public BorgerDkArticleModel[] GetAllArticles() {
 
-            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
+            using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
+            try {
 
-                try {
+                // Generate the SQL for the query
+                Sql<ISqlContext> sql = scope.SqlContext.Sql()
+                    .Select<BorgerDkArticleDto>()
+                    .From<BorgerDkArticleDto>();
 
-                    // Generate the SQL for the query
-                    Sql<ISqlContext> sql = scope.SqlContext.Sql()
-                        .Select<BorgerDkArticleDto>()
-                        .From<BorgerDkArticleDto>();
+                var dtos = scope.Database.Fetch<BorgerDkArticleDto>(sql);
 
-                    var dtos = scope.Database.Fetch<BorgerDkArticleDto>(sql);
+                _borgerDkCacheRefresher.RefreshAll(dtos);
 
-                    borgerDkCacheRefresher.RefreshAll(dtos);
+                // Make the call to the database
+                return dtos.Select(x => new BorgerDkArticleModel(x)).ToArray();
 
-                    // Make the call to the database
-                    return dtos.Select(x => new BorgerDkArticleModel(x)).ToArray();
-
-                } catch (Exception ex) {
-                    _logger.LogError(ex, "Unable to fetch all articles from the database.");
-                    throw new Exception("Unable to fetch all articles from the database.", ex);
-                }
-
+            } catch (Exception ex) {
+                _logger.LogError(ex, "Unable to fetch all articles from the database.");
+                throw new Exception("Unable to fetch all articles from the database.", ex);
             }
 
         }
@@ -153,8 +147,10 @@ namespace Skybrud.Umbraco.BorgerDk {
         public BorgerDkArticleModel[] GetAllArticles(bool usecache) {
 
             if (usecache) {
-                var cachedResult = borgerDkCachingService.GetAllArticles();
-                if (cachedResult != null) return cachedResult.Select(x => new BorgerDkArticleModel(x)).ToArray();
+                var cachedResult = _borgerDkCachingService.GetAllArticles();
+                if (cachedResult != null) {
+                    return cachedResult.Select(x => new BorgerDkArticleModel(x)).ToArray();
+                }
             }
 
             return GetAllArticles();
@@ -162,27 +158,24 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         public List<BorgerDkArticleDto> GetAllArticlesDtos() {
 
-            using (IScope scope = _scopeProvider.CreateScope(autoComplete: true)) {
+            using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
+            try {
 
-                try {
+                // Generate the SQL for the query
+                Sql<ISqlContext> sql = scope.SqlContext.Sql()
+                    .Select<BorgerDkArticleDto>()
+                    .From<BorgerDkArticleDto>();
 
-                    // Generate the SQL for the query
-                    Sql<ISqlContext> sql = scope.SqlContext.Sql()
-                        .Select<BorgerDkArticleDto>()
-                        .From<BorgerDkArticleDto>();
+                var dtos = scope.Database.Fetch<BorgerDkArticleDto>(sql);
 
-                    var dtos = scope.Database.Fetch<BorgerDkArticleDto>(sql);
+                _borgerDkCacheRefresher.RefreshAll(dtos);
 
-                    borgerDkCacheRefresher.RefreshAll(dtos);
+                // Make the call to the database
+                return dtos;
 
-                    // Make the call to the database
-                    return dtos;
-
-                } catch (Exception ex) {
-                    _logger.LogError(ex, "Unable to fetch all articles from the database.");
-                    throw new Exception("Unable to fetch all articles from the database.", ex);
-                }
-
+            } catch (Exception ex) {
+                _logger.LogError(ex, "Unable to fetch all articles from the database.");
+                throw new Exception("Unable to fetch all articles from the database.", ex);
             }
 
         }
@@ -190,8 +183,10 @@ namespace Skybrud.Umbraco.BorgerDk {
         public List<BorgerDkArticleDto> GetAllArticlesDtos(bool usecache) {
 
             if (usecache) {
-                var cachedResult = borgerDkCachingService.GetAllArticles();
-                if (cachedResult != null) return cachedResult.ToList();
+                var cachedResult = _borgerDkCachingService.GetAllArticles();
+                if (cachedResult != null) {
+                    return cachedResult.ToList();
+                }
             }
 
             return GetAllArticlesDtos();

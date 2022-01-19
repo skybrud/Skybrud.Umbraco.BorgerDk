@@ -28,7 +28,10 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Import {
         }
 
         public static T StopWithTime<T>(this T item) where T : ImportTask {
-            if (item.Stopwatch == null) return item;
+            if (item.Stopwatch == null) {
+                return item;
+            }
+
             item.Stopwatch.Stop();
             item.Duration = item.Stopwatch.Elapsed;
             return item;
