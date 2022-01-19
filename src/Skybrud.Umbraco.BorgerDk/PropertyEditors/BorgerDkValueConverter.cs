@@ -19,14 +19,14 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         private readonly IScopeProvider _scopeProvider;
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly BorgerDkCache _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCache;
         private readonly BorgerDkCacheRefresher _borgerDkCacheRefresher;
 
-        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCache borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
+        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCache borgerDkCache, BorgerDkCacheRefresher borgerDkCacheRefresher) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
-            _borgerDkCachingService = borgerDkCachingService;
+            _borgerDkCache = borgerDkCache;
             _borgerDkCacheRefresher = borgerDkCacheRefresher;
         }
 
@@ -54,7 +54,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
             int articleId = json.GetInt32("id");
 
-            BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment, _borgerDkCachingService, _borgerDkCacheRefresher).GetArticleById(domain, municipality, articleId);
+            BorgerDkArticle article = new BorgerDkService(_scopeProvider, _logger, _hostingEnvironment, _borgerDkCache, _borgerDkCacheRefresher).GetArticleById(domain, municipality, articleId);
 
             return new BorgerDkPublishedArticle(json, article);
 

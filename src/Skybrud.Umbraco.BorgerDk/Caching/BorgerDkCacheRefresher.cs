@@ -10,12 +10,12 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
 
     public class BorgerDkCacheRefresher : CacheRefresherBase<BorgerDkCacheRefresherNotification> {
 
-        public BorgerDkCacheRefresher(AppCaches appCaches, IEventAggregator eventAggregator, ICacheRefresherNotificationFactory factory, BorgerDkCache borgerDkCachingService) : base(appCaches, eventAggregator, factory) {
-            _borgerDkCachingService = borgerDkCachingService;
+        public BorgerDkCacheRefresher(AppCaches appCaches, IEventAggregator eventAggregator, ICacheRefresherNotificationFactory factory, BorgerDkCache borgerDkCache) : base(appCaches, eventAggregator, factory) {
+            _borgerDkCache = borgerDkCache;
         }
 
         public static readonly Guid _uniqueId = Guid.Parse("1F28970B-746B-451A-9B57-7A8AD394F1C8");
-        private readonly BorgerDkCache _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCache;
 
         public override Guid RefresherUniqueId => _uniqueId;
 
@@ -26,12 +26,12 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
         }
 
         public void Remove(string id) {
-            _borgerDkCachingService.ClearArticle(id);
+            _borgerDkCache.ClearArticle(id);
             OnCacheUpdated(NotificationFactory.Create<BorgerDkCacheRefresherNotification>(id, MessageType.RemoveById));
         }
 
         public void Refresh(string id) {
-            _borgerDkCachingService.CacheArticle(id);
+            _borgerDkCache.CacheArticle(id);
             OnCacheUpdated(NotificationFactory.Create<BorgerDkCacheRefresherNotification>(id, MessageType.RefreshById));
         }
 

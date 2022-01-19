@@ -19,28 +19,30 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly BorgerDkCache _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCache;
         private readonly BorgerDkCacheRefresher _borgerDkCacheRefresher;
 
         #region Constructors
 
-        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCache borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
+        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCache borgerDkCache, BorgerDkCacheRefresher borgerDkCacheRefresher) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
-            _borgerDkCachingService = borgerDkCachingService;
+            _borgerDkCache = borgerDkCache;
             _borgerDkCacheRefresher = borgerDkCacheRefresher;
         }
 
         #endregion
 
-        private BorgerDkArticleDto GetArticleDtoById(string domain, int municipality, int articleId) {
+        private BorgerDkArticleDto GetArticleDtoById(string domain, int municipality, int articleId, bool useCache) {
 
             string id = domain + "_" + municipality + "_" + articleId;
 
-            var cachedResult = _borgerDkCachingService.GetArticle(id);
-            if (cachedResult != null) {
-                return cachedResult;
+            if (useCache) {
+                var cachedResult = _borgerDkCache.GetArticle(id);
+                if (cachedResult != null) {
+                    return cachedResult;
+                }
             }
 
             using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
@@ -69,7 +71,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
             string id = domain + "_" + municipality + "_" + articleId;
 
-            var cachedResult = _borgerDkCachingService.GetArticle(id);
+            var cachedResult = _borgerDkCache.GetArticle(id);
             if (cachedResult != null) {
                 return cachedResult?.Meta;
             }
@@ -100,7 +102,7 @@ namespace Skybrud.Umbraco.BorgerDk {
         public void Import(BorgerDkArticle article) {
 
             // Get the article DTO (if it already exists in the db)
-            BorgerDkArticleDto dto = GetArticleDtoById(article.Domain, article.Municipality.Code, article.Id);
+            BorgerDkArticleDto dto = GetArticleDtoById(article.Domain, article.Municipality.Code, article.Id, false);
 
             using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
             if (dto == null) {
@@ -143,7 +145,7 @@ namespace Skybrud.Umbraco.BorgerDk {
         public BorgerDkArticleModel[] GetAllArticles(bool usecache) {
 
             if (usecache) {
-                var cachedResult = _borgerDkCachingService.GetAllArticles();
+                var cachedResult = _borgerDkCache.GetAllArticles();
                 if (cachedResult != null) {
                     return cachedResult.Select(x => new BorgerDkArticleModel(x)).ToArray();
                 }
@@ -179,7 +181,7 @@ namespace Skybrud.Umbraco.BorgerDk {
         public List<BorgerDkArticleDto> GetAllArticlesDtos(bool usecache) {
 
             if (usecache) {
-                var cachedResult = _borgerDkCachingService.GetAllArticles();
+                var cachedResult = _borgerDkCache.GetAllArticles();
                 if (cachedResult != null) {
                     return cachedResult.ToList();
                 }
