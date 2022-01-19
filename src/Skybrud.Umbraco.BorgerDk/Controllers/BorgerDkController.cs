@@ -153,7 +153,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
             if (refreshArticle == "true") {
                 _borgerdk.Import(article);
             } else {
-                _borgerdk.Import(article, useCache: true);
+                _borgerdk.Import(article);
             }
 
 

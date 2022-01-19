@@ -19,12 +19,12 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly BorgerDkCachingService _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCachingService;
         private readonly BorgerDkCacheRefresher _borgerDkCacheRefresher;
 
         #region Constructors
 
-        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCachingService borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
+        public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCache borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
@@ -97,14 +97,10 @@ namespace Skybrud.Umbraco.BorgerDk {
             }
         }
 
-        public void Import(BorgerDkArticle article, bool useCache = false) {
+        public void Import(BorgerDkArticle article) {
 
             // Get the article DTO (if it already exists in the db)
             BorgerDkArticleDto dto = GetArticleDtoById(article.Domain, article.Municipality.Code, article.Id);
-
-            if (useCache && dto != null) {
-                return;
-            }
 
             using IScope scope = _scopeProvider.CreateScope(autoComplete: true);
             if (dto == null) {

@@ -19,10 +19,10 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         private readonly IScopeProvider _scopeProvider;
         private readonly ILogger<BorgerDkService> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly BorgerDkCachingService _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCachingService;
         private readonly BorgerDkCacheRefresher _borgerDkCacheRefresher;
 
-        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCachingService borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
+        public BorgerDkValueConverter(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, BorgerDkCache borgerDkCachingService, BorgerDkCacheRefresher borgerDkCacheRefresher) {
             _scopeProvider = scopeProvider;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;

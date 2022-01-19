@@ -10,12 +10,12 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
 
     public class BorgerDkCacheRefresher : CacheRefresherBase<BorgerDkCacheRefresherNotification> {
 
-        public BorgerDkCacheRefresher(AppCaches appCaches, IEventAggregator eventAggregator, ICacheRefresherNotificationFactory factory, BorgerDkCachingService borgerDkCachingService) : base(appCaches, eventAggregator, factory) {
+        public BorgerDkCacheRefresher(AppCaches appCaches, IEventAggregator eventAggregator, ICacheRefresherNotificationFactory factory, BorgerDkCache borgerDkCachingService) : base(appCaches, eventAggregator, factory) {
             _borgerDkCachingService = borgerDkCachingService;
         }
 
         public static readonly Guid _uniqueId = Guid.Parse("1F28970B-746B-451A-9B57-7A8AD394F1C8");
-        private readonly BorgerDkCachingService _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCachingService;
 
         public override Guid RefresherUniqueId => _uniqueId;
 

@@ -6,9 +6,9 @@ using Umbraco.Cms.Core.Sync;
 namespace Skybrud.Umbraco.BorgerDk.Caching {
 
     public class BorgerDkCacheRefresherNotificationHandler : INotificationHandler<BorgerDkCacheRefresherNotification> {
-        private readonly BorgerDkCachingService _borgerDkCachingService;
+        private readonly BorgerDkCache _borgerDkCachingService;
 
-        public BorgerDkCacheRefresherNotificationHandler(BorgerDkCachingService borgerDkCachingService) {
+        public BorgerDkCacheRefresherNotificationHandler(BorgerDkCache borgerDkCachingService) {
             _borgerDkCachingService = borgerDkCachingService;
         }
 

@@ -11,14 +11,14 @@ using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Extensions;
 
 namespace Skybrud.Umbraco.BorgerDk.Caching {
-    public class BorgerDkCachingService {
+    public class BorgerDkCache {
         private readonly IMemoryCache _cache;
         private readonly IScopeProvider _scopeProvider;
-        private readonly ILogger<BorgerDkCachingService> _logger;
+        private readonly ILogger<BorgerDkCache> _logger;
         private readonly MemoryCacheEntryOptions _cacheEntryOptions;
         public List<string> CurrentlyCachedIds { get; set; } = new List<string>();
 
-        public BorgerDkCachingService(IMemoryCache cache, IScopeProvider scopeProvider, ILogger<BorgerDkCachingService> logger) {
+        public BorgerDkCache(IMemoryCache cache, IScopeProvider scopeProvider, ILogger<BorgerDkCache> logger) {
             _cache = cache;
             _scopeProvider = scopeProvider;
             _logger = logger;

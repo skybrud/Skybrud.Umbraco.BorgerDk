@@ -24,7 +24,7 @@ namespace Skybrud.Umbraco.BorgerDk.Composers {
             builder.Services.AddTransient<BorgerDkService>();
             builder.Services.AddSingleton<BorgerDkImportTaskSettings>();
             builder.Services.AddHostedService<BorgerDkImportTask>();
-            builder.Services.AddSingleton<BorgerDkCachingService>();
+            builder.Services.AddSingleton<BorgerDkCache>();
         }
     }
 
