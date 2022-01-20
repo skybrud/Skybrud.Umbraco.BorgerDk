@@ -1,31 +1,34 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Skybrud.Umbraco.BorgerDk.Caching;
+using Skybrud.Umbraco.BorgerDk.Notifications;
+using Skybrud.Umbraco.BorgerDk.Notifications.Handlers;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 
-namespace Skybrud.Umbraco.BorgerDk.Composers
-{
+namespace Skybrud.Umbraco.BorgerDk.Composers {
 
     public class BorgerDkComposer : IComposer {
 
-        //public void Compose(Composition composition) {
-
-        //    composition.RegisterUnique(CreateSearchIndexCacheRefresher);
-
-
-        //}
-
-        //private static BorgerDkCacheRefresher CreateSearchIndexCacheRefresher(IFactory factory) {
-        //    var appCaches = factory.GetInstance<AppCaches>();
-        //    return new BorgerDkCacheRefresher(appCaches);
-        //}
-
         public void Compose(IUmbracoBuilder builder) {
-            builder.Services.AddTransient<BorgerDkService>();
-            builder.Services.AddSingleton<BorgerDkImportTaskSettings>();
-            builder.Services.AddHostedService<BorgerDkImportTask>();
+            
+            // Register services
+            builder.Services
+                .AddTransient<BorgerDkService>()
+                .AddSingleton<BorgerDkCache>()
+                .AddSingleton<BorgerDkImportTaskSettings>()
+                .AddHostedService<BorgerDkImportTask>();
+
+            // Register cache refresher
+            builder.CacheRefreshers()
+                .Add<BorgerDkCacheRefresher>();
+
+            // Register notifications
+            builder
+                .AddNotificationHandler<BorgerDkArticleUpdatedNotification, BorgerDkArticleUpdatedHandler>();
+
         }
+
     }
 
 }
