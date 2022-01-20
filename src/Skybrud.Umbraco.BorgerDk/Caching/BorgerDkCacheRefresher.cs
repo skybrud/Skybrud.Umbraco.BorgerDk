@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Notifications;
-using System;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Serialization;
@@ -22,7 +22,7 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
         /// Gets the unique ID associated with this cache refresher.
         /// </summary>
         public static readonly Guid UniqueId = Guid.Parse("1F28970B-746B-451A-9B57-7A8AD394F1C8");
-        
+
         /// <summary>
         /// Gets the unique ID associated with this cache refresher.
         /// </summary>
@@ -37,7 +37,7 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
 
         #region Constructors
 
-        public BorgerDkCacheRefresher(AppCaches appCaches, 
+        public BorgerDkCacheRefresher(AppCaches appCaches,
             IJsonSerializer jsonSerializer,
             IEventAggregator eventAggregator,
             ICacheRefresherNotificationFactory factory,
@@ -57,7 +57,7 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
         }
 
         public override void Refresh(string json) {
-            
+
             Console.WriteLine("Refresh(string)");
 
             var payloads = Deserialize(json);
@@ -86,7 +86,7 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
             Console.WriteLine("Refresh(payloads)");
 
             foreach (JsonPayload payload in payloads) {
-                
+
                 Console.WriteLine(payload.GetType());
                 Console.WriteLine(JObject.FromObject(payload));
 
@@ -106,15 +106,15 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
             }
 
         }
-        
+
         #endregion
-        
+
         public class JsonPayload {
-            
+
             public string Domain { get; }
-            
+
             public int Municipality { get; }
-            
+
             public int ArticleId { get; }
 
             public JsonPayload(string domain, int municipality, int articleId) {

@@ -2,7 +2,7 @@
 using Umbraco.Cms.Core.Notifications;
 
 namespace Skybrud.Umbraco.BorgerDk.Notifications {
-    
+
     /// <summary>
     /// Class representing a notification about an updated article.
     /// </summary>

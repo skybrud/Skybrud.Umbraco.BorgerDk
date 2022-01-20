@@ -4,7 +4,7 @@ using System.Diagnostics;
 // ReSharper disable once InconsistentNaming
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Import {
-    
+
     public static class ImportExtensions {
 
         public static T Start<T>(this T item) where T : ImportTask {
@@ -12,7 +12,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Import {
             return item;
         }
 
-        public static T AppendToMessage<T>(this T item ,string line) where T : ImportTask {
+        public static T AppendToMessage<T>(this T item, string line) where T : ImportTask {
             item.Message = (item.Message + Environment.NewLine + line).Trim();
             return item;
         }
@@ -26,7 +26,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Import {
             item.Stopwatch?.Stop();
             return item;
         }
-        
+
         public static T StopWithTime<T>(this T item) where T : ImportTask {
             if (item.Stopwatch == null) return item;
             item.Stopwatch.Stop();
@@ -82,14 +82,14 @@ namespace Skybrud.Umbraco.BorgerDk.Models.Import {
         }
 
         public static T Aborted<T>(this T item) where T : ImportTask {
-            
+
             if (item.Stopwatch != null) {
                 item.Stopwatch.Stop();
                 item.Duration = item.Duration;
             }
 
             item.Status = ImportStatus.Aborted;
-            
+
             return item;
 
         }

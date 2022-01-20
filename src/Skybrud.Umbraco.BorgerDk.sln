@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skybrud.Umbraco.BorgerDk", "Skybrud.Umbraco.BorgerDk\Skybrud.Umbraco.BorgerDk.csproj", "{C2DCFD6F-4E63-4F17-B2E3-8635B3DC2167}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFAB9CF9-4B7B-4F27-8BC0-07387910C04B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D25683F-4CDC-4E44-B9A3-422C533A323E}"
 	ProjectSection(SolutionItems) = preProject
-		WebEssentials-Settings.json = WebEssentials-Settings.json
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global

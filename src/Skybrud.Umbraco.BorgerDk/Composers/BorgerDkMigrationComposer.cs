@@ -1,4 +1,4 @@
-﻿using Skybrud.Umbraco.BorgerDk.Notifications.Handlers;
+﻿using Skybrud.Umbraco.BorgerDk.NotificationHandlers;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;

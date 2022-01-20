@@ -1,8 +1,7 @@
 ﻿using Skybrud.Essentials.Time;
 using Skybrud.Integrations.BorgerDk;
 
-namespace Skybrud.Umbraco.BorgerDk.Models
-{
+namespace Skybrud.Umbraco.BorgerDk.Models {
 
     public class BorgerDkArticleModel {
 
@@ -21,7 +20,7 @@ namespace Skybrud.Umbraco.BorgerDk.Models
         public EssentialsTime PublishDate { get; set; }
 
         public EssentialsTime UpdateDate { get; set; }
-        
+
         public BorgerDkArticleModel(BorgerDkArticleDto dto) {
             Dto = dto;
             Municipality = BorgerDkMunicipality.GetFromCode(dto.Municipality);

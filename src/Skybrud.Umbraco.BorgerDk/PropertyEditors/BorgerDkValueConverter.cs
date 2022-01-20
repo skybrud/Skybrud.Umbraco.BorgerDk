@@ -12,9 +12,9 @@ using Umbraco.Extensions;
 namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
     public class BorgerDkValueConverter : PropertyValueConverterBase {
-        
+
         private readonly BorgerDkCache _borgerDkCache;
-        
+
         public BorgerDkValueConverter(BorgerDkCache borgerDkCache) {
             _borgerDkCache = borgerDkCache;
         }
@@ -27,7 +27,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         public override bool IsConverter(IPublishedPropertyType propertyType) {
             return propertyType.EditorAlias == BorgerDkPropertyEditor.EditorAlias;
         }
-        
+
         public override object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object source, bool preview) {
 
             // Return null right away if "source" isn't a valid JSON string
@@ -46,7 +46,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
             return new BorgerDkPublishedArticle(json, article);
 
         }
-        
+
         public override object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview) {
             return inter;
         }
@@ -58,7 +58,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) {
             return PropertyCacheLevel.Snapshot;
         }
-        
+
         /// <summary>
         /// Gets the type of values returned by the converter.
         /// </summary>

@@ -1,9 +1,9 @@
-﻿using Skybrud.Essentials.Time;
-using Skybrud.Essentials.Umbraco.Scheduling;
-using Skybrud.Umbraco.BorgerDk.Models.Import;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Skybrud.Essentials.Time;
+using Skybrud.Essentials.Umbraco.Scheduling;
+using Skybrud.Umbraco.BorgerDk.Models.Import;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Infrastructure.HostedServices;
@@ -11,13 +11,13 @@ using Umbraco.Cms.Infrastructure.HostedServices;
 namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
     public class BorgerDkImportTask : RecurringHostedServiceBase {
-        
+
         private readonly BorgerDkService _borgerDkService;
         private readonly BorgerDkImportTaskSettings _importSettings;
         private readonly TaskHelper _taskHelper;
 
         private static TimeSpan HowOftenWeRepeat => TimeSpan.FromMinutes(5);
-        
+
         private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(5);
 
         public BorgerDkImportTask(BorgerDkService borgerDkService, BorgerDkImportTaskSettings importSettings, TaskHelper taskHelper) : base(HowOftenWeRepeat, DelayBeforeWeStart) {
@@ -27,7 +27,7 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
         }
 
         public override Task PerformExecuteAsync(object state) {
-            
+
             // Don't do anything if the site is not running.
             if (_taskHelper.RuntimeLevel != RuntimeLevel.Run) return Task.CompletedTask;
 
@@ -39,10 +39,10 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
                 // If the state is set to "Auto", we check the current role of the server
                 case BorgerDkImportTaskState.Auto: {
-                    ServerRole role = _taskHelper.ServerRole;
-                    if (role is ServerRole.Subscriber or ServerRole.Unknown) return Task.CompletedTask;
-                    break;
-                }
+                        ServerRole role = _taskHelper.ServerRole;
+                        if (role is ServerRole.Subscriber or ServerRole.Unknown) return Task.CompletedTask;
+                        break;
+                    }
 
             }
 

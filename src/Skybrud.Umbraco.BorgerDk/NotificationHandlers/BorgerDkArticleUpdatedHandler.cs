@@ -1,10 +1,11 @@
-﻿using Skybrud.Umbraco.BorgerDk.Caching;
-using System;
+﻿using System;
+using Skybrud.Umbraco.BorgerDk.Caching;
+using Skybrud.Umbraco.BorgerDk.Notifications;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
 
-namespace Skybrud.Umbraco.BorgerDk.Notifications.Handlers {
-    
+namespace Skybrud.Umbraco.BorgerDk.NotificationHandlers {
+
     /// <summary>
     /// When <see cref="BorgerDkService"/> updates an article, it will broadcast this via a
     /// <see cref="BorgerDkArticleUpdatedNotification"/>.
@@ -19,8 +20,8 @@ namespace Skybrud.Umbraco.BorgerDk.Notifications.Handlers {
 
         public BorgerDkArticleUpdatedHandler(DistributedCache distributedCache) {
             _distributedCache = distributedCache;
-        } 
-        
+        }
+
         public void Handle(BorgerDkArticleUpdatedNotification notification) {
 
             Console.WriteLine("BorgerDkArticleUpdatedHandler received word that article " + BorgerDkUtils.GetUniqueId(notification.Article) + " has been updated.");

@@ -20,36 +20,32 @@ using Umbraco.Cms.Web.Common.Attributes;
 
 // ReSharper disable AssignNullToNotNullAttribute
 
-namespace Skybrud.Umbraco.BorgerDk.Controllers
-{
+namespace Skybrud.Umbraco.BorgerDk.Controllers {
 
     [PluginController("Skybrud")]
-    public class BorgerDkController : UmbracoAuthorizedApiController
-    {
+    public class BorgerDkController : UmbracoAuthorizedApiController {
 
         private readonly IServerRoleAccessor _serverRoleAccessor;
         private readonly BorgerDkService _borgerdk;
         private readonly BorgerDkImportTaskSettings _importSettings;
         private readonly ILogger<BorgerDkController> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAppPolicyCache _runtimeCache;
 
-        public BorgerDkController(IServerRoleAccessor serverRoleAccessor, BorgerDkService borgerdk, BorgerDkImportTaskSettings importSettings, ILogger<BorgerDkController> logger, IHttpContextAccessor httpContextAccessor, AppCaches appCaches) {
+        public BorgerDkController(IServerRoleAccessor serverRoleAccessor, BorgerDkService borgerdk, BorgerDkImportTaskSettings importSettings, ILogger<BorgerDkController> logger, AppCaches appCaches) {
             _serverRoleAccessor = serverRoleAccessor;
             _borgerdk = borgerdk;
             _importSettings = importSettings;
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
             _runtimeCache = appCaches.RuntimeCache;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public object Import() {
-            
+
             // Run a new import
             ImportJob result = _borgerdk.Import();
-            
+
             // Save the result to the disk
             _borgerdk.WriteToLog(result);
 
@@ -102,8 +98,8 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
 
         public object GetArticleByUrl() {
 
-            string url = _httpContextAccessor.HttpContext.Request.Query["url"];
-            int municipalityCode = StringUtils.ParseInt32(_httpContextAccessor.HttpContext.Request.Query["municipality"]);
+            string url = HttpContext.Request.Query["url"];
+            int municipalityCode = StringUtils.ParseInt32(HttpContext.Request.Query["municipality"]);
 
             if (string.IsNullOrWhiteSpace(url)) {
                 return BadRequest("Ingen URL angivet.");
@@ -126,15 +122,15 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
             try {
                 item = http.GetArticleIdFromUrl(url);
             } catch (BorgerDkNotFoundException) {
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Artiklen med den angivne URL blev ikke fundet.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Artiklen med den angivne URL blev ikke fundet.");
             } catch (BorgerDkNotExportableException) {
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Artiklen med den angivne URL er låst for eksport fra Borger.dk.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Artiklen med den angivne URL er låst for eksport fra Borger.dk.");
             } catch (BorgerDkException ex) {
                 _logger.LogError(ex, ex.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+                return StatusCode((int) HttpStatusCode.InternalServerError, ex.Message);
             } catch (Exception ex) {
                 _logger.LogError(ex, "Der skete en fejl i kaldet til Borger.dk.");
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
             }
 
             // Get the article via the web service
@@ -143,7 +139,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers
                 article = http.GetArticleFromId(item.Id, municipality);
             } catch (Exception ex) {
                 _logger.LogError(ex, "Der skete en fejl i kaldet til Borger.dk.");
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
+                return StatusCode((int) HttpStatusCode.InternalServerError, "Der skete en fejl i kaldet til Borger.dk.");
             }
 
             // Make sure to import/update the article

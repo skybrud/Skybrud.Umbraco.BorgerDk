@@ -11,7 +11,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         internal const string EditorIcon = "icon-school color-skybrud";
 
         internal const string EditorView = "/App_Plugins/Skybrud.BorgerDk/Views/Editor.html";
-        
+
         private readonly IIOHelper _iOHelper;
 
         public BorgerDkPropertyEditor(IDataValueEditorFactory dataValueEditorFactory, IIOHelper iOHelper) : base(dataValueEditorFactory) {

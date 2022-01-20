@@ -1,7 +1,7 @@
 ﻿using Skybrud.Integrations.BorgerDk;
 
 namespace Skybrud.Umbraco.BorgerDk {
-    
+
     public class BorgerDkUtils {
 
         public static string GetUniqueId(BorgerDkArticle article) {

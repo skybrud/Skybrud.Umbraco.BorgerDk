@@ -62,7 +62,7 @@ namespace Skybrud.Umbraco.BorgerDk {
 
                     // Fetch the article list
                     BorgerDkArticleDescription[] list = borgerdk.GetArticleList();
-                
+
                     // Add the articles to the dictionary
                     foreach (BorgerDkArticleDescription row in list) {
                         articles.Add(endpoint.Domain + "_" + row.Id, row);
@@ -138,7 +138,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                             BorgerDkArticle article;
 
                             try {
-                                
+
                                 // Get the endpoint from the domain
                                 BorgerDkEndpoint endpoint = BorgerDkEndpoint.GetFromDomain(dto.Domain);
 
@@ -177,7 +177,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                                 articleTask.Failed(ex);
 
                             }
-                            
+
                         } else {
 
                             articleTask
@@ -209,7 +209,7 @@ namespace Skybrud.Umbraco.BorgerDk {
                 }
 
             }
-            
+
             // Update the task
             if (task.Status == ImportStatus.Failed) {
                 task.Stop();

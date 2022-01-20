@@ -1,15 +1,15 @@
-﻿using Skybrud.Integrations.BorgerDk;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Skybrud.Integrations.BorgerDk;
 
 namespace Skybrud.Umbraco.BorgerDk.Caching {
-    
+
     /// <summary>
     /// Class representing the cache layer on top of <see cref="BorgerDkService"/>.
     /// </summary>
     public class BorgerDkCache {
-        
+
         private readonly BorgerDkService _borgerDkService;
 
         private Dictionary<string, BorgerDkArticle> _articles;
@@ -30,7 +30,7 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
                 .GetAllArticles()
                 .ToDictionary(BorgerDkUtils.GetUniqueId);
         }
-        
+
         public BorgerDkArticle GetArticleById(string domain, int municipality, int articleId) {
             return TryGetArticle(domain, municipality, articleId, out BorgerDkArticle article) ? article : null;
         }
@@ -39,7 +39,7 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
             string uniqueId = BorgerDkUtils.GetUniqueId(domain, municipality, articleId);
             return _articles.TryGetValue(uniqueId, out article);
         }
-        
+
         public void AddOrUpdate(BorgerDkArticle article) {
             if (article == null) throw new ArgumentNullException(nameof(article));
             string uniqueId = BorgerDkUtils.GetUniqueId(article);
