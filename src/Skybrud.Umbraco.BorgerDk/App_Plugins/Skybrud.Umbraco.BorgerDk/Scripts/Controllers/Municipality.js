@@ -4,8 +4,8 @@
 
     $scope.municipality = $scope.municipalities[0];
 
-    angular.forEach($scope.municipalities, function(m) {
-        if (m.id == $scope.model.value) {
+    $scope.municipalities.forEach(function(m) {
+        if (m.id === $scope.model.value) {
             $scope.municipality = m;
         }
     });

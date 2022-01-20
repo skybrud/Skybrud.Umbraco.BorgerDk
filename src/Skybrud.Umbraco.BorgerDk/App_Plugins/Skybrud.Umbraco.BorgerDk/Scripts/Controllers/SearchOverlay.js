@@ -1,4 +1,4 @@
-﻿angular.module("umbraco").controller("Skybrud.BorgerDk.SearchOverlay.Controller", function ($scope, $element, $http, $timeout, borgerDkService, editorService, notificationsService) {
+﻿angular.module("umbraco").controller("Skybrud.BorgerDk.SearchOverlay.Controller", function ($scope, $element, $http, $timeout) {
 
     // Borger.dk doesn't appear to have made any changes to the amount of
     // endpoints or their domains in years, so for now they are hardcoded here
@@ -23,11 +23,9 @@
 
     function search(text) {
 
-        var params = {};
+        const params = {};
 
         if (text) params.text = text;
-
-        console.log(text, params);
 
         $scope.loading = true;
 
@@ -37,8 +35,7 @@
         });
 
     }
-
-
+    
     search("");
 
     var wait = null;
@@ -55,14 +52,8 @@
     };
 
     $timeout(function() {
-        var input = $element[0].querySelector("input.text");
-        if (input) {
-            input.focus();
-            console.log("Successfully set focus on input");
-            console.log(input);
-        } else {
-            console.log("Input not found.");
-        }
+        const input = $element[0].querySelector("input.text");
+        if (input) input.focus();
     }, 100);
 
 });
