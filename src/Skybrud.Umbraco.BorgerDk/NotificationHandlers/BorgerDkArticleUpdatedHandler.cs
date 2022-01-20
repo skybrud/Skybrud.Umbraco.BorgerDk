@@ -4,6 +4,8 @@ using Skybrud.Umbraco.BorgerDk.Notifications;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.NotificationHandlers {
 
     /// <summary>

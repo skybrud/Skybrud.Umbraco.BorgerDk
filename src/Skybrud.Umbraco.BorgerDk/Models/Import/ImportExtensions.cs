@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 
+#pragma warning disable 1591
+
 // ReSharper disable once InconsistentNaming
 
 namespace Skybrud.Umbraco.BorgerDk.Models.Import {

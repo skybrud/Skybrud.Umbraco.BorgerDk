@@ -1,8 +1,13 @@
 ﻿using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
 
+    /// <summary>
+    /// Class representing the Borger.dk property editor.
+    /// </summary>
     [DataEditor(EditorAlias, EditorType.PropertyValue, "Skybrud Borger.dk", EditorView, ValueType = ValueTypes.Json, Group = "Skybrud.dk", Icon = EditorIcon)]
     public class BorgerDkPropertyEditor : DataEditor {
 

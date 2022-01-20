@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Skybrud.Essentials.Strings;
@@ -17,6 +16,8 @@ using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
+
+#pragma warning disable 1591
 
 // ReSharper disable AssignNullToNotNullAttribute
 

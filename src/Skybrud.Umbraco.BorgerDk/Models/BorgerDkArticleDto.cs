@@ -5,6 +5,8 @@ using Skybrud.Essentials.Json;
 using Skybrud.Integrations.BorgerDk;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.Models {
 
     [ExplicitColumns]

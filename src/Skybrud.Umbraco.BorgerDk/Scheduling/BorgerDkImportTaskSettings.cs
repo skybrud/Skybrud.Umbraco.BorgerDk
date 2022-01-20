@@ -37,6 +37,9 @@ namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance with <see cref="ImportInterval"/> set to 12 hours and <see cref="LogResults"/> set to <c>true</c>.
+        /// </summary>
         public BorgerDkImportTaskSettings() {
 
             ImportInterval = TimeSpan.FromHours(12);

@@ -6,6 +6,8 @@ using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Serialization;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.Caching {
 
     /// <summary>
@@ -37,6 +39,9 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance based on the specified DI dependencies.
+        /// </summary>
         public BorgerDkCacheRefresher(AppCaches appCaches,
             IJsonSerializer jsonSerializer,
             IEventAggregator eventAggregator,
@@ -51,11 +56,13 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
 
         #region Member methods
 
+        /// <inheritdoc/>
         public override void RefreshAll() {
             Console.WriteLine("RefreshAll()");
             _borgerDkCache.RefreshAll();
         }
-
+        
+        /// <inheritdoc/>
         public override void Refresh(string json) {
 
             Console.WriteLine("Refresh(string)");
@@ -80,7 +87,8 @@ namespace Skybrud.Umbraco.BorgerDk.Caching {
             }
 
         }
-
+        
+        /// <inheritdoc/>
         public override void Refresh(JsonPayload[] payloads) {
 
             Console.WriteLine("Refresh(payloads)");

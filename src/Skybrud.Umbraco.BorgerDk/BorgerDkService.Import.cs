@@ -15,6 +15,12 @@ namespace Skybrud.Umbraco.BorgerDk {
 
     public partial class BorgerDkService {
 
+        /// <summary>
+        /// Starts a new import from the Borger.dk web services. The method will pull an article list of each web
+        /// service, and then only update the articles that are already in our local database, but has a newer version
+        /// in the web service.
+        /// </summary>
+        /// <returns>An instance of <see cref="ImportJob"/> representing the result of the import.</returns>
         public ImportJob Import() {
 
             ImportJob job = new() { Name = "Importing articles from the Borger.dk web service" };
@@ -34,12 +40,17 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        /// <summary>
+        /// Writes the log of the specified <paramref name="job"/> to the disk.
+        /// </summary>
+        /// <param name="job">The job.</param>
         public void WriteToLog(ImportJob job) {
 
             string path = Path.Combine(Constants.SystemDirectories.LogFiles, BorgerDkPackage.Alias, $"{DateTime.UtcNow:yyyyMMddHHmmss}.txt");
 
             string fullPath = _hostingEnvironment.MapPathContentRoot(path);
 
+            // ReSharper disable once AssignNullToNotNullAttribute
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
             File.AppendAllText(fullPath, JsonConvert.SerializeObject(job), Encoding.UTF8);
 

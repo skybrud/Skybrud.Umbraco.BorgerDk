@@ -6,6 +6,8 @@ using Skybrud.Umbraco.BorgerDk.Scheduling;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.Composers {
 
     public class BorgerDkComposer : IComposer {

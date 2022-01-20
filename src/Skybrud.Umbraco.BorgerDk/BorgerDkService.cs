@@ -14,6 +14,9 @@ using Umbraco.Extensions;
 
 namespace Skybrud.Umbraco.BorgerDk {
 
+    /// <summary>
+    /// Service layer for working with Borger.dk
+    /// </summary>
     public partial class BorgerDkService {
 
         private readonly IScopeProvider _scopeProvider;
@@ -23,6 +26,9 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance based on the specified DI dependencies.
+        /// </summary>
         public BorgerDkService(IScopeProvider scopeProvider, ILogger<BorgerDkService> logger, IHostingEnvironment hostingEnvironment, IEventAggregator eventAggregator) {
             _scopeProvider = scopeProvider;
             _logger = logger;
@@ -58,10 +64,21 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        /// <summary>
+        /// Returns the article matching the specified <paramref name="domain"/>, <paramref name="municipality"/> and <paramref name="articleId"/>.
+        /// </summary>
+        /// <param name="domain">The domain of the article.</param>
+        /// <param name="municipality">The municipality of the article.</param>
+        /// <param name="articleId">The ID of the article.</param>
+        /// <returns>An instance of <see cref="BorgerDkArticle"/>, or <c>null</c> if not found.</returns>
         public BorgerDkArticle GetArticleById(string domain, int municipality, int articleId) {
             return GetArticleDtoById(domain, municipality, articleId)?.Meta;
         }
 
+        /// <summary>
+        /// Imports the specified <paramref name="article"/> into the database.
+        /// </summary>
+        /// <param name="article">The article to be imported.</param>
         public void Import(BorgerDkArticle article) {
 
             // Get the article DTO (if it already exists in the db)
@@ -85,6 +102,10 @@ namespace Skybrud.Umbraco.BorgerDk {
 
         }
 
+        /// <summary>
+        /// Returns an array of all articles currently stored in the local database.
+        /// </summary>
+        /// <returns>An array of <see cref="BorgerDkArticle"/>.</returns>
         public BorgerDkArticle[] GetAllArticles() {
             return GetAllArticlesDtos().Select(x => x.Meta).ToArray();
         }

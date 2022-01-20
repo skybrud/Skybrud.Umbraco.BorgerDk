@@ -1,6 +1,8 @@
 ﻿using Skybrud.Umbraco.BorgerDk.Models;
 using Umbraco.Cms.Infrastructure.Migrations;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.Migrations {
 
     public class BorgerDkCreateTableMigration : MigrationBase {

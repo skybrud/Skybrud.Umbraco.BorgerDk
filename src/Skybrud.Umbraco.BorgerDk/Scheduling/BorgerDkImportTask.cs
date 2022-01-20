@@ -8,6 +8,8 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Sync;
 using Umbraco.Cms.Infrastructure.HostedServices;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.Scheduling {
 
     public class BorgerDkImportTask : RecurringHostedServiceBase {

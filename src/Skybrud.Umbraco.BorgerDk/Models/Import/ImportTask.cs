@@ -4,6 +4,8 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using Skybrud.Essentials.Json.Converters.Time;
 
+#pragma warning disable 1591
+
 namespace Skybrud.Umbraco.BorgerDk.Models.Import {
 
     public class ImportTask {
