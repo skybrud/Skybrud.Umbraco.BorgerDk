@@ -1,28 +1,26 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!--Based on: https://github.com/bergmania/Bergmania.OpenStreetMap/blob/main/Bergmania.OpenStreetMap/build/Bergmania.OpenStreetMap.targets -->
-
   <PropertyGroup>
-    <SkybrudBorgerDkContentFilesPath>$(MSBuildThisFileDirectory)..\content\App_Plugins\Skybrud.BorgerDk\**\*.*</SkybrudBorgerDkContentFilesPath>
+    <SkybrudUmbracoBorgerDkContentFilesPath>$(MSBuildThisFileDirectory)..\content\App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.*</SkybrudUmbracoBorgerDkContentFilesPath>
   </PropertyGroup>
 
-  <Target Name="CopySkybrudBorgerDkAssets" BeforeTargets="Build">
+  <Target Name="CopySkybrudUmbracoBorgerDkAssets" BeforeTargets="Build">
     <ItemGroup>
-      <SkybrudBorgerDkContentFiles Include="$(SkybrudBorgerDkContentFilesPath)" />
+      <SkybrudUmbracoBorgerDkContentFiles Include="$(SkybrudUmbracoBorgerDkContentFilesPath)" />
     </ItemGroup>
-    <Message Text="Copying Skybrud.Umbraco.BorgerDk files: $(SkybrudBorgerDkContentFilesPath) - #@(SkybrudBorgerDkContentFiles->Count()) files"  Importance="high" />
+    <Message Text="Copying Skybrud.Umbraco.BorgerDk files: $(SkybrudUmbracoBorgerDkContentFilesPath) - #@(SkybrudUmbracoBorgerDkContentFiles->Count()) files"  Importance="high" />
     <Copy
-      SourceFiles="@(SkybrudBorgerDkContentFiles)"
-      DestinationFiles="@(SkybrudBorgerDkContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\Skybrud.BorgerDk\%(RecursiveDir)%(Filename)%(Extension)')"
+      SourceFiles="@(SkybrudUmbracoBorgerDkContentFiles)"
+      DestinationFiles="@(SkybrudUmbracoBorgerDkContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\Skybrud.Umbraco.BorgerDk\%(RecursiveDir)%(Filename)%(Extension)')"
       SkipUnchangedFiles="true" />
   </Target>
 
-  <Target Name="ClearSkybrudBorgerDkAssets" BeforeTargets="Clean">
+  <Target Name="ClearSkybrudUmbracoBorgerDkAssets" BeforeTargets="Clean">
     <ItemGroup>
-      <SkybrudBorgerDkDir Include="$(MSBuildProjectDirectory)\App_Plugins\Skybrud.BorgerDk\" />
+      <SkybrudUmbracoBorgerDkDir Include="$(MSBuildProjectDirectory)\App_Plugins\Skybrud.Umbraco.BorgerDk\" />
     </ItemGroup>
     <Message Text="Clear old Skybrud.Umbraco.BorgerDk files"  Importance="high" />
-    <RemoveDir Directories="@(SkybrudBorgerDkDir)"  />
+    <RemoveDir Directories="@(SkybrudUmbracoBorgerDkDir)"  />
   </Target>
 
 </Project>

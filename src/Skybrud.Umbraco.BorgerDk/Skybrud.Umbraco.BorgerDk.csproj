@@ -1,49 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <ContentTargetFolders>content</ContentTargetFolders>
   </PropertyGroup>
+
   <PropertyGroup>
     <Version>4.0.0-beta001</Version>
-    <Authors>Anders Bjerner</Authors>
     <Company>Limbo</Company>
-    <Copyright>Copyright © 2021</Copyright>
+    <Authors>Anders Bjerner</Authors>
+    <Copyright>Copyright © 2022</Copyright>
+    <Title>Skybrud Borger.dk</Title>
+    <Description>Umbraco package for integration with the Borger.dk web service.</Description>
   </PropertyGroup>
+
+  <!-- Information for the NuGet package -->
   <PropertyGroup>
-    <PackageId>Skybrud.Umbraco.BorgerDk</PackageId>
     <PackageTags>Skybrud, Umbraco, Borger.dk, selvbetjening, web service, artikel</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</PackageProjectUrl>
     <PackageIcon>Limbo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</RepositoryUrl>
   </PropertyGroup>
+
+  <!-- Include NuGet dependencies -->
   <ItemGroup>
-    <PackageReference Include="Skybrud.Essentials.Umbraco" Version="1.0.0-alpha001" />
+    <PackageReference Include="Skybrud.Essentials.Umbraco" Version="1.0.0-alpha002" />
     <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
     <PackageReference Include="Umbraco.Cms.Core" Version="9.0.0" />
-    <PackageReference Include="Umbraco.Cms.Infrastructure" Version="9.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0" />
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />
   </ItemGroup>
+
+  <!-- Include backoffice assets -->
   <ItemGroup>
-    <Content Include="../build/Skybrud.Umbraco.BorgerDk.targets" PackagePath="build\Skybrud.Umbraco.BorgerDk.targets" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.js" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.css" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.html" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.xml" />
-    <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
-    <None Include="../build/Limbo.png" Pack="true" PackagePath="\" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.css" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.html" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.js" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\Lang\*.xml" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\package.manifest" />
   </ItemGroup>
+
+  <!-- Include the targets file -->
   <ItemGroup>
-    <Content Update="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.css">
-      <DependentUpon>BorgerDk.less</DependentUpon>
-    </Content>
+    <Content Include="../build/$(AssemblyName).targets" PackagePath="build\$(AssemblyName).targets" />
   </ItemGroup>
+
+  <!-- Include package icon for NuGet -->
   <ItemGroup>
-    <Content Update="App_Plugins\Skybrud.BorgerDk\Styles\BorgerDk.min.css">
-      <DependentUpon>BorgerDk.css</DependentUpon>
-    </Content>
+    <Content Include="../build/Limbo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
-  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ConfigurationName)'=='Release' AND '$(BuildTools)'=='1'">
-    <Exec Command="&quot;$(ProjectDir)..\build\Skybrud.BuildTools.Tasks.exe&quot; &quot;postBuild&quot; &quot;$(ConfigurationName)&quot; &quot;$(ProjectPath)&quot; &quot;$(TargetPath)&quot;" />
-  </Target>-->
+
+  <!-- Generate XML documentation -->
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
 </Project>

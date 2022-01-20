@@ -7,7 +7,7 @@
         transclude: true,
         restrict: "E",
         replace: true,
-        templateUrl: "/App_Plugins/Skybrud.BorgerDk/Views/Directives/Item.html",
+        templateUrl: "/App_Plugins/Skybrud.Umbraco.BorgerDk/Views/Directives/Item.html",
         link: function (scope) {
 
             scope.item.expanded = scope.item.type === "Job" || scope.item.type === "Group" || scope.item.status !== "Completed";
