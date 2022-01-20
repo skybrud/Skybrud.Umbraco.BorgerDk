@@ -153,7 +153,7 @@
         editorService.open({
             title: "Indsæt artikel",
             //size: "medium",
-            view: "/App_Plugins/Skybrud.Borgerdk/Views/SearchOverlay.html",
+            view: "/App_Plugins/Skybrud.Umbraco.Borgerdk/Views/SearchOverlay.html",
             submit: function (article) {
                 
                 $scope.model.value = {

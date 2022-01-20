@@ -419,7 +419,7 @@
             editorService.open({
                 title: "Indsæt artikel",
                 size: "medium",
-                view: "/App_Plugins/Skybrud.Borgerdk/Views/Overlay.html",
+                view: "/App_Plugins/Skybrud.Umbraco.Borgerdk/Views/Overlay.html",
                 value: angular.copy(value),
                 config: config,
                 submit: submit,
