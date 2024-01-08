@@ -10,7 +10,6 @@ using Skybrud.Essentials.Strings;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Integrations.BorgerDk.Elements;
 using Skybrud.Integrations.BorgerDk.Exceptions;
-using Skybrud.Umbraco.BorgerDk.Composers;
 using Skybrud.Umbraco.BorgerDk.Models.Import;
 using Skybrud.Umbraco.BorgerDk.Scheduling;
 using Skybrud.WebApi.Json;
@@ -27,7 +26,7 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
     [JsonOnlyConfiguration]
     [PluginController("Skybrud")]
     public class BorgerDkController : UmbracoAuthorizedApiController {
-        
+
         private readonly IServerRegistrar _serverRegistrar;
         private readonly BorgerDkService _borgerdk;
         private readonly BorgerDkImportTaskSettings _importSettings;
@@ -41,10 +40,10 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
         [HttpGet]
         [AllowAnonymous]
         public object Import() {
-            
+
             // Run a new import
             ImportJob result = _borgerdk.Import();
-            
+
             // Save the result to the disk
             _borgerdk.WriteToLog(result);
 
@@ -89,8 +88,8 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
                 id = x.Id,
                 url = x.Url,
                 title = HttpUtility.HtmlDecode(x.Title),
-                publishDate = x.PublishDate.UnixTimestamp,
-                updateDate = x.UpdateDate.UnixTimestamp
+                publishDate = x.PublishDate.UnixTimeSeconds,
+                updateDate = x.UpdateDate.UnixTimeSeconds
             });
 
         }
@@ -178,8 +177,8 @@ namespace Skybrud.Umbraco.BorgerDk.Controllers {
                 title = article.Title,
                 header = article.Header,
                 byline = StringUtils.StripHtml(article.Elements.OfType<BorgerDkTextElement>().FirstOrDefault(x => x.Id == "byline")?.Content),
-                publishDate = article.PublishDate.UnixTimestamp,
-                updateDate = article.UpdateDate.UnixTimestamp,
+                publishDate = article.PublishDate.UnixTimeSeconds,
+                updateDate = article.UpdateDate.UnixTimeSeconds,
                 elements
             };
 

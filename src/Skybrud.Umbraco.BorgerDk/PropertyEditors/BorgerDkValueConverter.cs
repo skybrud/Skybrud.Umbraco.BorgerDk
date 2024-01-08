@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-using Skybrud.Essentials.Json;
-using Skybrud.Essentials.Json.Extensions;
+using Skybrud.Essentials.Json.Newtonsoft;
+using Skybrud.Essentials.Json.Newtonsoft.Extensions;
 using Skybrud.Integrations.BorgerDk;
 using Skybrud.Umbraco.BorgerDk.Models.Published;
 using Umbraco.Core;
@@ -20,7 +20,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         public override bool IsConverter(IPublishedPropertyType propertyType) {
             return propertyType.EditorAlias == "Skybrud.BorgerDk";
         }
-        
+
         public override object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object source, bool preview) {
 
             if (source is string str && str.DetectIsJson()) {
@@ -42,7 +42,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
             return null;
 
         }
-        
+
         public override object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object inter, bool preview) {
             return inter;
         }
@@ -54,7 +54,7 @@ namespace Skybrud.Umbraco.BorgerDk.PropertyEditors {
         public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) {
             return PropertyCacheLevel.Snapshot;
         }
-        
+
         /// <summary>
         /// Gets the type of values returned by the converter.
         /// </summary>

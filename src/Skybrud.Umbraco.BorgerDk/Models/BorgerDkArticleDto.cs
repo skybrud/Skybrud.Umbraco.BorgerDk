@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using NPoco;
-using Skybrud.Essentials.Json;
+using Skybrud.Essentials.Json.Newtonsoft;
 using Skybrud.Integrations.BorgerDk;
 using Umbraco.Core.Persistence.DatabaseAnnotations;
 
