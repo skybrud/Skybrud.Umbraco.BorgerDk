@@ -1,61 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<LangVersion>9.0</LangVersion>
-		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-		<ContentTargetFolders>content</ContentTargetFolders>
-	</PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<VersionPrefix>4.0.0-beta001</VersionPrefix>
-		<VersionSuffix Condition="'$(Configuration)'=='Debug'">build$([System.DateTime]::UtcNow.ToString(`yyyyMMddHHmm`))</VersionSuffix>
-		<Company>Limbo</Company>
-		<Authors>Anders Bjerner</Authors>
-		<Copyright>Copyright © 2022</Copyright>
-		<Title>Skybrud Borger.dk</Title>
-		<Description>Umbraco package for integration with the Borger.dk web service.</Description>
-	</PropertyGroup>
+  <PropertyGroup>
+    <VersionPrefix>4.0.0-beta001</VersionPrefix>
+    <VersionSuffix Condition="'$(Configuration)'=='Debug'">build$([System.DateTime]::UtcNow.ToString(`yyyyMMddHHmm`))</VersionSuffix>
+    <Company>Limbo</Company>
+    <Authors>Anders Bjerner</Authors>
+    <Copyright>Copyright © $([System.DateTime]::UtcNow.ToString(`yyyy`))</Copyright>
+    <Title>Skybrud Borger.dk</Title>
+    <Description>Umbraco package for integration with the Borger.dk web service.</Description>
+  </PropertyGroup>
 
-	<!-- Information for the NuGet package -->
-	<PropertyGroup>
-		<PackageTags>Skybrud, Umbraco, Borger.dk, selvbetjening, web service, artikel</PackageTags>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageIcon>Limbo.png</PackageIcon>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</RepositoryUrl>
-	</PropertyGroup>
+  <!-- Information for the NuGet package -->
+  <PropertyGroup>
+    <PackageTags>Skybrud, Umbraco, Borger.dk, selvbetjening, web service, artikel</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Limbo.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/skybrud/Skybrud.Umbraco.BorgerDk</RepositoryUrl>
+  </PropertyGroup>
 
-	<!-- Include NuGet dependencies -->
-	<ItemGroup>
-		<PackageReference Include="Skybrud.Essentials.Umbraco" Version="1.0.0-alpha002" />
-		<PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
-		<PackageReference Include="Umbraco.Cms.Core" Version="9.0.0" />
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />
-	</ItemGroup>
+  <!-- Include NuGet dependencies -->
+  <ItemGroup>
+    <PackageReference Include="Skybrud.Essentials.Umbraco" Version="1.0.0" />
+    <PackageReference Include="Skybrud.Integrations.BorgerDk" Version="1.0.1" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="[9.0,10.0)" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[9.0,10.0)" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="[9.0,10.0)" />
+  </ItemGroup>
 
-	<!-- Include backoffice assets -->
-	<ItemGroup>
-		<Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.css" />
-		<Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.html" />
-		<Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.js" />
-		<Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\Lang\*.xml" />
-		<Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\package.manifest" />
-	</ItemGroup>
+  <!-- Include backoffice assets -->
+  <ItemGroup>
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.css" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.html" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\**\*.js" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\Lang\*.xml" />
+    <Content Include="App_Plugins\Skybrud.Umbraco.BorgerDk\package.manifest" />
+  </ItemGroup>
 
-	<!-- Include the targets file -->
-	<ItemGroup>
-		<Content Include="../build/$(AssemblyName).targets" PackagePath="build\$(AssemblyName).targets" />
-	</ItemGroup>
+  <!-- Include the targets file -->
+  <ItemGroup>
+    <Content Include="../build/$(AssemblyName).targets" PackagePath="build\$(AssemblyName).targets" />
+  </ItemGroup>
 
-	<!-- Include package icon for NuGet -->
-	<ItemGroup>
-		<Content Include="../build/Limbo.png" Pack="true" PackagePath="\" />
-	</ItemGroup>
+  <!-- Include package icon for NuGet -->
+  <ItemGroup>
+    <Content Include="../build/Limbo.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
-	<!-- Generate XML documentation -->
-	<PropertyGroup>
-		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-	</PropertyGroup>
+  <!-- Generate XML documentation -->
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
 
 </Project>
