@@ -3,7 +3,7 @@ Skybrud.Umbraco.BorgerDk
 
 This repository covers the integration between our [**Skybrud.Integrations.BorgerDk**](https://github.com/skybrud/Skybrud.Integrations.BorgerDk) package and Umbraco. This gives editors the option to insert Borger.dk articles as part of their content in their own pages in Umbraco.
 
-The `v3/main` branch (the one you're viewing now) contains the Umbraco 8 implementation, while an older implementations for Umbraco 7 and Umbraco 6 can be found in the [`v2/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v2/main) and [`v1/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v1/main) branches respectively.
+The `v4/main` branch (the one you're viewing now) contains the Umbraco 9 implementation, while an older implementations for Umbraco 8, Umbraco 7 and Umbraco 6 can be found in the [`v3/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v3/main), [`v2/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v2/main) and [`v1/main`](https://github.com/skybrud/Skybrud.Umbraco.BorgerDk/tree/v1/main) branches respectively.
 
 ## List of contents
 
