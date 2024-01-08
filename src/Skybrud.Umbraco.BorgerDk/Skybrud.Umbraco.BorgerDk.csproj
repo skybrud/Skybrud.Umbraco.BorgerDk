@@ -5,10 +5,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>3.0.0-beta003</Version>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionSuffix Condition="'$(Configuration)'=='Debug'">build$([System.DateTime]::UtcNow.ToString(`yyyyMMddHHmm`))</VersionSuffix>
     <Authors>Anders Bjerner</Authors>
     <Company>Limbo</Company>
-    <Copyright>Copyright © 2021</Copyright>
+    <Title>Skybrud Borger.dk</Title>
+    <Description>Umbraco package for integration with the Borger.dk web service.</Description>
+    <Copyright>Copyright © $([System.DateTime]::UtcNow.ToString(`yyyy`))</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -34,7 +37,7 @@
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.html" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\**\*.xml" />
     <Content Include="App_Plugins\Skybrud.BorgerDk\package.manifest" />
-    <None Include="../build/Limbo.png" Pack="true" PackagePath="\"/>
+    <None Include="../build/Limbo.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
